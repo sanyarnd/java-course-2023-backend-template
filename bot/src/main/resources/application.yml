@@ -1,5 +1,5 @@
 app:
-  telegram-token: unset
+  telegram-token: ${APP_TELEGRAM_TOKEN}
 
 spring:
   application:
