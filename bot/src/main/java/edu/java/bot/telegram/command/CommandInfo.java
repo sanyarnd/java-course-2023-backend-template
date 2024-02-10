@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum CommandType {
+public enum CommandInfo {
     START("/start", "Зарегистрировать пользователя."),
     HELP("/help", "Вывести окно с командами."),
     TRACK("/track", "Начать отслеживание ссылки."),

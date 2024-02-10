@@ -1,31 +1,26 @@
 package edu.java.bot.telegram.command;
 
-import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UntrackCommand implements Command {
-    private final TelegramBot telegramBot;
-
-    @Autowired
-    public UntrackCommand(TelegramBot telegramBot) {
-        this.telegramBot = telegramBot;
-    }
+    private final CommandInfo commandInfo = CommandInfo.UNTRACK;
 
     @Override
-    public void processCommand(Update update) {
-
+    public SendMessage processCommand(Update update) {
+        // TODO
+        return new SendMessage(update.message().chat().id(), "test message command /untrack");
     }
 
     @Override
     public String type() {
-        return CommandType.UNTRACK.getType();
+        return commandInfo.getType();
     }
 
     @Override
     public String description() {
-        return CommandType.UNTRACK.getDescription();
+        return CommandInfo.UNTRACK.getDescription();
     }
 }

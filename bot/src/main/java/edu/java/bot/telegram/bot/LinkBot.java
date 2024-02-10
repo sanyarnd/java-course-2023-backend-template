@@ -2,43 +2,38 @@ package edu.java.bot.telegram.bot;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
+import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.SetMyCommands;
+import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.telegram.command.Command;
+import edu.java.bot.telegram.message.UserMessageProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
-public class LinkBot implements Bot {
-    private final TelegramBot telegramBot;
-    private final Map<String, Command> commands;
+public class LinkBot extends TelegramBot {
+    private final UserMessageProcessor userMessageProcessor;
 
     @Autowired
-    public LinkBot(TelegramBot telegramBot, List<Command> commands) {
-        this.telegramBot = telegramBot;
-        this.telegramBot.setUpdatesListener(this::processUpdates);
+    public LinkBot(ApplicationConfig config, List<Command> commands, UserMessageProcessor userMessageProcessor) {
+        super(config.telegramToken());
+        this.userMessageProcessor = userMessageProcessor;
 
-        this.commands = new HashMap<>();
-        for (var command : commands) {
-            this.commands.put(command.type(), command);
-        }
+        List<BotCommand> botApiCommands = commands.stream().map(Command::toApiCommand).toList();
+        setMyCommands(botApiCommands);
+        setUpdatesListener(this::processUpdates);
     }
 
-    @Override
-    public void processCurrentUpdate(Update update) {
-        String userMessage = update.message().text();
-        Command command = commands.get(userMessage.split("\s+")[0]);
-
-        if (command != null) {
-            command.processCommand(update);
-        }
-    }
-
-    @Override
     public int processUpdates(List<Update> updates) {
-        updates.forEach(this::processCurrentUpdate);
+        for (var update: updates) {
+            execute(userMessageProcessor.processUpdate(update));
+        }
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
+    }
+
+    public void setMyCommands(List<BotCommand> botApiCommands) {
+        execute(new SetMyCommands(botApiCommands.toArray(BotCommand[]::new)));
     }
 }
