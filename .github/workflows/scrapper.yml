@@ -2,7 +2,7 @@ name: Scrapper Build
 
 on:
   workflow_dispatch:
-  push:
+  pull_request:
     paths:
       - .github/workflows/scrapper.yml
       - link-parser/**
@@ -14,6 +14,7 @@ jobs:
     name: Build
     permissions:
       packages: write
+      pull-requests: write
 
     steps:
       - uses: actions/checkout@v4
