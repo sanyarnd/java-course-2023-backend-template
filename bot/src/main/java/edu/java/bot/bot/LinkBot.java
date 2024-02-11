@@ -1,13 +1,13 @@
-package edu.java.bot.telegram.bot;
+package edu.java.bot.bot;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SetMyCommands;
+import edu.java.bot.command.Command;
 import edu.java.bot.configuration.ApplicationConfig;
-import edu.java.bot.telegram.command.Command;
-import edu.java.bot.telegram.message.UserMessageProcessor;
+import edu.java.bot.service.UserMessageProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.List;

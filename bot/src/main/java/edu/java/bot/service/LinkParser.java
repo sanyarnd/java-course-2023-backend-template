@@ -1,10 +1,10 @@
-package edu.java.bot.telegram.message;
+package edu.java.bot.service;
 
 import org.springframework.stereotype.Service;
 import java.util.Arrays;
 
 @Service
-public class UserMessageParser {
+public class LinkParser {
     public String[] getMessageArgs(String message) {
         String[] messageParts = message.split("\s+");
         if (messageParts.length > 1) {

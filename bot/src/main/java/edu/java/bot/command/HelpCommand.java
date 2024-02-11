@@ -1,20 +1,16 @@
-package edu.java.bot.telegram.command;
+package edu.java.bot.command;
 
 import java.util.List;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class HelpCommand implements Command {
     private final List<Command> commands;
     private final CommandInfo commandInfo = CommandInfo.HELP;
-
-    @Autowired
-    public HelpCommand(List<Command> commands) {
-        this.commands = commands;
-    }
 
     @Override
     public SendMessage processCommand(Update update) {

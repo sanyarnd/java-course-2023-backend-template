@@ -1,25 +1,21 @@
-package edu.java.bot.telegram.command;
+package edu.java.bot.command;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.telegram.message.UserMessageParser;
-import org.springframework.beans.factory.annotation.Autowired;
+import edu.java.bot.service.LinkParser;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class TrackCommand implements Command {
     private final CommandInfo commandInfo = CommandInfo.TRACK;
-    private final UserMessageParser userMessageParser;
-
-    @Autowired
-    public TrackCommand(UserMessageParser userMessageParser) {
-        this.userMessageParser = userMessageParser;
-    }
+    private final LinkParser linkParser;
 
     @Override
     public SendMessage processCommand(Update update) {
         // TODO
-        String[] messageArgs = userMessageParser.getMessageArgs(update.message().text());
+        String[] messageArgs = linkParser.getMessageArgs(update.message().text());
         return new SendMessage(update.message().chat().id(), "test message command /track");
     }
 

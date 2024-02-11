@@ -1,4 +1,4 @@
-package edu.java.bot.telegram.command;
+package edu.java.bot.command;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
