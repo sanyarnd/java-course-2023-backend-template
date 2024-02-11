@@ -23,8 +23,7 @@ public class ListCommand implements Command {
             message
                 .append("Список отслеживаемых ссылок пуст. Для добавления ссылки используйте ")
                 .append(CommandInfo.TRACK.getType());
-        }
-        else {
+        } else {
             message.append("Список отслеживаемых ссылок:");
             for (var link: trackingLinks) {
                 message.append("\n").append(link);

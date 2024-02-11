@@ -25,4 +25,18 @@ public class UserChatRepository {
         }
         return null;
     }
+
+    public boolean containsLink(Long chatId, String url) {
+        return findChat(chatId).getTrackingLinks().contains(url);
+    }
+
+    public void addLink(Long chatId, String link) {
+        UserChat userChat = findChat(chatId);
+        userChat.getTrackingLinks().add(link);
+    }
+
+    public void removeLink(Long chatId, String link) {
+        UserChat userChat = findChat(chatId);
+        userChat.getTrackingLinks().remove(link);
+    }
 }

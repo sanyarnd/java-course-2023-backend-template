@@ -18,8 +18,7 @@ public class HelpCommand implements Command {
         message.append("Список поддерживаемых команд:").append("\n");
 
         for (var command: commands) {
-            if (!command.type().equals(CommandInfo.START.getType())
-                && !command.type().equals(this.type())) {
+            if (!command.type().equals(CommandInfo.START.getType())) {
                 message.append(command.type()).append(" - ")
                     .append(command.description()).append("\n");
             }

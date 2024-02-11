@@ -22,8 +22,7 @@ public class StartCommand implements Command {
         if (userChatRepository.findChat(chatId) == null) {
             message.append("Приветствую! Вы зарегистрировались в приложении Link Tracker!");
             userChatRepository.register(new UserChat(chatId, new ArrayList<>()));
-        }
-        else {
+        } else {
             message.append("Вы уже зарегистрированы :)");
         }
         message
