@@ -60,9 +60,10 @@ public class ListenerBotTest {
 
         String testCommand = "/help";
 
-        String expectedResult = "/start : starts interacting with the bot\n" +
-            "/untrack : stops tracking link\n" +
-            "/help : shows available commands";
+        String expectedResult = """
+                /start : starts interacting with the bot
+                /untrack : stops tracking link
+                /help : shows available commands""";
 
         Update update = BotUtils.parseUpdate("{\"message\":{\"text\":\"" + testCommand + "\",\"chat\":{\"id\":0}}}");
 
