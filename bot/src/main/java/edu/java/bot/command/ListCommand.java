@@ -4,6 +4,8 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.repository.UserChatRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
@@ -14,23 +16,31 @@ public class ListCommand implements Command {
 
     private final UserChatRepository userChatRepository;
 
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    private static final String EMPTY_LINKS_LIST_MESSAGE =
+        "Список отслеживаемых ссылок пуст. Для добавления ссылки используйте " + CommandInfo.TRACK.getType();
+
+    private static final String LINKS_LIST_MESSAGE_TITLE = "Список отслеживаемых ссылок:";
+
     @Override
     public SendMessage processCommand(Update update) {
-        StringBuilder message = new StringBuilder();
+        StringBuilder botMessage = new StringBuilder();
+        Long chatId = update.message().chat().id();
 
-        List<String> trackingLinks = userChatRepository.getUserLinks(update.message().chat().id());
+        List<String> trackingLinks = userChatRepository.getUserLinks(chatId);
         if (trackingLinks == null || trackingLinks.isEmpty()) {
-            message
-                .append("Список отслеживаемых ссылок пуст. Для добавления ссылки используйте ")
-                .append(CommandInfo.TRACK.getType());
+            botMessage.append(EMPTY_LINKS_LIST_MESSAGE);
+            LOGGER.info("ChatID: %d; command: %s; result: links list is empty".formatted(chatId, type()));
         } else {
-            message.append("Список отслеживаемых ссылок:");
+            botMessage.append(LINKS_LIST_MESSAGE_TITLE);
             for (var link: trackingLinks) {
-                message.append("\n").append(link);
+                botMessage.append("\n").append(link);
             }
+            LOGGER.info("ChatID: %d; command: %s; result: links list has sent".formatted(chatId, type()));
         }
 
-        return new SendMessage(update.message().chat().id(), message.toString());
+        return new SendMessage(update.message().chat().id(), botMessage.toString());
     }
 
     @Override
