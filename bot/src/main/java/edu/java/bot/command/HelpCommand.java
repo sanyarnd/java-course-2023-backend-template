@@ -1,9 +1,9 @@
 package edu.java.bot.command;
 
-import java.util.List;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.website.WebsiteInfo;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,14 +22,14 @@ public class HelpCommand implements Command {
         StringBuilder botMessage = new StringBuilder();
 
         botMessage.append(SUPPORTED_COMMANDS_MESSAGE_TITLE).append("\n");
-        for (var command: commands) {
+        for (var command : commands) {
             if (!command.type().equals(CommandInfo.START.getType())) {
                 botMessage.append(command.type()).append(" - ").append(command.description()).append("\n");
             }
         }
 
         botMessage.append("\n").append(SUPPORTED_WEBSERVICES_MESSAGE_TITLE);
-        for (var website: WebsiteInfo.values()) {
+        for (var website : WebsiteInfo.values()) {
             botMessage.append("\n").append(website.getDomain());
         }
 

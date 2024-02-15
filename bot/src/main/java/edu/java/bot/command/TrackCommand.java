@@ -6,11 +6,11 @@ import edu.java.bot.repository.UserChatRepository;
 import edu.java.bot.service.LinkParsingProcessor;
 import edu.java.bot.util.LinkValidator;
 import edu.java.bot.website.WebsiteInfo;
+import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
-import java.net.URI;
 
 @Component
 @RequiredArgsConstructor

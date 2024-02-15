@@ -1,14 +1,17 @@
 package edu.java.bot.parser;
 
 import edu.java.bot.website.WebsiteInfo;
-import org.springframework.stereotype.Component;
 import java.net.URI;
+import org.springframework.stereotype.Component;
 
 @Component
 public class GitHubParser implements LinkParser {
     @Override
     public boolean parseLink(URI uri) {
         String host = uri.getHost();
-        return host.equals(WebsiteInfo.GITHUB.getDomain());
+        if (host != null) {
+            return host.equals(WebsiteInfo.GITHUB.getDomain());
+        }
+        return false;
     }
 }

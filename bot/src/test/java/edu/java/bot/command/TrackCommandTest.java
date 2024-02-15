@@ -3,12 +3,12 @@ package edu.java.bot.command;
 import edu.java.bot.service.LinkParsingProcessor;
 import edu.java.bot.util.LinkValidator;
 import edu.java.bot.website.WebsiteInfo;
+import java.net.URI;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.net.URI;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 

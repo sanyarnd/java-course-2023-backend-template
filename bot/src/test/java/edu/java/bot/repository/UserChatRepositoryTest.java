@@ -1,11 +1,11 @@
 package edu.java.bot.repository;
 
 import edu.java.bot.model.UserChat;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,7 +19,7 @@ public class UserChatRepositoryTest {
 
     private List<String> links;
 
-    private String testLink = "https://github.com/pengrad";
+    private final String testLink = "https://github.com/pengrad";
 
     @BeforeEach
     public void setUp() {
