@@ -70,13 +70,13 @@ public class TelegramRequestRoutesServiceImpl implements TelegramRequestRoutesSe
     public TelegramAnswer untrack(UserMessage message) {
         var startLength = "/untrack ".length();
         if (message.text().length() <= startLength) {
-            return new TelegramAnswer(Optional.of("Please, send a link"));
+            return new TelegramAnswer(Optional.of(WITHOUT_LINK_ERROR_MESSAGE));
         }
         Link link;
         try {
             link = LinkUtils.convertUriToLink(URI.create(message.text().substring(startLength)));
         } catch (IllegalArgumentException e) {
-            return new TelegramAnswer(Optional.of("Sended link is incorrect " + e.getMessage()));
+            return new TelegramAnswer(Optional.of(INCORRECT_LINK_ERROR_MESSAGE + e.getMessage()));
         }
         log.info("User {} ended tracking link {}", message.chatId(), link);
         var success = userLinksRepository.removeUserLinks(message.chatId(), link);
