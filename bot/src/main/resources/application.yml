@@ -12,3 +12,4 @@ server:
 
 logging:
   config: ${BOT_LOGGING_CONFIG:"classpath:log4j2-plain.xml"}
+
