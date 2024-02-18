@@ -1,5 +1,5 @@
 app:
-  telegram-token: unset
+  telegram-token: 6830302236:AAHhIgpBMPwaIyxdGyn9usln77ZBJNBWgDE
 
 spring:
   application:
