@@ -5,13 +5,12 @@ import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import java.util.List;
-import com.pengrad.telegrambot.request.SendMessage;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.mockito.Mockito;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class BotTest {
-    private Update getMockUpdate(String text){
+    private Update getMockUpdate(String text) {
         var mock = Mockito.mock(Update.class);
         Mockito.when(mock.message()).thenReturn(Mockito.mock(Message.class));
         Mockito.when(mock.message().chat()).thenReturn(Mockito.mock(Chat.class));
@@ -21,7 +20,7 @@ public class BotTest {
     }
 
     @Test
-    void process_shouldReturnConfirmedUpdatesAll(){
+    void process_shouldReturnConfirmedUpdatesAll() {
         //arrange
         Update mock = getMockUpdate("/help");
         //act
@@ -32,7 +31,7 @@ public class BotTest {
     }
 
     @Test
-    void recognizeCommand_shouldRecognizeStartCommand(){
+    void recognizeCommand_shouldRecognizeStartCommand() {
         //arrange
         Update mock = getMockUpdate("/start");
         String exp = "You are registered for resource tracking";
@@ -44,7 +43,7 @@ public class BotTest {
     }
 
     @Test
-    void recognizeCommand_shouldRecognizeTrackCommand(){
+    void recognizeCommand_shouldRecognizeTrackCommand() {
         //arrange
         Update mock = getMockUpdate("/track");
         String exp = "Input link for tracking:";
@@ -56,7 +55,7 @@ public class BotTest {
     }
 
     @Test
-    void recognizeCommand_shouldRecognizeUnknownCommand(){
+    void recognizeCommand_shouldRecognizeUnknownCommand() {
         //arrange
         Update mock = getMockUpdate("/hello");
         String exp = "Unknown command. Use /help to see the available commands";
