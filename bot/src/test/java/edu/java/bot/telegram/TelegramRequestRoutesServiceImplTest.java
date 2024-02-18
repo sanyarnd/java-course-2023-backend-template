@@ -1,9 +1,9 @@
 package edu.java.bot.telegram;
 
-import java.util.List;
 import edu.java.bot.model.Link;
 import edu.java.bot.model.UserMessage;
 import edu.java.bot.repositories.UserLinksRepository;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

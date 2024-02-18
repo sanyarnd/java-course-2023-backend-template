@@ -1,6 +1,5 @@
 package edu.java.bot.telegram;
 
-import com.pengrad.telegrambot.model.Message;
 import edu.java.bot.model.Link;
 import edu.java.bot.model.TelegramAnswer;
 import edu.java.bot.model.UserMessage;

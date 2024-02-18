@@ -16,16 +16,14 @@ import static org.mockito.Mockito.when;
 
 class TelegramRequestServiceImplTest {
 
-    private TelegramBot telegramBot;
-
-    private TelegramRequestRoutesService telegramRequestRoutesService;
-    private TelegramRequestService telegramRequestService;
     private final TelegramAnswer exampleAnswer = new TelegramAnswer(Optional.of("Answer"));
     private final Long chatId = 0L;
-
     private final ArgumentMatcher<SendMessage> argumentMatcher = sendMessage ->
         sendMessage.getParameters().get("chat_id").equals(0L) &&
         sendMessage.getParameters().get("text").equals(exampleAnswer.text().get());
+    private TelegramBot telegramBot;
+    private TelegramRequestRoutesService telegramRequestRoutesService;
+    private TelegramRequestService telegramRequestService;
 
     @BeforeEach
     void setUp() {

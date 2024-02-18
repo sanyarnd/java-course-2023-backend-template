@@ -12,12 +12,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class TelegramRequestServiceImpl implements TelegramRequestService {
 
-    private final TelegramBot telegramBot;
-
     private static final TelegramAnswer FALLBACK_MESSAGE = new TelegramAnswer(
         Optional.of("Undefined command, see /help")
     );
-
+    private final TelegramBot telegramBot;
     private final Map<String, Function<UserMessage, TelegramAnswer>> messageRoutes;
 
     public TelegramRequestServiceImpl(

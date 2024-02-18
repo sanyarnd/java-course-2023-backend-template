@@ -2,9 +2,9 @@ package edu.java.bot.telegram;
 
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
+import edu.java.bot.model.UserMessage;
 import java.util.List;
 import java.util.Objects;
-import edu.java.bot.model.UserMessage;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Component;
 
