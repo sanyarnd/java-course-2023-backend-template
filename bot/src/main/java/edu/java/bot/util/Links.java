@@ -1,11 +1,11 @@
 package edu.java.bot.util;
 
-import com.pengrad.telegrambot.model.Update;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,6 +33,9 @@ public class Links {
 
     public static Map<String, List<String>> splitByDomain(List<String> links) {
         Map<String, List<String>> map = new TreeMap<>();
+        if (Objects.isNull(links)) {
+            return null;
+        }
         for (var link : links) {
             try {
                 URL parsedUrl = new URL(link);

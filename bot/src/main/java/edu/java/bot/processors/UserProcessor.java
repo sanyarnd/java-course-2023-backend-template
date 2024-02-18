@@ -9,9 +9,9 @@ import edu.java.bot.commands.StartCommand;
 import edu.java.bot.commands.TrackCommand;
 import edu.java.bot.commands.UntrackCommand;
 import edu.java.bot.repository.SyntheticRecentlyUsedRepository;
-import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Component
 public class UserProcessor {

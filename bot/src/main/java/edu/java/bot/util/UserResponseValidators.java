@@ -1,6 +1,7 @@
 package edu.java.bot.util;
 
 import java.util.List;
+import java.util.Objects;
 
 public class UserResponseValidators {
 
@@ -8,6 +9,9 @@ public class UserResponseValidators {
     }
 
     public static boolean listIndexValidate(String index, List<?> list) {
+        if (Objects.isNull(list)) {
+            return false;
+        }
         int i;
         try {
             i = Integer.parseInt(index);
