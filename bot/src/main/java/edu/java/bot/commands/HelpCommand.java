@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class HelpCommand implements Command {
-    private final int FORMAT_LENGTH = 6;
+    private final int formatLength = 6;
+
     @Override
     public String command() {
         return getCommandList();
@@ -60,7 +61,7 @@ public class HelpCommand implements Command {
                     for (File f : Objects.requireNonNull(file.listFiles())) {
                         if (f.getName().endsWith(".class")) {
                             String className =
-                                packageName + "." + f.getName().substring(0, f.getName().length() - FORMAT_LENGTH);
+                                packageName + "." + f.getName().substring(0, f.getName().length() - formatLength);
                             classes.add(Class.forName(className));
                         }
                     }

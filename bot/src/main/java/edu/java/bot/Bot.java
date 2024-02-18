@@ -11,8 +11,8 @@ import org.apache.logging.log4j.Logger;
 
 public class Bot implements UpdatesListener, AutoCloseable {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final CommandRecognizer recognizer = new CommandRecognizer();
-    private static final LinkValidator validator = new LinkValidator();
+    private final CommandRecognizer recognizer = new CommandRecognizer();
+    private final LinkValidator validator = new LinkValidator();
     private final TelegramBot bot;
     private boolean dialogState = false;
 

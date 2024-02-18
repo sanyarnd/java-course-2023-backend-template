@@ -10,7 +10,7 @@ public class TrackCommand implements Command {
         return "Input link for tracking:";
     }
 
-    public String addLink(String link){
+    public String addLink(String link) {
         //add link to db;
         return link;
     }

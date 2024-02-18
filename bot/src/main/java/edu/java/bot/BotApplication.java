@@ -10,6 +10,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @EnableConfigurationProperties(ApplicationConfig.class)
 public class BotApplication {
     private static ApplicationConfig applicationConfig;
+
     @Autowired
     public BotApplication(ApplicationConfig applicationConfig) {
         BotApplication.applicationConfig = applicationConfig;
