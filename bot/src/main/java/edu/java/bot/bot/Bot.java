@@ -9,7 +9,6 @@ import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.services.CommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.util.HashMap;
 
 //Is it Controller?
 @Component
