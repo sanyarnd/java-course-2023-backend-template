@@ -5,12 +5,11 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
 public class HelloCommandHandler implements CommandHandler {
-    private final TelegramBot telegramBot;
-
     @Override
     public String command() {
         return "/hello";
@@ -22,8 +21,7 @@ public class HelloCommandHandler implements CommandHandler {
     }
 
     @Override
-    public void handle(Update update) {
-        SendMessage msg = new SendMessage(update.message().chat().id(), "Hi");
-        telegramBot.execute(msg);
+    public Optional<SendMessage> handle(Update update) {
+        return Optional.of(new SendMessage(update.message().chat().id(), String.format("Hello %s", update.message().from().username())));
     }
 }

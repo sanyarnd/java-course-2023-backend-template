@@ -1,17 +1,17 @@
 package edu.java.bot.view.command;
 
-import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.domain.RegisterUserUseCase;
+import edu.java.bot.domain.register.RegisterUserResponse;
+import edu.java.bot.domain.register.RegisterUserUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
 public class StartCommandHandler implements CommandHandler {
     private final RegisterUserUseCase register;
-    private final TelegramBot telegramBot;
 
     @Override
     public String command() {
@@ -24,14 +24,14 @@ public class StartCommandHandler implements CommandHandler {
     }
 
     @Override
-    public void handle(Update update) {
-        new Thread(() -> {
-            var response = register.registerUser(update.message().from());
-            var message = switch (response) {
-                case OK -> "Successfully registered!";
-                case ALREADY_REGISTERED -> "You already registered!";
-            };
-            telegramBot.execute(new SendMessage(update.message().chat().id(), message));
-        }).start();
+    public Optional<SendMessage> handle(Update update) {
+        var response = register.registerUser(update.message().from());
+        String message = null;
+        if (response instanceof RegisterUserResponse.Ok) {
+            message = "Registration successful";
+        } else if (response instanceof RegisterUserResponse.AlreadyRegistered) {
+            message = "You already logged in!";
+        }
+        return Optional.of(new SendMessage(update.message().chat().id(), message));
     }
 }

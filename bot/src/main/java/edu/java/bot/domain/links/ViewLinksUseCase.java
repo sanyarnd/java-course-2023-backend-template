@@ -1,27 +1,23 @@
-package edu.java.bot.domain;
+package edu.java.bot.domain.links;
 
 import com.pengrad.telegrambot.model.User;
 import edu.java.bot.data.TrackerRepository;
+import edu.java.bot.domain.register.RegisterUserResponse;
 import edu.java.bot.util.UserAlreadyRegisteredException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class RegisterUserUseCase {
+public class ViewLinksUseCase {
     private final TrackerRepository repository;
 
-    public enum RegisterUserResponse {
-        OK,
-        ALREADY_REGISTERED
-    }
-
-    public RegisterUserResponse registerUser(User user) {
+    public ViewLinksResponse viewLinks(User user) {
         try {
-            repository.registerUser(user.username());
-            return RegisterUserResponse.OK;
+            var subscriptions = repository.getUserSubscriptions(user.username());
+            return new ViewLinksResponse.Ok(subscriptions);
         } catch (UserAlreadyRegisteredException exception) {
-            return RegisterUserResponse.ALREADY_REGISTERED;
+            return new ViewLinksResponse.UserIsNotDefined();
         }
     }
 }
