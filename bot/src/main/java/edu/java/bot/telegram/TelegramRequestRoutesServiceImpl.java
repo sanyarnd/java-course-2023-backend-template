@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class TelegramRequestRoutesServiceImpl implements TelegramRequestRoutesService {
 
+    public static final String WITHOUT_LINK_ERROR_MESSAGE = "Please, send a link";
+    public static final String INCORRECT_LINK_ERROR_MESSAGE = "Sended link is incorrect ";
     private final UserLinksRepository userLinksRepository;
 
     public TelegramRequestRoutesServiceImpl(UserLinksRepository userLinksRepository) {
@@ -47,13 +49,13 @@ public class TelegramRequestRoutesServiceImpl implements TelegramRequestRoutesSe
     public TelegramAnswer track(UserMessage message) {
         var startLength = "/track ".length();
         if (message.text().length() <= startLength) {
-            return new TelegramAnswer(Optional.of("Please, send a link"));
+            return new TelegramAnswer(Optional.of(WITHOUT_LINK_ERROR_MESSAGE));
         }
         Link link;
         try {
             link = LinkUtils.convertUriToLink(URI.create(message.text().substring(startLength)));
         } catch (IllegalArgumentException e) {
-            return new TelegramAnswer(Optional.of("Sended link is incorrect " + e.getMessage()));
+            return new TelegramAnswer(Optional.of(INCORRECT_LINK_ERROR_MESSAGE + e.getMessage()));
         }
         if (link.host() == null) {
             return new TelegramAnswer(Optional.of("Sended link host is incorrect"));
