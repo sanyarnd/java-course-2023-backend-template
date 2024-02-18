@@ -1,14 +1,14 @@
 app:
-  telegram-token: unset
+  telegram-token: ${BOT_TELEGRAM_TOKEN:unset}
 
 spring:
   application:
-    name: bot
+    name: ${BOT_SPRING_APPLICATION_NAME:bot}
   jackson:
-    time-zone: UTC
+    time-zone: ${BOT_SPRING_JACKSON_TIME_ZONE:UTC}
 
 server:
-  port: 8090
+  port: ${BOT_SERVER_PORT:8090}
 
 logging:
-  config: classpath:log4j2-plain.xml
+  config: ${BOT_LOGGING_CONFIG:"classpath:log4j2-plain.xml"}
