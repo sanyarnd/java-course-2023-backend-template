@@ -29,18 +29,19 @@ public class Bot implements UpdatesListener, AutoCloseable {
     }
 
     private SendMessage generateResponse(Update update) {
-        return dialogState ? linkValidationInDialog(update) : recognizeCommand(update);
+        return new SendMessage(update.message().chat().id(),
+            dialogState ? linkValidationInDialog(update) : recognizeCommand(update));
     }
 
-    private SendMessage recognizeCommand(Update update) {
+    public String recognizeCommand(Update update) {
         Command command = recognizer.recognize(update);
         if (command.getClass().equals(TrackCommand.class)) {
             dialogState = true;
         }
-        return command.handle(update);
+        return command.command();
     }
 
-    private SendMessage linkValidationInDialog(Update update) {
+    public String linkValidationInDialog(Update update) {
         String link = update.message().text();
         String messageText = validator.validate(link);
         if (validator.isLinkCorrect(link)) {
@@ -48,7 +49,7 @@ public class Bot implements UpdatesListener, AutoCloseable {
             linkAdder.addLink(link);
             dialogState = false;
         }
-        return new SendMessage(update.message().chat().id(), messageText);
+        return messageText;
     }
 
     public void start() {

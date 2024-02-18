@@ -20,7 +20,6 @@ public class CommandRecognizer {
             default -> new UnknownCommand();
         };
 
-
         return command;
     }
 }
