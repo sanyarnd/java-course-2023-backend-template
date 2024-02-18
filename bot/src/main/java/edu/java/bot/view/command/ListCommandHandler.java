@@ -4,7 +4,6 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.domain.links.ViewLinksResponse;
 import edu.java.bot.domain.links.ViewLinksUseCase;
-import edu.java.bot.domain.register.RegisterUserResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import java.util.Optional;

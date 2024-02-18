@@ -25,7 +25,7 @@ public class BotUpdatesListener implements UpdatesListener {
     @PostConstruct
     private void subscribe() {
         List<BotCommand> botCommands = commandHandlers.stream().map(CommandHandler::convertToApi).toList();
-        SetMyCommands commands = new SetMyCommands(botCommands.toArray(new BotCommand[0]));
+        SetMyCommands commands = new SetMyCommands(botCommands.toArray(BotCommand[]::new));
         telegramBot.execute(commands);
         // Set updates
         telegramBot.setUpdatesListener(this, exceptionHandler);

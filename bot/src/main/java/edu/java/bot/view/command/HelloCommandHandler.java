@@ -1,10 +1,10 @@
 package edu.java.bot.view.command;
 
-import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+
 import java.util.Optional;
 
 @Controller
@@ -22,6 +22,9 @@ public class HelloCommandHandler implements CommandHandler {
 
     @Override
     public Optional<SendMessage> handle(Update update) {
-        return Optional.of(new SendMessage(update.message().chat().id(), String.format("Hello %s", update.message().from().username())));
+        return Optional.of(new SendMessage(
+            update.message().chat().id(),
+            String.format("Hello %s", update.message().from().username())
+        ));
     }
 }
