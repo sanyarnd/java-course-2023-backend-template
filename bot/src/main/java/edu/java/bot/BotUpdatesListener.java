@@ -1,21 +1,21 @@
 package edu.java.bot;
 
-
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.message_sender.MessageSender;
+import edu.java.bot.message_sender.Sender;
 import edu.java.bot.resolver.UpdateResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class BotUpdatesListener implements UpdatesListener {
+    @Qualifier("sender") private final Sender messageSenderImpl;
 
     private final UpdateResolver updateResolver;
-    private final MessageSender messageSenderImpl;
 
     @Override
     public int process(List<Update> list) {

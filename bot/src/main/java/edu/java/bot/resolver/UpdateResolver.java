@@ -1,6 +1,5 @@
 package edu.java.bot.resolver;
 
-
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;

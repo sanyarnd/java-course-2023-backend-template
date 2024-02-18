@@ -8,7 +8,7 @@ import edu.java.bot.command.ListCommand;
 import edu.java.bot.command.StartCommand;
 import edu.java.bot.command.TrackCommand;
 import edu.java.bot.command.UntrackCommand;
-import edu.java.bot.service.LinkService;
+import edu.java.bot.service.CommandService;
 import edu.java.bot.resolver.UpdateCallbackResolver;
 import edu.java.bot.resolver.UpdateMessageResolver;
 import edu.java.bot.resolver.UpdateResolver;
@@ -23,8 +23,8 @@ import static edu.java.bot.command.Command.UNTRACK;
 public class BotConfiguration {
 
     @Bean
-    public LinkService linkService() {
-        return new LinkService();
+    public CommandService linkService() {
+        return new CommandService();
     }
 
     @Bean

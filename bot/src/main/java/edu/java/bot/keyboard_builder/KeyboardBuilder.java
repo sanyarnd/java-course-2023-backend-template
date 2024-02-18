@@ -11,7 +11,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class KeyboardBuilder {
 
-    public static Keyboard buildUrlKeyboard(List<Link> links) {
+    public static Keyboard createUrlKeyboard(List<Link> links) {
         return new InlineKeyboardMarkup(
             links.stream()
                 .map(link -> new InlineKeyboardButton(link.link()).url(link.link()))
@@ -20,7 +20,7 @@ public class KeyboardBuilder {
         );
     }
 
-    public static Keyboard buildCallbackKeyboard(List<Link> links) {
+    public static Keyboard createCallbackKeyboard(List<Link> links) {
         return new InlineKeyboardMarkup(
             links.stream()
                 .map(link -> new InlineKeyboardButton(link.link()).callbackData("/untrack:" + link.linkId()))

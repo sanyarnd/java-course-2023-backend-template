@@ -1,5 +1,6 @@
 package edu.java.bot.message_sender;
 
+
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
 import edu.java.bot.LinkTrackerBot;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 @Log4j2
-public class MessageSenderImpl implements MessageSender {
+public class TelegramMessageSender implements Sender {
 
     private final LinkTrackerBot bot;
 
