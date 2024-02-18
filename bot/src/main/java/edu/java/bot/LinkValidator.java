@@ -11,6 +11,6 @@ public class LinkValidator {
     }
 
     public boolean isLinkCorrect(String link) {
-        return Pattern.matches("^https:\\/\\/stackoverflow\\.com\\/questions\\/.+", link);
+        return Pattern.matches("^https:\\/\\/stackoverflow\\.com\\/questions\\/\\d+", link);
     }
 }
