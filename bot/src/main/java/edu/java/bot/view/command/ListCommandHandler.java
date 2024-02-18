@@ -4,9 +4,9 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.domain.links.ViewLinksResponse;
 import edu.java.bot.domain.links.ViewLinksUseCase;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
-import java.util.Optional;
 
 @Controller
 @AllArgsConstructor

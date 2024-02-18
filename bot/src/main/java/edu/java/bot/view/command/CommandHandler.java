@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 public interface CommandHandler {
     String command();
+
     String description();
 
     Optional<SendMessage> handle(Update update);

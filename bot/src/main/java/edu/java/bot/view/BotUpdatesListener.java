@@ -9,11 +9,11 @@ import com.pengrad.telegrambot.request.SetMyCommands;
 import edu.java.bot.view.command.CommandHandler;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
@@ -39,7 +39,6 @@ public class BotUpdatesListener implements UpdatesListener {
     @Override
     public int process(List<Update> list) {
         for (Update update : list) {
-            System.out.println(update);
             // Find matching command handler
             Optional<CommandHandler> handler = commandHandlers.stream()
                 .filter(commandHandler -> {

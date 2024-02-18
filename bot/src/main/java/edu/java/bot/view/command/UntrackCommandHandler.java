@@ -4,11 +4,10 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.domain.unsubscribe.UntrackLinkResponse;
 import edu.java.bot.domain.unsubscribe.UntrackLinkUseCase;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Controller;
-
 import java.util.Optional;
 import java.util.regex.Pattern;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Controller;
 
 @Controller
 @AllArgsConstructor
