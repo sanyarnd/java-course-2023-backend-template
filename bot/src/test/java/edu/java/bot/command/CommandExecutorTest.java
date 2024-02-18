@@ -24,7 +24,7 @@ public class CommandExecutorTest {
     @Test
     @DisplayName("CommandExecutor#execute test")
     public void execute_shouldReturnCorrectMessage_whenCommandIsInvalid() {
-        SendMessage actual = commandExecutor.execute("wrokoj", 1);
+        SendMessage actual = commandExecutor.execute("open", 1);
 
         Assertions.assertThat(actual.getParameters().get("text")).isEqualTo(ERROR_MESSAGE);
     }

@@ -35,11 +35,11 @@ public class ListCommandTest {
         Mockito.when(linkService.getAllTrackedLinks(chatId)).thenReturn(List.of(
             new Link(
                 UUID.fromString("bcdf9843-7543-479b-8ac0-f2065335f820"),
-                "https://github.com/sanyarnd/tinkoff-java-course-2023"
+                "https://github.com/Pollipol4ik"
             ),
             new Link(
                 UUID.fromString("86aeb965-7a88-421c-9792-36d95d6e0425"),
-                "https://stackoverflow.com/questions/1642028/what-is-the-operator-in-c"
+                "https://stackoverflow.com/questions/77425606/mock-contract-allowance-from-ethers-js-using-jest"
             )
         ));
 

@@ -25,7 +25,7 @@ public class TrackCommandTest {
     @DisplayName("TrackCommandExecutor#execute with correct link test")
     public void execute_shouldReturnCorrectMessage_whenLinkIsCorrect() {
         long chatId = 1;
-        String command = "/track https://github.com";
+        String command = "/track https://github.com/Pollipol4ik";
 
         SendMessage actual = commandExecutor.execute(command, chatId);
 
