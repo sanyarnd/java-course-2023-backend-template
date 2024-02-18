@@ -42,7 +42,6 @@ public class HelpCommandTest {
         when(listCommand.command()).thenReturn("/list");
         when(listCommand.description()).thenReturn("Показать список отслеживаемых ссылок.");
 
-        // Настройка списка команд
         commands = Arrays.asList(trackCommand, listCommand);
 
         helpCommand = new HelpCommand(commands);
@@ -51,9 +50,9 @@ public class HelpCommandTest {
     @Test
     public void testHandle() {
         String expectedMessage = """
-                Список поддерживаемых команд:
-                /track - Начать отслеживание ссылки.
-                /list - Показать список отслеживаемых ссылок.""";
+            Список поддерживаемых команд:
+            /track - Начать отслеживание ссылки.
+            /list - Показать список отслеживаемых ссылок.""";
 
         SendMessage result = helpCommand.handle(update);
 
