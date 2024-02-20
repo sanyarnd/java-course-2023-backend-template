@@ -33,13 +33,14 @@ public class StackoverflowClientTest {
         stubFor(get(urlEqualTo("/questions/" + questionId + "?site=stackoverflow"))
             .willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
-                .withBody("{ \"items\": [{ \"last_activity_date\": \"2024-02-20T12:00:00Z\" }]}")));
+                .withBody("{ \"items\": [{ \"last_activity_date\": \"2024-02-20T12:00Z\" }]}")));
 
         StackoverflowClient stackoverflowClient =
             new StackoverflowClient(WebClient.builder().baseUrl(wireMockBaseUrl).build());
-        StackoverflowResponse stackoverflowResponse = stackoverflowClient.getStackoverflowResponse("12345678910");
+        StackoverflowResponse stackoverflowResponse =
+            stackoverflowClient.getStackoverflowResponse(String.valueOf(questionId));
         StackoverflowQuestion stackoverflowQuestion = stackoverflowResponse.items().getFirst();
 
-        assertEquals("2024-02-20T12:00:00Z", stackoverflowQuestion.lastActivityDate());
+        assertEquals("2024-02-20T12:00Z", stackoverflowQuestion.lastActivityDate().toString());
     }
 }
