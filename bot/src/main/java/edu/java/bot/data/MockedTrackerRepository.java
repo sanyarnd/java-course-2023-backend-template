@@ -7,11 +7,13 @@ import edu.java.bot.util.UserIsNotRegisteredException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class MockedTrackerRepository implements TrackerRepository {
-    private final static HashMap<String, HashSet<String>> MOCKED_DB = new HashMap<>();
+    private final static Map<String, Set<String>> MOCKED_DB = new HashMap<>();
 
     @Override
     public void registerUser(String userId) {
@@ -31,7 +33,7 @@ public class MockedTrackerRepository implements TrackerRepository {
         if (!isUserRegistered(userId)) {
             throw new UserIsNotRegisteredException();
         }
-        HashSet<String> trackedLinks = MOCKED_DB.get(userId);
+        var trackedLinks = MOCKED_DB.get(userId);
         if (trackedLinks.contains(link)) {
             throw new LinkAlreadyTrackedException();
         }
@@ -43,7 +45,7 @@ public class MockedTrackerRepository implements TrackerRepository {
         if (!isUserRegistered(userId)) {
             throw new UserIsNotRegisteredException();
         }
-        HashSet<String> trackedLinks = MOCKED_DB.get(userId);
+        var trackedLinks = MOCKED_DB.get(userId);
         if (!trackedLinks.contains(link)) {
             throw new LinkIsNotTrackedException();
         }
