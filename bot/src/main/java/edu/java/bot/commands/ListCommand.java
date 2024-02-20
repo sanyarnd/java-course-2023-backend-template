@@ -24,7 +24,12 @@ public class ListCommand implements ICommand {
         var chatId = update.message().chat().id();
         var linkMap = Links.splitByDomain(SyntheticLinkRepository.getAllByChatId(chatId));
         if (Objects.isNull(linkMap)) {
-            return new SendMessage(chatId, "Ваш список отслеживаемых сайтов пуст :(\nДавайте это исправим! **Напишите команду** /track");
+            return new SendMessage(
+                chatId,
+                """
+                    Ваш список отслеживаемых сайтов пуст :(
+                    Давайте это исправим! **Напишите команду ** /track"""
+            );
         }
         var domains = linkMap.keySet();
         for (var domain : domains) {

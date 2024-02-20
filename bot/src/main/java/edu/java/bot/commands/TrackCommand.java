@@ -19,7 +19,8 @@ public class TrackCommand implements ICommand {
 
     @Override
     public SendMessage handle(Update update) {
-        return new SendMessage(update.message().chat().id(), "Отправьте ссылку на ресурс, который желаете отслеживать:");
+        return new SendMessage(update.message().chat().id(),
+            "Отправьте ссылку на ресурс, который желаете отслеживать:");
     }
 
     @Override
