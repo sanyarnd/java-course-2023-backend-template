@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StackoverflowClientTest {
 
-    WireMockServer wireMockServer = new WireMockServer();
+    private final WireMockServer wireMockServer = new WireMockServer();
 
     @BeforeEach
     public void setUp() {
