@@ -7,6 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class ApplicationTest {
     @Test
     public void testSomething() {
-
+        System.out.println("Hello, world!");
     }
 }
