@@ -12,17 +12,7 @@ public interface Command {
 
     SendMessage handle(Update update);
 
-    default boolean supports(Update update, UserService userService) {
-        if (update.message() != null && update.message().text() != null) {
-            String messageText = update.message().text();
-            Long userId = update.message().from().id();
-            boolean isCommandMatch = messageText.startsWith(command());
-            boolean isUserRegistered = userService.isRegistered(userId) || command().equals("/start");
-
-            return isCommandMatch && isUserRegistered;
-        }
-        return false;
-    }
+    boolean supports(Update update, UserService userService);
 
     default BotCommand toApiCommand() {
         return new BotCommand(command(), description());

@@ -4,7 +4,6 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.user.UserService;
-import edu.java.bot.user.UserState;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +31,9 @@ public class CommandService {
         if (update.message() != null && update.message().text() != null) {
             Long userId = update.message().from().id();
             boolean isRegistered = userService.isRegistered(userId);
-            UserState userState = userService.getUserState(userId);
             SendMessage request = null;
 
-            if (userState == UserState.AWAITING_LINK) {
-                request = findCommandBy("/track")
-                    .map(command -> command.handle(update))
-                    .orElse(null);
-            } else if (userState == UserState.AWAITING_UNTRACK_LINK) {
-                request = findCommandBy("/untrack")
-                    .map(command -> command.handle(update))
-                    .orElse(null);
-            } else if (!isRegistered && !update.message().text().startsWith("/start")) {
+            if (!isRegistered && !update.message().text().startsWith("/start")) {
                 request = new SendMessage(update.message().chat().id(), REGISTRATION_REQUEST_MESSAGE);
             } else {
                 Optional<Command> commandOptional = commands.stream()
@@ -66,11 +56,5 @@ public class CommandService {
         String messageText =
             isRegistered ? REGISTERED_COMMAND_NOT_FOUND_MESSAGE : UNREGISTERED_COMMAND_NOT_FOUND_MESSAGE;
         return new SendMessage(update.message().chat().id(), messageText);
-    }
-
-    private Optional<Command> findCommandBy(String commandText) {
-        return commands.stream()
-            .filter(command -> commandText.equals(command.command()))
-            .findFirst();
     }
 }

@@ -2,11 +2,12 @@ package edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.user.UserService;
+import edu.java.bot.user.UserState;
 import edu.java.bot.utils.LinkStorageService;
 import java.util.Set;
 import java.util.StringJoiner;
 import org.springframework.stereotype.Component;
-
 
 @Component
 public class ListCommand implements Command {
@@ -44,5 +45,15 @@ public class ListCommand implements Command {
             links.forEach(message::add);
             return new SendMessage(update.message().chat().id(), message.toString());
         }
+    }
+
+    @Override
+    public boolean supports(Update update, UserService userService) {
+        if (update.message() != null && update.message().text() != null) {
+            Long userId = update.message().from().id();
+            UserState userState = userService.getUserState(userId);
+            return COMMAND.equals(update.message().text()) && userState == UserState.NONE;
+        }
+        return false;
     }
 }

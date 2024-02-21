@@ -35,4 +35,17 @@ public class StartCommand implements Command {
         userService.registerUser(userId);
         return new SendMessage(update.message().chat().id(), SUCCESS_MESSAGE);
     }
+
+    @Override
+    public boolean supports(Update update, UserService userService) {
+        if (update.message() != null && update.message().text() != null) {
+            String messageText = update.message().text();
+            Long userId = update.message().from().id();
+            boolean isCommandMatch = messageText.startsWith(command());
+            boolean isUserRegistered = userService.isRegistered(userId) || command().equals(COMMAND);
+
+            return isCommandMatch && isUserRegistered;
+        }
+        return false;
+    }
 }

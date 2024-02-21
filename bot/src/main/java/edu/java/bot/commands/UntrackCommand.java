@@ -19,7 +19,7 @@ public class UntrackCommand implements Command {
     private static final String ALL_LINKS_REMOVED_MESSAGE = "Все ссылки удалены.";
     private static final String LINK_REMOVED_SUCCESS_MESSAGE = "Ссылка успешно удалена.";
     private static final String LINK_NOT_FOUND_MESSAGE = "Указанная ссылка не найдена.";
-    private static final String UNKNOWN_COMMAND = "Неизвестная комманда.";
+    private static final String UNKNOWN_COMMAND = "Неизвестная команда.";
 
     public UntrackCommand(LinkStorageService linkStorageService, UserService userService) {
         this.linkStorageService = linkStorageService;
@@ -41,27 +41,36 @@ public class UntrackCommand implements Command {
         Long userId = update.message().from().id();
         UserState state = userService.getUserState(userId);
         Long chatId = update.message().chat().id();
-        SendMessage responseMessage = null;
 
         if (state == UserState.NONE) {
             userService.setUserState(userId, UserState.AWAITING_UNTRACK_LINK);
-            responseMessage = new SendMessage(chatId, REQUEST_LINK_MESSAGE);
+            return new SendMessage(chatId, REQUEST_LINK_MESSAGE);
         } else if (state == UserState.AWAITING_UNTRACK_LINK) {
             String messageText = update.message().text().trim();
             userService.setUserState(userId, UserState.NONE);
 
             if ("all".equalsIgnoreCase(messageText)) {
                 linkStorageService.removeAllLinks(userId);
-                responseMessage = new SendMessage(chatId, ALL_LINKS_REMOVED_MESSAGE);
+                return new SendMessage(chatId, ALL_LINKS_REMOVED_MESSAGE);
             } else {
                 boolean isRemoved = linkStorageService.removeLink(userId, messageText);
-                responseMessage =
-                    new SendMessage(chatId, isRemoved ? LINK_REMOVED_SUCCESS_MESSAGE : LINK_NOT_FOUND_MESSAGE);
+                return new SendMessage(chatId, isRemoved ? LINK_REMOVED_SUCCESS_MESSAGE : LINK_NOT_FOUND_MESSAGE);
             }
         } else {
-            responseMessage = new SendMessage(chatId, UNKNOWN_COMMAND);
+            return new SendMessage(chatId, UNKNOWN_COMMAND);
         }
+    }
 
-        return responseMessage;
+    @Override
+    public boolean supports(Update update, UserService userService) {
+        Long userId = update.message().from().id();
+        UserState state = userService.getUserState(userId);
+        String messageText = update.message().text();
+
+        boolean isUntrackCommand = COMMAND.equals(messageText);
+        boolean isUserAwaitingUntrackLink = state == UserState.AWAITING_UNTRACK_LINK;
+
+        return isUntrackCommand || isUserAwaitingUntrackLink;
     }
 }
+
