@@ -11,7 +11,7 @@ public class ListCommand implements Command {
 
     @Override
     public String description() {
-        return "Command to see all tracking urls";
+        return "get your tracking urls list";
     }
 
     @Override

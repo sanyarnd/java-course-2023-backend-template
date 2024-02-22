@@ -11,7 +11,7 @@ public class UntrackCommand implements Command {
 
     @Override
     public String description() {
-        return "A command to untrack url";
+        return "untrack some url example: '/untrack google.com'";
     }
 
     @Override

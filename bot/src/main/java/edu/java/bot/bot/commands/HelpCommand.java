@@ -11,7 +11,7 @@ public class HelpCommand implements Command {
 
     @Override
     public String description() {
-        return "This is the command where you can see all commands of the bot";
+        return "this is the help command";
     }
 
     @Override

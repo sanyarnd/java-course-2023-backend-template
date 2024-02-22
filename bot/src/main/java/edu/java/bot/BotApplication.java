@@ -4,7 +4,6 @@ import edu.java.bot.configuration.ApplicationConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import com.pengrad.telegrambot.TelegramBot;
 
 @SpringBootApplication
 @EnableConfigurationProperties(ApplicationConfig.class)

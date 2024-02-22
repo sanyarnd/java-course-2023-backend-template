@@ -11,7 +11,7 @@ public class TrackCommand implements Command {
 
     @Override
     public String description() {
-        return "A command to track yours urls";
+        return "track some url example: '/track google.com'";
     }
 
     @Override

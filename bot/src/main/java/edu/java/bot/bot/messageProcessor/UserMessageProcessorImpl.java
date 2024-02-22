@@ -8,9 +8,9 @@ import edu.java.bot.bot.commands.ListCommand;
 import edu.java.bot.bot.commands.StartCommand;
 import edu.java.bot.bot.commands.TrackCommand;
 import edu.java.bot.bot.commands.UntrackCommand;
-import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserMessageProcessorImpl implements UserMessageProcessor {
@@ -32,19 +32,15 @@ public class UserMessageProcessorImpl implements UserMessageProcessor {
 
     @Override
     public SendMessage process(Update update) {
-        switch (update.message().text().split(" ")[0]) {
-            case "/help":
-                return availableCommands.get(0).handle(update);
-            case "/list":
-                return availableCommands.get(1).handle(update);
-            case "/start":
-                return availableCommands.get(2).handle(update);
-            case "/track":
-                return availableCommands.get(3).handle(update);
-            case "/untrack":
-                return availableCommands.get(4).handle(update);
-
+        for (var cmd : availableCommands) {
+            if (cmd.supports(update)) {
+                return cmd.handle(update);
+            }
+        }
+        if (update.message().text().contains("/")) {
+            return new SendMessage(update.message().chat().id(), "Unsupported");
         }
         return null;
+
     }
 }
