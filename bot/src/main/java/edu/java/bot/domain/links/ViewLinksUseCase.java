@@ -2,7 +2,7 @@ package edu.java.bot.domain.links;
 
 import com.pengrad.telegrambot.model.User;
 import edu.java.bot.data.TrackerRepository;
-import edu.java.bot.util.UserAlreadyRegisteredException;
+import edu.java.bot.util.UserIsNotRegisteredException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +15,7 @@ public class ViewLinksUseCase {
         try {
             var subscriptions = repository.getUserSubscriptions(user.username());
             return new ViewLinksResponse.Ok(subscriptions);
-        } catch (UserAlreadyRegisteredException exception) {
+        } catch (UserIsNotRegisteredException exception) {
             return new ViewLinksResponse.UserIsNotDefined();
         }
     }
