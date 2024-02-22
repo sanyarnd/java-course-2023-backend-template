@@ -59,15 +59,14 @@ public class DomainLayerTest {
         public void userRegistrationOk() {
             var useCase = new RegisterUserUseCase(repository);
             var response = useCase.registerUser(notOkUser);
-            Assertions.assertTrue(response instanceof RegisterUserResponse.Ok);
+            Assertions.assertInstanceOf(RegisterUserResponse.Ok.class, response);
         }
 
         @Test
         public void userRegistrationNotOk() {
             var useCase = new RegisterUserUseCase(repository);
             var response = useCase.registerUser(okUser);
-            System.out.println(response);
-            Assertions.assertTrue(response instanceof RegisterUserResponse.AlreadyRegistered);
+            Assertions.assertInstanceOf(RegisterUserResponse.AlreadyRegistered.class, response);
         }
     }
 
@@ -83,14 +82,14 @@ public class DomainLayerTest {
         public void checkUserIsNotRegisteredYet() {
             var useCase = new TrackLinkUseCase(repository);
             var response = useCase.trackLink(notOkUser, "onlyfans.com");
-            Assertions.assertTrue(response instanceof TrackLinkResponse.UserIsNotDefined);
+            Assertions.assertInstanceOf(TrackLinkResponse.UserIsNotDefined.class, response);
         }
 
         @Test
         public void checkLinkIsAlreadyTracked() {
             var useCase = new TrackLinkUseCase(repository);
             var response = useCase.trackLink(okUser, "github.com");
-            Assertions.assertTrue(response instanceof TrackLinkResponse.AlreadyRegistered);
+            Assertions.assertInstanceOf(TrackLinkResponse.AlreadyRegistered.class, response);
         }
     }
 
@@ -107,14 +106,14 @@ public class DomainLayerTest {
         public void checkUserIsNotRegisteredYet() {
             var useCase = new UntrackLinkUseCase(repository);
             var response = useCase.untrackLink(notOkUser, "onlyfans.com");
-            Assertions.assertTrue(response instanceof UntrackLinkResponse.UserIsNotDefined);
+            Assertions.assertInstanceOf(UntrackLinkResponse.UserIsNotDefined.class, response);
         }
 
         @Test
         public void checkLinkIsAlreadyTracked() {
             var useCase = new UntrackLinkUseCase(repository);
             var response = useCase.untrackLink(okUser, "onlyfans.com");
-            Assertions.assertTrue(response instanceof UntrackLinkResponse.IsNotRegistered);
+            Assertions.assertInstanceOf(UntrackLinkResponse.IsNotRegistered.class, response);
         }
     }
 
@@ -130,19 +129,15 @@ public class DomainLayerTest {
         @Test
         public void checkLinksOk() {
             var useCase = new ViewLinksUseCase(repository);
-
-            // Check when OK
-            var okResponse = useCase.viewLinks(okUser);
-            Assertions.assertTrue(okResponse instanceof ViewLinksResponse.Ok);
+            var response = useCase.viewLinks(okUser);
+            Assertions.assertInstanceOf(ViewLinksResponse.Ok.class, response);
         }
 
         @Test
         public void checkLinksNotOk() {
             var useCase = new ViewLinksUseCase(repository);
-
-            // Check when user is missed
-            var missedResponse = useCase.viewLinks(notOkUser);
-            Assertions.assertTrue(missedResponse instanceof ViewLinksResponse.UserIsNotDefined);
+            var response = useCase.viewLinks(notOkUser);
+            Assertions.assertInstanceOf(ViewLinksResponse.UserIsNotDefined.class, response);
         }
     }
 }
