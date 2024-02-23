@@ -1,0 +1,29 @@
+{
+    "properties": [
+        {
+            "description": "Is scheduler enabled.",
+            "name": "app.scheduler.enable",
+            "type": "java.lang.Boolean"
+        },
+        {
+            "name": "app.scheduler.interval",
+            "type": "java.time.Duration",
+            "description": "Scheduler interval in milliseconds/seconds/minutes."
+        },
+        {
+            "name": "app.scheduler.force-check-delay",
+            "type": "java.time.Duration",
+            "description": "Scheduler force-check-delay in milliseconds/seconds/minutes."
+        },
+        {
+            "name": "app.api.github",
+            "type": "java.lang.String",
+            "description": "Endpoint for GitHub API."
+        },
+        {
+            "name": "app.api.stack-overflow",
+            "type": "java.lang.String",
+            "description": "Endpoint for Stack Overflow API."
+        }
+    ]
+}
