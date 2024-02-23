@@ -39,7 +39,7 @@ public class BotTest {
     private final CommandRecognizer recognizer = new CommandRecognizer(commands);
     private final LinkValidator validator = new LinkValidator();
     private final UserMessageListener listener = new UserMessageListener(recognizer, validator);
-    private final Bot bot = new Bot(Mockito.mock(ApplicationConfig.class), listener);
+    private final Bot bot = new Bot(Mockito.mock(ApplicationConfig.class), listener, commands);
 
     private Update getMockUpdate(String text) {
         var mock = Mockito.mock(Update.class);
