@@ -11,7 +11,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserMessageListener implements UserMessageProcessor, ApplicationContextAware {
+public class UserMessageListener implements UserMessageProcessor {
     private static ApplicationContext context;
     private final CommandRecognizer recognizer;
     private final LinkValidator validator;
@@ -44,17 +44,5 @@ public class UserMessageListener implements UserMessageProcessor, ApplicationCon
             dialogState = false;
         }
         return new SendMessage(update.message().chat().id(), messageText);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        context = applicationContext;
-    }
-
-    public static List<? extends Command> commands() {
-        var map = context.getBeansOfType(Command.class);
-        return map.values().stream()
-            .filter(s -> !s.command().equals("/unknown"))
-            .toList();
     }
 }
