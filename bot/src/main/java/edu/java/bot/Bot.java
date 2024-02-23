@@ -3,56 +3,35 @@ package edu.java.bot;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.commands.TrackCommand;
+import edu.java.bot.configuration.ApplicationConfig;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Bot implements UpdatesListener, AutoCloseable {
     private static final Logger LOGGER = LogManager.getLogger();
-    private final CommandRecognizer recognizer = new CommandRecognizer();
-    private final LinkValidator validator = new LinkValidator();
+    private UserMessageListener updateListener;
     private final TelegramBot bot;
-    private boolean dialogState = false;
 
-    public Bot(String token) {
-        this.bot = new TelegramBot(token);
+    @Autowired
+    public Bot(ApplicationConfig appCof, UserMessageListener updateListener) {
+        this.bot = new TelegramBot(appCof.telegramToken());
+        this.updateListener = updateListener;
     }
 
     @Override
     public int process(List<Update> updates) {
         for (Update update : updates) {
-            bot.execute(generateResponse(update));
+            bot.execute(updateListener.process(update));
         }
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 
-    private SendMessage generateResponse(Update update) {
-        return new SendMessage(update.message().chat().id(),
-            dialogState ? linkValidationInDialog(update) : recognizeCommand(update));
-    }
-
-    public String recognizeCommand(Update update) {
-        Command command = recognizer.recognize(update);
-        if (command.getClass().equals(TrackCommand.class)) {
-            dialogState = true;
-        }
-        return command.command();
-    }
-
-    public String linkValidationInDialog(Update update) {
-        String link = update.message().text();
-        String messageText = validator.validate(link);
-        if (validator.isLinkCorrect(link)) {
-            TrackCommand linkAdder = new TrackCommand();
-            linkAdder.addLink(link);
-            dialogState = false;
-        }
-        return messageText;
-    }
-
     public void start() {
+        //bot.execute(new SetMyCommands(commands.toArray(new BotCommand[]{})).scope(new BotCommandsScopeChat(chatId)));
         bot.setUpdatesListener(
             this::process,
             e -> {

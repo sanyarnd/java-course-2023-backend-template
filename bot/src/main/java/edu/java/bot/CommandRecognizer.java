@@ -1,25 +1,32 @@
 package edu.java.bot;
 
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.commands.HelpCommand;
-import edu.java.bot.commands.ListCommand;
-import edu.java.bot.commands.StartCommand;
-import edu.java.bot.commands.TrackCommand;
-import edu.java.bot.commands.UntrackCommand;
 import edu.java.bot.commands_support.UnknownCommand;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CommandRecognizer {
-    public Command recognize(Update update) {
-        String messageText = update.message().text();
-        Command command = switch (messageText) {
-            case "/help" -> new HelpCommand();
-            case "/start" -> new StartCommand();
-            case "/list" -> new ListCommand();
-            case "/track" -> new TrackCommand();
-            case "/untrack" -> new UntrackCommand();
-            default -> new UnknownCommand();
-        };
+    private final Command unknown = new UnknownCommand();
 
-        return command;
+    private Map<String, Command> getCommandMap() {
+        Map<String, Command> result = new HashMap<>();
+        List<? extends Command> commands = UserMessageListener.commands();
+        for (var command : commands) {
+            result.put(command.command(), command);
+        }
+        return result;
+    }
+
+    public Command recognize(Update update) {
+        var commandMap = getCommandMap();
+        String messageText = update.message().text();
+        Command recognizedCommand = commandMap.get(messageText);
+        if (recognizedCommand == null) {
+            recognizedCommand = unknown;
+        }
+        return recognizedCommand;
     }
 }

@@ -9,16 +9,15 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @SpringBootApplication
 @EnableConfigurationProperties(ApplicationConfig.class)
 public class BotApplication {
-    private static ApplicationConfig applicationConfig;
+    private static Bot bot;
 
     @Autowired
-    public BotApplication(ApplicationConfig applicationConfig) {
-        BotApplication.applicationConfig = applicationConfig;
+    public BotApplication(Bot bot) {
+        BotApplication.bot = bot;
     }
 
     public static void main(String[] args) {
         SpringApplication.run(BotApplication.class, args);
-        Bot bot = new Bot(applicationConfig.telegramToken());
         bot.start();
     }
 }

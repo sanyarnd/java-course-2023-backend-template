@@ -6,11 +6,16 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import java.util.List;
 import edu.java.bot.commands.HelpCommand;
+import edu.java.bot.commands.StartCommand;
+import edu.java.bot.configuration.ApplicationConfig;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class BotTest {
+    private final UserMessageListener listener = Mockito.mock(UserMessageListener.class);
+    private final Bot bot = new Bot(Mockito.mock(ApplicationConfig.class), listener);
+
     private Update getMockUpdate(String text) {
         var mock = Mockito.mock(Update.class);
         Mockito.when(mock.message()).thenReturn(Mockito.mock(Message.class));
@@ -21,11 +26,22 @@ public class BotTest {
     }
 
     @Test
+    void recognize_shouldRecognizeCommand() {
+        //arrange
+        Update mock = getMockUpdate("/start");
+        CommandRecognizer recognizer = new CommandRecognizer();
+        var exp = StartCommand.class;
+        //act
+        var act = recognizer.recognize(mock);
+        //assert
+        assertThat(act).isEqualTo(exp);
+    }
+
+    @Test
     void process_shouldReturnConfirmedUpdatesAll() {
         //arrange
         Update mock = getMockUpdate("/help");
         //act
-        Bot bot = new Bot("test");
         var act = bot.process(List.of(mock));
         //assert
         assertThat(act).isEqualTo(UpdatesListener.CONFIRMED_UPDATES_ALL);
@@ -37,8 +53,7 @@ public class BotTest {
         Update mock = getMockUpdate("/start");
         String exp = "You are registered for resource tracking";
         //act
-        Bot bot = new Bot("test");
-        var act = bot.recognizeCommand(mock);
+        var act = listener.recognizeCommand(mock).getParameters().get("text");
         //assert
         assertThat(act).isEqualTo(exp);
     }
@@ -49,8 +64,7 @@ public class BotTest {
         Update mock = getMockUpdate("/track");
         String exp = "Input link for tracking:";
         //act
-        Bot bot = new Bot("test");
-        var act = bot.recognizeCommand(mock);
+        var act = listener.recognizeCommand(mock);
         //assert
         assertThat(act).isEqualTo(exp);
     }
@@ -61,8 +75,7 @@ public class BotTest {
         Update mock = getMockUpdate("/hello");
         String exp = "Unknown command. Use /help to see the available commands";
         //act
-        Bot bot = new Bot("test");
-        var act = bot.recognizeCommand(mock);
+        var act = listener.recognizeCommand(mock);
         //assert
         assertThat(act).isEqualTo(exp);
     }
@@ -74,8 +87,7 @@ public class BotTest {
         HelpCommand com = new HelpCommand();
         String exp = com.command();
         //act
-        Bot bot = new Bot("test");
-        var act = bot.recognizeCommand(mock);
+        var act = listener.recognizeCommand(mock);
         //assert
         assertThat(act).isEqualTo(exp);
     }
@@ -87,8 +99,7 @@ public class BotTest {
         HelpCommand com = new HelpCommand();
         String exp = "Link successfully added for tracking!";
         //act
-        Bot bot = new Bot("test");
-        var act = bot.linkValidationInDialog(mock);
+        var act = listener.linkValidationInDialog(mock);
         //assert
         assertThat(act).isEqualTo(exp);
     }
@@ -100,8 +111,7 @@ public class BotTest {
         HelpCommand com = new HelpCommand();
         String exp = "Incorrect input";
         //act
-        Bot bot = new Bot("test");
-        var act = bot.linkValidationInDialog(mock);
+        var act = listener.linkValidationInDialog(mock);
         //assert
         assertThat(act).isEqualTo(exp);
     }

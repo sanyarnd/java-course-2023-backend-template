@@ -1,7 +1,9 @@
 package edu.java.bot;
 
 import java.util.regex.Pattern;
+import org.springframework.stereotype.Component;
 
+@Component
 public class LinkValidator {
     public String validate(String link) {
         if (isLinkCorrect(link)) {

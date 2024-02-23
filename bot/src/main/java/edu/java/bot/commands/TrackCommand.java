@@ -3,25 +3,22 @@ package edu.java.bot.commands;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.Command;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TrackCommand implements Command {
     @Override
     public String command() {
-        return "Input link for tracking:";
-    }
-
-    public String addLink(String link) {
-        //add link to db;
-        return link;
+        return "/track";
     }
 
     @Override
     public String description() {
-        return "/track — start tracking the link";
+        return "start tracking the link";
     }
 
     @Override
     public SendMessage handle(Update update) {
-        return new SendMessage(update.message().chat().id(), command());
+        return new SendMessage(update.message().chat().id(), "Input link for tracking:");
     }
 }
