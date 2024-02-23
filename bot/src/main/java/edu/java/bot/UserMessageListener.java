@@ -2,17 +2,13 @@ package edu.java.bot;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.commands.Command;
 import edu.java.bot.commands.TrackCommand;
-import java.util.List;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserMessageListener implements UserMessageProcessor {
-    private static ApplicationContext context;
     private final CommandRecognizer recognizer;
     private final LinkValidator validator;
     private boolean dialogState = false;

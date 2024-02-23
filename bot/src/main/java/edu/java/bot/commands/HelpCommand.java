@@ -2,16 +2,16 @@ package edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.Command;
-import edu.java.bot.UserMessageListener;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HelpCommand implements Command {
-    @Autowired
-    private List<Command> commands;
+    private final List<Command> commands;
+
+    public HelpCommand(List<Command> commands) {
+        this.commands = commands;
+    }
 
     @Override
     public String command() {

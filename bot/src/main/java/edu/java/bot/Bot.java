@@ -2,10 +2,7 @@ package edu.java.bot;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
-import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.botcommandscope.BotCommandsScopeChat;
-import com.pengrad.telegrambot.request.SetMyCommands;
 import edu.java.bot.configuration.ApplicationConfig;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
