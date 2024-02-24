@@ -1,6 +1,8 @@
 package edu.java.bot.telegram;
 
+import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
+import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.model.UserMessage;
 import java.util.List;
@@ -11,20 +13,27 @@ import org.springframework.stereotype.Component;
 @Component
 public class BotUpdatesListener implements UpdatesListener {
 
-    private final ObjectProvider<TelegramRequestService> telegramRequestService;
+    private final TelegramRequestService telegramRequestService;
 
-    public BotUpdatesListener(ObjectProvider<TelegramRequestService> telegramRequestService) {
+    public BotUpdatesListener(TelegramRequestService telegramRequestService, TelegramBot telegramBot) {
         this.telegramRequestService = telegramRequestService;
+        telegramBot.setUpdatesListener(this);
     }
 
     @Override
     public int process(List<Update> updates) {
-        updates.stream().filter(it -> it.message() != null).forEach(this::process);
+        updates.stream()
+            .map(Update::message)
+            .filter(Objects::nonNull)
+            .forEach(this::process);
         return CONFIRMED_UPDATES_ALL;
     }
 
-    private void process(Update update) {
-        Objects.requireNonNull(telegramRequestService.getIfAvailable())
-            .processMessage(new UserMessage(update.message().text(), update.message().chat().id()));
+    private void process(Message message) {
+        if (message.text() == null) {
+            return;
+        }
+        telegramRequestService
+            .processMessage(new UserMessage(message.text(), message.chat().id()));
     }
 }

@@ -17,11 +17,8 @@ public record ApplicationConfig(
 
     @Bean
     public TelegramBot createTelegramBot(
-        @Autowired UpdatesListener botUpdateListener
     ) {
-        var telegramBot = new TelegramBot(telegramToken);
-        telegramBot.setUpdatesListener(botUpdateListener);
-        return telegramBot;
+        return new TelegramBot(telegramToken);
     }
 
 }

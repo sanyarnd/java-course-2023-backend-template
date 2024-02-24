@@ -4,12 +4,13 @@ import edu.java.bot.model.Link;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserLinksRepositoryInMemory implements UserLinksRepository {
 
-    private final HashMap<Long, List<Link>> data = new HashMap<>();
+    private final Map<Long, List<Link>> data = new HashMap<>();
 
     @Override
     public List<Link> getLinksByUser(Long user) {
