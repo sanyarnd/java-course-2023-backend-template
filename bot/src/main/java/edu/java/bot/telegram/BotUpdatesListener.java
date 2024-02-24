@@ -7,7 +7,6 @@ import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.model.UserMessage;
 import java.util.List;
 import java.util.Objects;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Component;
 
 @Component
