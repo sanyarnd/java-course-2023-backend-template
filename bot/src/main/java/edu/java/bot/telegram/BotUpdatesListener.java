@@ -33,7 +33,6 @@ public class BotUpdatesListener implements UpdatesListener {
         if (message.text() == null) {
             return;
         }
-        telegramRequestService
-            .processMessage(new UserMessage(message.text(), message.chat().id()));
+        telegramRequestService.processMessage(new UserMessage(message.text(), message.chat().id()));
     }
 }
