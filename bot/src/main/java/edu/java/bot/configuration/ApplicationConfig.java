@@ -7,7 +7,6 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
-@ComponentScan("edu.java.bot")
 public record ApplicationConfig(
     @NotEmpty
     String telegramToken

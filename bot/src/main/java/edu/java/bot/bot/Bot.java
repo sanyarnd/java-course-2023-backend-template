@@ -46,6 +46,15 @@ public class Bot {
             }
 
             return UpdatesListener.CONFIRMED_UPDATES_ALL;
+        }, e -> {
+            if (e.response() != null) {
+                // got bad response from telegram
+                e.response().errorCode();
+                e.response().description();
+            } else {
+                // probably network error
+                e.printStackTrace();
+            }
         });
     }
 
@@ -60,7 +69,7 @@ public class Bot {
     }
 
     private boolean handleMessage(Update update) {
-        if (update.message() == null || update.message().chat() == null) {
+        if (update == null || update.message() == null || update.message().chat() == null) {
             return true;
         }
         return commandService.processCommand(this, update);
