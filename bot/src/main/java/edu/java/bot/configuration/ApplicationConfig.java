@@ -14,8 +14,7 @@ public record ApplicationConfig(
 ) {
 
     @Bean
-    public TelegramBot createTelegramBot(
-    ) {
+    public TelegramBot createTelegramBot() {
         return new TelegramBot(telegramToken);
     }
 
