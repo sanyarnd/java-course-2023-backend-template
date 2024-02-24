@@ -30,6 +30,11 @@ public class TrackCommand implements ICommand {
     }
 
     @Override
+    public String getDescription() {
+        return "Начать отслеживание ссылки";
+    }
+
+    @Override
     public boolean processCommand(Bot bot, Update update) {
         if (!isWaiting) {
             return requestURL(bot, update);

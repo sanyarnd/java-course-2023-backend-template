@@ -24,6 +24,11 @@ public class HelpCommand implements ICommand {
     }
 
     @Override
+    public String getDescription() {
+        return "Вывести окно с командами";
+    }
+
+    @Override
     public boolean processCommand(Bot bot, Update update) {
         return bot.writeToUser(update, HELP_COMMAND_RESPONSE);
     }

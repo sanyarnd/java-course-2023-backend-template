@@ -2,13 +2,22 @@ package edu.java.bot.bot;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
+import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.botcommandscope.BotCommandScopeAllChatAdministrators;
+import com.pengrad.telegrambot.request.BaseRequest;
+import com.pengrad.telegrambot.request.GetMyCommands;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.request.SetMyCommands;
+import com.pengrad.telegrambot.response.BaseResponse;
+import com.pengrad.telegrambot.response.GetMyCommandsResponse;
 import com.pengrad.telegrambot.response.SendResponse;
 import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.services.CommandService;
+import edu.java.bot.services.ICommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import java.util.Arrays;
 
 //Is it Controller?
 @Component
@@ -16,12 +25,17 @@ public class Bot {
     private final TelegramBot telegramBot;
     private final ApplicationConfig applicationConfig;
     private final CommandService commandService;
-
+    private final ICommand[] commands;
     @Autowired
-    public Bot(ApplicationConfig applicationConfig, CommandService commandService) {
+    public Bot(ApplicationConfig applicationConfig, CommandService commandService, ICommand[] commands) {
         this.applicationConfig = applicationConfig;
         this.commandService = commandService;
+        this.commands = commands;
+
         telegramBot = new TelegramBot(applicationConfig.telegramToken());
+
+        addMenu();
+
         telegramBot.setUpdatesListener(updates -> {
             Integer lastId = UpdatesListener.CONFIRMED_UPDATES_NONE;
             for (Update update : updates) {
@@ -33,6 +47,16 @@ public class Bot {
 
             return UpdatesListener.CONFIRMED_UPDATES_ALL;
         });
+    }
+
+    private void addMenu() {
+        BotCommand[] commandsForMenu = Arrays.stream(commands)
+            .map(command -> new BotCommand(command.getName(), command.getDescription()))
+            .toArray(BotCommand[]::new);
+
+        SetMyCommands setCommands = new SetMyCommands(commandsForMenu);
+        BaseResponse response = telegramBot.execute(setCommands);
+        //TODO:: implement some actions if response status is bad
     }
 
     private boolean handleMessage(Update update) {

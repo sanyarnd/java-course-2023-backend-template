@@ -30,6 +30,11 @@ public class UntrackCommand implements ICommand {
     }
 
     @Override
+    public String getDescription() {
+        return "Прекратить отслеживание ссылки";
+    }
+
+    @Override
     public boolean processCommand(Bot bot, Update update) {
         if (!isWaiting) {
             return requestURL(bot, update);

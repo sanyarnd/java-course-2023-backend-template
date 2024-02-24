@@ -7,6 +7,7 @@ public interface ICommand {
     boolean isWaiting();
 
     String getName();
+    String getDescription();
 
     boolean processCommand(Bot bot, Update update);
 }

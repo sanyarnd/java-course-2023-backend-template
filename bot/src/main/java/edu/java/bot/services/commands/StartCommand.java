@@ -27,6 +27,11 @@ public class StartCommand implements ICommand {
     }
 
     @Override
+    public String getDescription() {
+        return "Введите, чтобы начать";
+    }
+
+    @Override
     public boolean processCommand(Bot bot, Update update) {
         if (!usersTracks.addUser(update.message().chat().id())) {
             return true;

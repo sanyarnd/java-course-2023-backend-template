@@ -30,6 +30,11 @@ public class ListCommand implements ICommand {
     }
 
     @Override
+    public String getDescription() {
+        return "Показать список отслеживаемых ссылок";
+    }
+
+    @Override
     public boolean processCommand(Bot bot, Update update) {
         HashSet<String> urls = usersTracks.getTrackedURLs(update.message().chat().id());
         if (urls == null || urls.isEmpty()) {
