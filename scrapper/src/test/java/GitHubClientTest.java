@@ -1,7 +1,5 @@
-package edu.java.scrapper;
-
 import com.github.tomakehurst.wiremock.WireMockServer;
-import edu.java.scrapper.client.StackOverflowClient;
+import edu.java.scrapper.client.GitHubClient;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -18,17 +16,17 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class StackOverflowClientTest {
+public class GitHubClientTest {
     private WireMockServer wireMockServer;
     private final String baseUrl = "http://localhost:8080";
-    private StackOverflowClient stackOverflowClient;
+    private GitHubClient gitHubClient;
     private final String REPOSITORY_PATH = "src" + File.separator + "test" +
         File.separator + "java" + File.separator + "edu" + File.separator + "java" + File.separator + "scrapper" +
-        File.separator + "question.json";
+        File.separator + "repository.json";
 
     @BeforeAll
     public void setUp() {
-        stackOverflowClient = new StackOverflowClient(baseUrl);
+        gitHubClient = new GitHubClient(baseUrl);
         wireMockServer = new WireMockServer(8080);
         wireMockServer.start();
     }
@@ -39,11 +37,11 @@ public class StackOverflowClientTest {
     }
 
     @Test
-    public void getQuestion_shouldGetInfoAboutQuestion() throws IOException {
+    public void getRepository_shouldGetInfoAboutRepo() throws IOException {
         //arrange
         File file = new File(REPOSITORY_PATH);
         String repositoryJson = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
-        String url = "/2.3/questions/23584996?order=desc&sort=activity&site=stackoverflow";
+        String url = "/repos/Minkerr/Tinkoff_Backend_Course_Application";
         stubFor(get(url)
             .willReturn(aResponse()
                 .withStatus(200)
@@ -51,12 +49,11 @@ public class StackOverflowClientTest {
                 .withBody(repositoryJson))
         );
         //act
-        var act = stackOverflowClient.getQuestion(23584996).items().get(0);
+        var act = gitHubClient.getRepository("Minkerr", "Tinkoff_Backend_Course_Application");
         //assert
-        assertThat(act.id()).isEqualTo(23584996);
-        assertThat(act.title()).isEqualTo("How to write a Hello World application in Java?");
-        assertThat(act.lastEditDate()).isEqualTo("2014-05-23T22:02:28Z");
+        assertThat(act.id()).isEqualTo(754620859);
+        assertThat(act.repositoryName()).isEqualTo("Tinkoff_Backend_Course_Application");
+        assertThat(act.pushedAt()).isEqualTo("2024-02-23T18:56:38Z");
     }
 
 }
-
