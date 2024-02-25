@@ -1,5 +1,6 @@
-package edu.java.scrapper;
+package edu.java.scrapper.client;
 
+import edu.java.scrapper.response.RepositoryResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.reactive.function.client.WebClient;
 
