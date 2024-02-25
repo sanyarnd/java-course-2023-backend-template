@@ -1,7 +1,6 @@
 package edu.java.bot.services.commands;
 
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.bot.Bot;
 import edu.java.bot.services.ICommand;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +23,7 @@ public class HelpCommand implements ICommand {
     }
 
     @Override
-    public boolean processCommand(Bot bot, Update update) {
-        return bot.writeToUser(update, HELP_COMMAND_RESPONSE);
+    public String processCommand(Update update) {
+        return HELP_COMMAND_RESPONSE;
     }
 }

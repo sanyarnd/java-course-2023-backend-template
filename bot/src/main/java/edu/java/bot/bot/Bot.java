@@ -12,12 +12,14 @@ import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.services.CommandService;
 import edu.java.bot.services.ICommand;
 import java.util.Arrays;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 //Is it Controller?
 @Component
 public class Bot {
+    private static final Logger LOGGER = Logger.getLogger(Bot.class.getName());
     private final TelegramBot telegramBot;
     private final ApplicationConfig applicationConfig;
     private final CommandService commandService;
@@ -65,7 +67,17 @@ public class Bot {
         if (update == null || update.message() == null || update.message().chat() == null) {
             return true;
         }
-        return commandService.processCommand(this, update);
+        String requestForUser = null;
+        try {
+            requestForUser = commandService.processCommand(update);
+        } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
+            return false;
+        }
+        if (requestForUser != null) {
+            writeToUser(update, requestForUser);
+        }
+        return true;
     }
 
     public boolean writeToUser(Update update, String text) {

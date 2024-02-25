@@ -1,7 +1,6 @@
 package edu.java.bot.services.commands;
 
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.bot.Bot;
 import edu.java.bot.data.UsersTracks;
 import edu.java.bot.services.ICommand;
 import java.util.HashSet;
@@ -29,10 +28,10 @@ public class ListCommand implements ICommand {
     }
 
     @Override
-    public boolean processCommand(Bot bot, Update update) {
+    public String processCommand(Update update) {
         HashSet<String> urls = usersTracks.getTrackedURLs(update.message().chat().id());
         if (urls == null || urls.isEmpty()) {
-            bot.writeToUser(update, NO_TRACKED);
+            return NO_TRACKED;
         } else {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(ANY_TRACKED);
@@ -41,8 +40,7 @@ public class ListCommand implements ICommand {
                 stringBuilder.append("\n");
             }
             stringBuilder.trimToSize();
-            bot.writeToUser(update, stringBuilder.toString());
+            return stringBuilder.toString();
         }
-        return true;
     }
 }

@@ -1,7 +1,6 @@
 package edu.java.bot.services.commands;
 
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.bot.Bot;
 import edu.java.bot.data.UsersTracks;
 import edu.java.bot.data.UsersWaiting;
 import edu.java.bot.services.ICommand;
@@ -13,6 +12,7 @@ public class TrackCommand implements ICommand {
     private static final String REQUEST = "Пожалуйста, введите URL, который надо трэкать:";
     private static final String URL_ADDED = "URL был добавлен";
     private static final String BAD_URL = "Введённая строка не является url!";
+    private static final String BAD_USER_ID = "Извините, но сначала надо зарегестрироваться: /start";
     private UsersTracks usersTracks;
     private UsersWaiting usersWaiting;
 
@@ -32,28 +32,28 @@ public class TrackCommand implements ICommand {
     }
 
     @Override
-    public boolean processCommand(Bot bot, Update update) {
+    public String processCommand(Update update) {
         if (!usersWaiting.getWaiting(update.message().chat().id()).equals(getName())) {
-            return requestURL(bot, update);
+            return requestURL(update);
         } else {
-            return addURL(bot, update);
+            return addURL(update);
         }
     }
 
-    private boolean requestURL(Bot bot, Update update) {
-        bot.writeToUser(update, REQUEST);
+    private String requestURL(Update update) {
+        if (!usersTracks.containsUser(update.message().chat().id())) {
+            return BAD_USER_ID;
+        }
         usersWaiting.setWaiting(update.message().chat().id(), getName());
-        return true;
+        return REQUEST;
     }
 
-    private boolean addURL(Bot bot, Update update) {
-        usersTracks.addUser(update.message().chat().id());
-        if (!usersTracks.addTrackedURLs(update.message().chat().id(), update.message().text())) {
-            bot.writeToUser(update, BAD_URL);
-        } else {
-            bot.writeToUser(update, URL_ADDED);
-        }
+    private String addURL(Update update) {
         usersWaiting.setWaiting(update.message().chat().id(), usersWaiting.getDefaultWaiting());
-        return true;
+        if (!usersTracks.addTrackedURLs(update.message().chat().id(), update.message().text())) {
+            return BAD_URL;
+        } else {
+            return URL_ADDED;
+        }
     }
 }

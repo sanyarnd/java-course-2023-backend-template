@@ -1,7 +1,6 @@
 package edu.java.bot.services;
 
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.bot.Bot;
 import edu.java.bot.data.UsersWaiting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,28 +20,37 @@ public class CommandService {
         this.waitings = waitings;
     }
 
-    public boolean processCommand(Bot bot, Update update) {
+    public String processCommand(Update update) {
+        String requestToUser = null;
+        requestToUser = checkWaiting(update);
+        if (requestToUser != null) {
+            return requestToUser;
+        }
 
-        Long chatId = update.message().chat().id();
         String text = update.message().text();
+        for (ICommand command : commands) {
+            if (command.getName().equals(text)) {
+                return command.processCommand(update);
+            }
+        }
+        return processUndefinedCommand(update);
+    }
 
+    private String checkWaiting(Update update) {
+        Long chatId = update.message().chat().id();
         String waitingName = waitings.getWaiting(chatId);
         if (!waitings.getDefaultWaiting().equals(waitingName)) {
             for (ICommand command : commands) {
                 if (command.getName().equals(waitingName)) {
-                    return command.processCommand(bot, update);
+                    return command.processCommand(update);
                 }
             }
         }
-        for (ICommand command : commands) {
-            if (command.getName().equals(text)) {
-                return command.processCommand(bot, update);
-            }
-        }
-        return processUndefinedCommand(bot, update);
+
+        return null;
     }
 
-    private boolean processUndefinedCommand(Bot bot, Update update) {
-        return bot.writeToUser(update, UNDEFIENED_COMMAND_RESPONSE);
+    private String processUndefinedCommand(Update update) {
+        return UNDEFIENED_COMMAND_RESPONSE;
     }
 }

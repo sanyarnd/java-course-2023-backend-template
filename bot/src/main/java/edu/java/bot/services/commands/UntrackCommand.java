@@ -1,7 +1,6 @@
 package edu.java.bot.services.commands;
 
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.bot.Bot;
 import edu.java.bot.data.UsersTracks;
 import edu.java.bot.data.UsersWaiting;
 import edu.java.bot.services.ICommand;
@@ -33,31 +32,29 @@ public class UntrackCommand implements ICommand {
     }
 
     @Override
-    public boolean processCommand(Bot bot, Update update) {
+    public String processCommand(Update update) {
         if (!usersWaiting.getWaiting(update.message().chat().id()).equals(getName())) {
-            return requestURL(bot, update);
+            return requestURL(update);
         } else {
-            return removeURL(bot, update);
+            return removeURL(update);
         }
     }
 
-    private boolean requestURL(Bot bot, Update update) {
+    private String requestURL(Update update) {
         if (!usersTracks.containsUser(update.message().chat().id())) {
-            bot.writeToUser(update, BAD_USER_ID);
-            return true;
+            return BAD_USER_ID;
         }
-        bot.writeToUser(update, REQUEST);
         usersWaiting.setWaiting(update.message().chat().id(), getName());
-        return true;
+        return REQUEST;
     }
 
-    private boolean removeURL(Bot bot, Update update) {
-        if (!usersTracks.removeTrackedURLs(update.message().chat().id(), update.message().text())) {
-            bot.writeToUser(update, BAD_URL);
-        } else {
-            bot.writeToUser(update, URL_REMOVED);
-        }
+    private String removeURL(Update update) {
         usersWaiting.setWaiting(update.message().chat().id(), usersWaiting.getDefaultWaiting());
-        return true;
+        if (!usersTracks.removeTrackedURLs(update.message().chat().id(), update.message().text())) {
+            return BAD_URL;
+        } else {
+            return URL_REMOVED;
+        }
+
     }
 }
