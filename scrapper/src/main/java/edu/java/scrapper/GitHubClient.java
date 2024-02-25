@@ -9,10 +9,11 @@ public class GitHubClient {
     private final WebClient webClient;
 
     public GitHubClient(String baseUrl) {
+        String url = baseUrl;
         if (baseUrl.isEmpty()) {
-            baseUrl = gitNubBaseUrl;
+            url = gitNubBaseUrl;
         }
-        this.webClient = WebClient.builder().baseUrl(baseUrl).build();
+        this.webClient = WebClient.builder().baseUrl(url).build();
     }
 
     public RepositoryResponse getRepository(String user, String repository) {
