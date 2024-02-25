@@ -1,4 +1,4 @@
-package edu.java.scrapper.data.api;
+package edu.java.scrapper.data.client;
 
 import edu.java.scrapper.data.dto.github.RepositoryDTO;
 

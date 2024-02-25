@@ -1,6 +1,6 @@
-package edu.java.scrapper.data.source;
+package edu.java.scrapper.data.client.impl;
 
-import edu.java.scrapper.data.api.GithubClient;
+import edu.java.scrapper.data.client.GithubClient;
 import edu.java.scrapper.data.dto.github.RepositoryDTO;
 import edu.java.scrapper.util.ApiQualifier;
 import org.springframework.stereotype.Component;

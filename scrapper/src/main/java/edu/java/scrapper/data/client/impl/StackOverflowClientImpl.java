@@ -1,6 +1,6 @@
-package edu.java.scrapper.data.source;
+package edu.java.scrapper.data.client.impl;
 
-import edu.java.scrapper.data.api.StackOverflowClient;
+import edu.java.scrapper.data.client.StackOverflowClient;
 import edu.java.scrapper.data.dto.stackoverflow.AnswersDTO;
 import edu.java.scrapper.util.ApiQualifier;
 import org.springframework.stereotype.Component;

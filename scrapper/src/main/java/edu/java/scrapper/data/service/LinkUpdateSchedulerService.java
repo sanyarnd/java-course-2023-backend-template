@@ -1,7 +1,7 @@
 package edu.java.scrapper.data.service;
 
-import edu.java.scrapper.data.api.GithubClient;
-import edu.java.scrapper.data.api.StackOverflowClient;
+import edu.java.scrapper.data.client.GithubClient;
+import edu.java.scrapper.data.client.StackOverflowClient;
 import edu.java.scrapper.util.LoggerQualifier;
 import java.text.MessageFormat;
 import java.util.logging.Level;
