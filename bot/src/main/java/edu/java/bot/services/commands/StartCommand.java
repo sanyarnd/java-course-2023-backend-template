@@ -17,11 +17,6 @@ public class StartCommand implements ICommand {
     }
 
     @Override
-    public boolean isWaiting() {
-        return false;
-    }
-
-    @Override
     public String getName() {
         return "/start";
     }

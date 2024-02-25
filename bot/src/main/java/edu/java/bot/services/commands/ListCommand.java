@@ -8,7 +8,6 @@ import java.util.HashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
 @Component
 public class ListCommand implements ICommand {
     private UsersTracks usersTracks;
@@ -17,11 +16,6 @@ public class ListCommand implements ICommand {
 
     @Autowired ListCommand(UsersTracks usersTracks) {
         this.usersTracks = usersTracks;
-    }
-
-    @Override
-    public boolean isWaiting() {
-        return false;
     }
 
     @Override

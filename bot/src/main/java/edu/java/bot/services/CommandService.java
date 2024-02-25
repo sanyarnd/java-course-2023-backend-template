@@ -2,6 +2,7 @@ package edu.java.bot.services;
 
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.bot.Bot;
+import edu.java.bot.data.UsersWaiting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,19 +13,25 @@ public class CommandService {
         + " введите /help";
 
     private ICommand[] commands;
+    private UsersWaiting waitings;
 
     @Autowired
-    public CommandService(ICommand[] commands) {
+    public CommandService(ICommand[] commands, UsersWaiting waitings) {
         this.commands = commands;
+        this.waitings = waitings;
     }
 
     public boolean processCommand(Bot bot, Update update) {
 
-        String chatId = update.message().chat().id().toString();
+        Long chatId = update.message().chat().id();
         String text = update.message().text();
-        for (ICommand command : commands) {
-            if (command.isWaiting()) {
-                return command.processCommand(bot, update);
+
+        String waitingName = waitings.getWaiting(chatId);
+        if (!waitings.getDefaultWaiting().equals(waitingName)) {
+            for (ICommand command : commands) {
+                if (command.getName().equals(waitingName)) {
+                    return command.processCommand(bot, update);
+                }
             }
         }
         for (ICommand command : commands) {

@@ -4,20 +4,16 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.botcommandscope.BotCommandScopeAllChatAdministrators;
-import com.pengrad.telegrambot.request.BaseRequest;
-import com.pengrad.telegrambot.request.GetMyCommands;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import com.pengrad.telegrambot.response.BaseResponse;
-import com.pengrad.telegrambot.response.GetMyCommandsResponse;
 import com.pengrad.telegrambot.response.SendResponse;
 import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.services.CommandService;
 import edu.java.bot.services.ICommand;
+import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.util.Arrays;
 
 //Is it Controller?
 @Component
@@ -26,6 +22,7 @@ public class Bot {
     private final ApplicationConfig applicationConfig;
     private final CommandService commandService;
     private final ICommand[] commands;
+
     @Autowired
     public Bot(ApplicationConfig applicationConfig, CommandService commandService, ICommand[] commands) {
         this.applicationConfig = applicationConfig;
@@ -48,12 +45,8 @@ public class Bot {
             return UpdatesListener.CONFIRMED_UPDATES_ALL;
         }, e -> {
             if (e.response() != null) {
-                // got bad response from telegram
                 e.response().errorCode();
                 e.response().description();
-            } else {
-                // probably network error
-                e.printStackTrace();
             }
         });
     }

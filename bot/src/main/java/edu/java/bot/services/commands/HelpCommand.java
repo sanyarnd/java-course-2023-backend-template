@@ -14,11 +14,6 @@ public class HelpCommand implements ICommand {
         + "list - Показать список отслеживаемых ссылок";
 
     @Override
-    public boolean isWaiting() {
-        return false;
-    }
-
-    @Override
     public String getName() {
         return "/help";
     }

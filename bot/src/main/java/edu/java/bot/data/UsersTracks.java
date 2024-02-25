@@ -27,6 +27,10 @@ public class UsersTracks {
         return true;
     }
 
+    public boolean containsUser(Long chatId) {
+        return idToURLsMap.containsKey(chatId);
+    }
+
     public HashSet<String> getTrackedURLs(Long chatId) {
         return idToURLsMap.get(chatId);
     }
@@ -52,6 +56,7 @@ public class UsersTracks {
     private boolean checkURL(String url) {
         try {
             new URL(url);
+            //TODO: check is allowed URL(github, stackoverflow, etc)
         } catch (MalformedURLException e) {
             return false;
         }
