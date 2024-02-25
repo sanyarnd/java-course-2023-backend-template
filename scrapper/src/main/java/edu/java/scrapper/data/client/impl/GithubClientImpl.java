@@ -3,13 +3,15 @@ package edu.java.scrapper.data.client.impl;
 import edu.java.scrapper.data.client.GithubClient;
 import edu.java.scrapper.data.dto.github.RepositoryDTO;
 import edu.java.scrapper.util.ApiQualifier;
+import java.time.Duration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.util.retry.Retry;
-import java.time.Duration;
 
 @Component
 public class GithubClientImpl implements GithubClient {
+    private final static int MAX_ATTEMPTS = 3;
+    private final static int DURATION = 200;
     private final WebClient webClient;
 
     public GithubClientImpl(@ApiQualifier("github") String baseUrl) {
@@ -26,7 +28,7 @@ public class GithubClientImpl implements GithubClient {
             .uri("/repos/{username}/{repo}", user, repository)
             .retrieve()
             .bodyToMono(RepositoryDTO.class)
-            .retryWhen(Retry.fixedDelay(3, Duration.ofMillis(100)))
+            .retryWhen(Retry.fixedDelay(MAX_ATTEMPTS, Duration.ofMillis(DURATION)))
             .block();
     }
 }

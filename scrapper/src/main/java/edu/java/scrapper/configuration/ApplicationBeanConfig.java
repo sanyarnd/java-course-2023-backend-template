@@ -1,11 +1,11 @@
 package edu.java.scrapper.configuration;
 
 import edu.java.scrapper.util.LoggerQualifier;
+import java.time.Duration;
+import java.util.logging.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import java.time.Duration;
-import java.util.logging.Logger;
 
 @Configuration
 @EnableScheduling
