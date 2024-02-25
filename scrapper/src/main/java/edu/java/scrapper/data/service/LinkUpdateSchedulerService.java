@@ -33,7 +33,5 @@ public class LinkUpdateSchedulerService {
     @Scheduled(fixedDelayString = "#{@interval}")
     public void update() {
         logger.log(Level.WARNING, MessageFormat.format("Current time: {0}", System.currentTimeMillis()));
-        logger.log(Level.INFO, githubClient.fetchRepository("AlexCawl", "iot-connector-application").toString());
-        logger.log(Level.INFO, stackOverflowClient.fetchAnswers("78046340").toString());
     }
 }

@@ -1,11 +1,11 @@
 package edu.java.scrapper.data.dto.github;
 
-import java.util.List;
+import java.time.OffsetDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record RepositoryDTO(
 	@JsonProperty("pushed_at")
-	String pushedAt,
+    OffsetDateTime pushedAt,
 
 	@JsonProperty("subscribers_count")
 	int subscribersCount,
@@ -28,14 +28,8 @@ public record RepositoryDTO(
 	@JsonProperty("size")
 	int size,
 
-	@JsonProperty("allow_auto_merge")
-	boolean allowAutoMerge,
-
 	@JsonProperty("name")
 	String name,
-
-	@JsonProperty("default_branch")
-	String defaultBranch,
 
 	@JsonProperty("open_issues_count")
 	int openIssuesCount,
@@ -44,19 +38,13 @@ public record RepositoryDTO(
 	String description,
 
 	@JsonProperty("created_at")
-	String createdAt,
+    OffsetDateTime createdAt,
 
 	@JsonProperty("updated_at")
-	String updatedAt,
+    OffsetDateTime updatedAt,
 
 	@JsonProperty("owner")
     RepositoryOwnerDTO owner,
-
-	@JsonProperty("topics")
-	List<String> topics,
-
-	@JsonProperty("fork")
-	boolean fork,
 
 	@JsonProperty("open_issues")
 	int openIssues,

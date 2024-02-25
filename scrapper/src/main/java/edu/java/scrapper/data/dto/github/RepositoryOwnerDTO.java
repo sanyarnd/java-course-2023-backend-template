@@ -9,9 +9,6 @@ public record RepositoryOwnerDTO(
 	@JsonProperty("type")
 	String type,
 
-	@JsonProperty("site_admin")
-	boolean siteAdmin,
-
 	@JsonProperty("id")
 	int id
 ) {

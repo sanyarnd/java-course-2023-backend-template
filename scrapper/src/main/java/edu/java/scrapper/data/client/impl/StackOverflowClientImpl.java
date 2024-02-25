@@ -21,7 +21,7 @@ public class StackOverflowClientImpl implements StackOverflowClient {
     public AnswersDTO fetchAnswers(String questionId) {
         return webClient
             .get()
-            .uri("/questions/{questionId}?site=stackoverflow", questionId)
+            .uri("/questions/{questionId}/answers?site=stackoverflow", questionId)
             .retrieve().bodyToMono(AnswersDTO.class)
             .block();
     }
