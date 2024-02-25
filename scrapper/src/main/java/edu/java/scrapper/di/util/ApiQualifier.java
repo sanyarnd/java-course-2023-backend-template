@@ -1,4 +1,4 @@
-package edu.java.scrapper.util;
+package edu.java.scrapper.di.util;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

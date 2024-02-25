@@ -1,4 +1,4 @@
-package edu.java.scrapper.configuration;
+package edu.java.scrapper.di;
 
 import jakarta.validation.constraints.NotNull;
 import java.time.Duration;

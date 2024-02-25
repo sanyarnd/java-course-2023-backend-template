@@ -1,6 +1,6 @@
-package edu.java.scrapper.configuration;
+package edu.java.scrapper.di;
 
-import edu.java.scrapper.util.LoggerQualifier;
+import edu.java.scrapper.di.util.LoggerQualifier;
 import java.time.Duration;
 import java.util.logging.Logger;
 import org.springframework.context.annotation.Bean;

@@ -2,7 +2,7 @@ package edu.java.scrapper.data.client.impl;
 
 import edu.java.scrapper.data.client.StackOverflowClient;
 import edu.java.scrapper.data.dto.stackoverflow.AnswersDTO;
-import edu.java.scrapper.util.ApiQualifier;
+import edu.java.scrapper.di.util.ApiQualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
