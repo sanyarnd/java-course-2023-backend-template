@@ -1,33 +1,41 @@
 package edu.java.scrapper;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.WireMockServer;
 import edu.java.scrapper.client.GitHubClient;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
-import org.testcontainers.shaded.com.google.common.net.HttpHeaders;
-import org.testcontainers.shaded.org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.http.MediaType;
+import org.testcontainers.shaded.com.google.common.net.HttpHeaders;
+import org.testcontainers.shaded.org.apache.commons.io.FileUtils;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class GitHubClientTest {
-    @Rule
-    public final WireMockRule wireMockRule = new WireMockRule();
+    private WireMockServer wireMockServer;
     private final String baseUrl = "http://localhost:8080";
     private GitHubClient gitHubClient;
     private final String REPOSITORY_PATH = "src" + File.separator + "test" +
         File.separator + "java" + File.separator + "edu" + File.separator + "java" + File.separator + "scrapper" +
         File.separator + "repository.json";
 
-    @Before
-    public void initClient() {
+    @BeforeAll
+    public void setUp() {
         gitHubClient = new GitHubClient(baseUrl);
+        wireMockServer = new WireMockServer(8080);
+        wireMockServer.start();
+    }
+
+    @AfterAll
+    public void tearDown() {
+        wireMockServer.stop();
     }
 
     @Test
