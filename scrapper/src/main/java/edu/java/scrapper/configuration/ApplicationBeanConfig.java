@@ -11,12 +11,6 @@ import java.util.logging.Logger;
 @EnableScheduling
 public class ApplicationBeanConfig {
     @Bean
-    @LoggerQualifier("rest-client-handler")
-    public Logger provideRestClientExceptionLogger() {
-        return Logger.getLogger("REST-CLIENT-HANDLER");
-    }
-
-    @Bean
     @LoggerQualifier("schedule-logger")
     public Logger provideScheduleLogger() {
         return Logger.getLogger("SCHEDULE-LOGGER");

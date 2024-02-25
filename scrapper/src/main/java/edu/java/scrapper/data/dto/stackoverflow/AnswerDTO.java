@@ -2,12 +2,9 @@ package edu.java.scrapper.data.dto.stackoverflow;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record Answer(
+public record AnswerDTO(
 	@JsonProperty("owner")
-    Owner owner,
-
-	@JsonProperty("content_license")
-	String contentLicense,
+    AnswerOwnerDTO owner,
 
 	@JsonProperty("score")
 	int score,

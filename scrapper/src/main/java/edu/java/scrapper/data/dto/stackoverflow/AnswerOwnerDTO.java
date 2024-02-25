@@ -2,10 +2,7 @@ package edu.java.scrapper.data.dto.stackoverflow;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record Owner(
-	@JsonProperty("profile_image")
-	String profileImage,
-
+public record AnswerOwnerDTO(
 	@JsonProperty("account_id")
 	int accountId,
 
@@ -14,9 +11,6 @@ public record Owner(
 
 	@JsonProperty("user_id")
 	int userId,
-
-	@JsonProperty("link")
-	String link,
 
 	@JsonProperty("reputation")
 	int reputation,
