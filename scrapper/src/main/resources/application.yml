@@ -13,3 +13,7 @@ server:
 
 logging:
   config: classpath:log4j2-plain.xml
+
+api:
+  github:
+    base-url: https://api.github.com
