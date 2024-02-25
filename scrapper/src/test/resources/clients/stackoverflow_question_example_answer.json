@@ -1,0 +1,34 @@
+{
+    "items": [
+        {
+            "tags": [
+                "yolo",
+                "angle",
+                "estimation",
+                "pose"
+            ],
+            "owner": {
+                "account_id": 29195240,
+                "reputation": 11,
+                "user_id": 22366498,
+                "user_type": "registered",
+                "profile_image": "https://www.gravatar.com/avatar/5f1f6a72aa16b1c3790bf013b5057fa4?s=256&d=identicon&r=PG&f=y&so-version=2",
+                "display_name": "leo_nidas300",
+                "link": "https://stackoverflow.com/users/22366498/leo-nidas300"
+            },
+            "is_answered": false,
+            "view_count": 5,
+            "answer_count": 0,
+            "score": 0,
+            "last_activity_date": 1708870853,
+            "creation_date": 1708870853,
+            "question_id": 78056287,
+            "content_license": "CC BY-SA 4.0",
+            "link": "https://stackoverflow.com/questions/78056287/yolo-pose-estimation-calculate-angle-position",
+            "title": "YOLO pose estimation Calculate angle position"
+        }
+    ],
+    "has_more": false,
+    "quota_max": 300,
+    "quota_remaining": 288
+}
