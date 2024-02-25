@@ -4,6 +4,7 @@ import edu.java.scrapper.util.LoggerQualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import java.time.Duration;
 import java.util.logging.Logger;
 
 @Configuration
@@ -22,7 +23,7 @@ public class ApplicationBeanConfig {
     }
 
     @Bean("interval")
-    public long provideSchedulerInterval(ApplicationConfig config) {
-        return config.scheduler().interval().toMillis();
+    public Duration provideSchedulerInterval(ApplicationConfig config) {
+        return config.scheduler().interval();
     }
 }

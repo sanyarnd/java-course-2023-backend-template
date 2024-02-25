@@ -2,10 +2,12 @@ package edu.java.scrapper.configuration;
 
 import edu.java.scrapper.data.source.GithubSource;
 import edu.java.scrapper.data.ClientErrorHandler;
+import edu.java.scrapper.data.source.StackOverflowSource;
 import edu.java.scrapper.util.ApiQualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.client.ReactorNettyClientRequestFactory;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
@@ -26,12 +28,26 @@ public class NetworkBeanConfig {
 
     @Bean
     public GithubSource provideGithubClient(@ApiQualifier("github") String apiUrl, ClientErrorHandler handler) {
-        var client = RestClient.builder()
+        var client = RestClient
+            .builder()
             .baseUrl(apiUrl)
             .defaultStatusHandler(HttpStatusCode::isError, handler)
             .build();
         var adapter = RestClientAdapter.create(client);
         var factory = HttpServiceProxyFactory.builderFor(adapter).build();
         return factory.createClient(GithubSource.class);
+    }
+
+    @Bean
+    public StackOverflowSource provideStackOverflowClient(@ApiQualifier("stack-overflow") String apiUrl, ClientErrorHandler handler) {
+        var client = RestClient
+            .builder()
+            .baseUrl(apiUrl)
+            .defaultStatusHandler(HttpStatusCode::isError, handler)
+            .requestFactory(new ReactorNettyClientRequestFactory())
+            .build();
+        var adapter = RestClientAdapter.create(client);
+        var factory = HttpServiceProxyFactory.builderFor(adapter).build();
+        return factory.createClient(StackOverflowSource.class);
     }
 }
