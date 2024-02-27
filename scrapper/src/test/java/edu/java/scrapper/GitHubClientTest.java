@@ -19,22 +19,21 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class GitHubClientTest {
-    private WireMockServer wireMockServer;
-    private final String baseUrl = "http://localhost:8080";
-    private GitHubClient gitHubClient;
-    private final String REPOSITORY_PATH = "src" + File.separator + "test" +
-        File.separator + "java" + File.separator + "edu" + File.separator + "java" + File.separator + "scrapper" +
-        File.separator + "repository.json";
+    private static WireMockServer wireMockServer;
+    private static GitHubClient gitHubClient;
+    private static final String baseUrl = "http://localhost:8080";
+    private static final String REPOSITORY_PATH = "src" + File.separator + "test" +
+        File.separator + "resources" + File.separator + "repository.json";
 
     @BeforeAll
-    public void setUp() {
+    public static void setUp() {
         gitHubClient = new GitHubClient(baseUrl);
         wireMockServer = new WireMockServer(8080);
         wireMockServer.start();
     }
 
     @AfterAll
-    public void tearDown() {
+    public static void tearDown() {
         wireMockServer.stop();
     }
 

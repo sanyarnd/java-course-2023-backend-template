@@ -6,13 +6,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 public class GitHubClient {
     @Value("${api.github.base-url}")
-    private String gitNubBaseUrl;
+    private String gitHubBaseUrl;
     private final WebClient webClient;
 
     public GitHubClient(String baseUrl) {
         String url = baseUrl;
         if (baseUrl.isEmpty()) {
-            url = gitNubBaseUrl;
+            url = gitHubBaseUrl;
         }
         this.webClient = WebClient.builder().baseUrl(url).build();
     }
