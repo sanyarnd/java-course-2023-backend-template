@@ -13,7 +13,7 @@ public class ClientConfiguration {
     @Value("${clients.base-url.stackoverflow:https://api.stackexchange.com/2.3}")
     private String stackoverflowBaseUrl;
 
-    @Bean("gitHubClient")
+    @Bean("gitHubWebClient")
     public WebClient getGitHubClient() {
         return WebClient
             .builder()
