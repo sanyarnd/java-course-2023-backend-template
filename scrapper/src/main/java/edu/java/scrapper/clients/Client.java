@@ -1,6 +1,6 @@
-package edu.java.scrapper.trackers;
+package edu.java.scrapper.clients;
 
-public interface Tracker {
+public interface Client {
     void addTrack(long user_id, String resource);
 
     void removeTrack(long user_id, String resource);

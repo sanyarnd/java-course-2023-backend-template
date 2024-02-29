@@ -1,6 +1,8 @@
-package edu.java.scrapper.trackers;
+package edu.java.scrapper.clients.impl;
 
-public class StackoverflowTracker implements Tracker {
+import edu.java.scrapper.clients.Client;
+
+public class StackOverflowClient implements Client {
     @Override
     public void addTrack(long user_id, String resource) {
 

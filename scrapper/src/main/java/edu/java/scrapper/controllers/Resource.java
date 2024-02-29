@@ -1,7 +1,7 @@
 package edu.java.scrapper.controllers;
 
 import edu.java.scrapper.storage.Storage;
-import edu.java.scrapper.trackers.TrackersManager;
+import edu.java.scrapper.clients.TrackersManager;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
