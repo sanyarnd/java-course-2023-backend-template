@@ -1,4 +1,4 @@
-package edu.java.bot.api.controller.dto.response;
+package edu.java.bot.response;
 
 import java.util.List;
 

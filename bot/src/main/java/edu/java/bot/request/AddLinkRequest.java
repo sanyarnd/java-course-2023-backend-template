@@ -1,4 +1,4 @@
-package edu.java.api.scrapper.dto.request;
+package edu.java.bot.request;
 
 public record AddLinkRequest(String link) {
 }

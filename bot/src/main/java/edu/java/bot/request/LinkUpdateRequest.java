@@ -1,4 +1,4 @@
-package edu.java.bot.api.controller.dto.request;
+package edu.java.bot.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;

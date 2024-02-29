@@ -1,6 +1,6 @@
-package edu.java.bot.api.controller.exception.handler;
+package edu.java.bot.client.exception.handle;
 
-import edu.java.bot.api.controller.dto.response.ApiErrorResponse;
+import edu.java.bot.response.ApiErrorResponse;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Slf4j
 @org.springframework.web.bind.annotation.RestControllerAdvice
-public class BotRestControllerAdvice {
+public class ExceptionGlobalHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorResponse> notValidArgumentHandle(MethodArgumentNotValidException ex) {
         return ResponseEntity.status(BAD_REQUEST)
