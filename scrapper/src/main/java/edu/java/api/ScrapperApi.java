@@ -35,6 +35,8 @@ public interface ScrapperApi {
         @ApiResponse(responseCode = "200",
                      description = "Ссылка успешно добавлена",
                      content = @Content(schema = @Schema(implementation = LinkResponse.class))),
+        @ApiResponse(responseCode = "409",
+                     description = "Ссылка уже добавлена", content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))),
         @ApiResponse(responseCode = "400",
                      description = "Некорректные параметры запроса",
                      content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))})
