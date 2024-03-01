@@ -7,13 +7,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ClientConfiguration {
-    @Bean
+    @Bean("github")
     public Client createGithubClient() {
         return new GitHubClient();
     }
 
-    @Bean
-    public Client createStackoverflowClient() {
+    @Bean("stackoverflow")
+    public Client createStackOverflowClient() {
         return new StackOverflowClient();
     }
 }
