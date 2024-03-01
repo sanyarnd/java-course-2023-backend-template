@@ -4,12 +4,12 @@ import edu.java.scrapper.clients.Client;
 
 public class StackOverflowClient implements Client {
     @Override
-    public void addTrack(long user_id, String resource) {
+    public void addTrack(long userId, String resource) {
 
     }
 
     @Override
-    public void removeTrack(long user_id, String resource) {
+    public void removeTrack(long userId, String resource) {
 
     }
 

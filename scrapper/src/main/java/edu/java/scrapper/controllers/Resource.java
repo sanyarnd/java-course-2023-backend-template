@@ -1,7 +1,7 @@
 package edu.java.scrapper.controllers;
 
-import edu.java.scrapper.storage.Storage;
 import edu.java.scrapper.clients.TrackersManager;
+import edu.java.scrapper.storage.Storage;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,21 +19,21 @@ public class Resource {
         this.storage = storage;
     }
 
-    @RequestMapping(value = "/{user_id}", method = RequestMethod.GET)
-    List<String> getResourceList(@PathVariable long user_id) {
-        return storage.getResources(user_id);
+    @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+    List<String> getResourceList(@PathVariable long userId) {
+        return storage.getResources(userId);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    void track(Long user_id, String resource) {
+    void track(Long userId, String resource) {
         var tracker = TrackersManager.getTracker(resource);
-        tracker.addTrack(user_id, resource);
+        tracker.addTrack(userId, resource);
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
-    void untrack(Long user_id, String resource) {
+    void untrack(Long userId, String resource) {
         var tracker = TrackersManager.getTracker(resource);
-        tracker.removeTrack(user_id, resource);
+        tracker.removeTrack(userId, resource);
 
     }
 }

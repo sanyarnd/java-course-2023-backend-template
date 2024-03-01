@@ -8,12 +8,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ClientConfiguration {
     @Bean
-    public Client createGithubClient(){
+    public Client createGithubClient() {
         return new GitHubClient();
     }
 
     @Bean
-    public Client createStackoverflowClient(){
+    public Client createStackoverflowClient() {
         return new StackOverflowClient();
     }
 }
