@@ -5,7 +5,6 @@ import edu.java.request.RemoveLinkRequest;
 import edu.java.response.ApiErrorResponse;
 import edu.java.response.LinkResponse;
 import edu.java.response.ListLinksResponse;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,9 +16,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Validated
-@Api(value = "scrapper")
+@RequestMapping(value = "scrapper")
 public interface ScrapperApi {
     @Operation(summary = "Получить все отслеживаемые ссылки", responses = {
         @ApiResponse(responseCode = "200",
