@@ -1,17 +1,22 @@
 package edu.java.bot.data.impl;
 
 import edu.java.bot.data.LinkTrackerRepository;
-import edu.java.core.exception.LinkAlreadyTracked;
 import edu.java.core.exception.LinkAlreadyNotTracked;
+import edu.java.core.exception.LinkAlreadyTracked;
+import edu.java.core.exception.LinkIsUnreachable;
 import edu.java.core.exception.UserIsNotAuthenticated;
+import edu.java.core.request.AddLinkRequest;
+import edu.java.core.request.RemoveLinkRequest;
+import edu.java.core.response.ApiErrorResponse;
 import edu.java.core.response.LinkResponse;
 import edu.java.core.response.ListLinksResponse;
+import java.util.List;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.ClientResponse;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import java.util.List;
 
 @Component
 public class LinkTrackerRepositoryImpl implements LinkTrackerRepository {
@@ -21,16 +26,28 @@ public class LinkTrackerRepositoryImpl implements LinkTrackerRepository {
         this.webClient = WebClient.create(baseUrl);
     }
 
-    private static Mono<? extends Throwable> apply(ClientResponse clientResponse) {
-        return Mono.error(new UserIsNotAuthenticated());
+    private static RuntimeException extractException(ApiErrorResponse apiErrorResponse) {
+        final var exceptionName = apiErrorResponse.exceptionName();
+        if (exceptionName.equals(UserIsNotAuthenticated.class.getName())) {
+            return new UserIsNotAuthenticated();
+        } else if (exceptionName.equals(LinkAlreadyTracked.class.getName())) {
+            return new LinkAlreadyTracked();
+        } else if (exceptionName.equals(LinkIsUnreachable.class.getName())) {
+            return new LinkIsUnreachable();
+        } else if (exceptionName.equals(LinkAlreadyNotTracked.class.getName())) {
+            return new LinkAlreadyNotTracked();
+        } else {
+            return new IllegalStateException();
+        }
     }
 
     @Override
     public List<String> getUserTrackedLinks(Long userId) throws UserIsNotAuthenticated {
-        var response = webClient.get()
+        final var response = webClient.get()
+            .uri("/links")
             .header("Tg-Chat-Id", String.valueOf(userId))
             .retrieve()
-            .onStatus(HttpStatusCode::is4xxClientError, LinkTrackerRepositoryImpl::apply)
+            .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.error(new UserIsNotAuthenticated()))
             .bodyToMono(ListLinksResponse.class)
             .block();
         if (response != null) {
@@ -41,11 +58,18 @@ public class LinkTrackerRepositoryImpl implements LinkTrackerRepository {
     }
 
     @Override
-    public void setLinkTracked(Long userId, String link) throws UserIsNotAuthenticated, LinkAlreadyTracked {
+    public void setLinkTracked(Long userId, String link)
+        throws UserIsNotAuthenticated, LinkAlreadyTracked, LinkIsUnreachable {
         webClient.post()
+            .uri("/links")
             .header("Tg-Chat-Id", String.valueOf(userId))
+            .body(BodyInserters.fromValue(new AddLinkRequest(link)))
             .retrieve()
-            .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> null)
+            .onStatus(
+                HttpStatusCode::is4xxClientError,
+                clientResponse -> clientResponse.bodyToMono(ApiErrorResponse.class)
+                    .map(LinkTrackerRepositoryImpl::extractException)
+            )
             .toBodilessEntity()
             .block();
     }
@@ -53,6 +77,17 @@ public class LinkTrackerRepositoryImpl implements LinkTrackerRepository {
     @Override
     public void setLinkUntracked(Long userId, String link)
         throws UserIsNotAuthenticated, LinkAlreadyNotTracked {
-
+        webClient.method(HttpMethod.DELETE)
+            .uri("/links")
+            .header("Tg-Chat-Id", String.valueOf(userId))
+            .body(BodyInserters.fromValue(new RemoveLinkRequest(link)))
+            .retrieve()
+            .onStatus(
+                HttpStatusCode::is4xxClientError,
+                clientResponse -> clientResponse.bodyToMono(ApiErrorResponse.class)
+                    .map(LinkTrackerRepositoryImpl::extractException)
+            )
+            .toBodilessEntity()
+            .block();
     }
 }
