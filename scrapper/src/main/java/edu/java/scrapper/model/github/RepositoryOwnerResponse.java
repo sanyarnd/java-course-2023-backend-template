@@ -1,8 +1,8 @@
-package edu.java.scrapper.data.dto.github;
+package edu.java.scrapper.model.github;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record RepositoryOwnerDTO(
+public record RepositoryOwnerResponse(
     @JsonProperty("login")
     String login,
 

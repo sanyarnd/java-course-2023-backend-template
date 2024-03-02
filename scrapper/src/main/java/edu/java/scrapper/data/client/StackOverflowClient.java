@@ -1,7 +1,7 @@
 package edu.java.scrapper.data.client;
 
-import edu.java.scrapper.data.dto.stackoverflow.AnswersDTO;
+import edu.java.scrapper.model.stackoverflow.StackOverflowAnswersResponse;
 
 public interface StackOverflowClient {
-    AnswersDTO fetchAnswers(String questionId);
+    StackOverflowAnswersResponse fetchAnswers(String questionId);
 }

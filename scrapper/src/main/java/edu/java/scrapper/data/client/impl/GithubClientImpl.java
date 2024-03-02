@@ -1,7 +1,7 @@
 package edu.java.scrapper.data.client.impl;
 
 import edu.java.scrapper.data.client.GithubClient;
-import edu.java.scrapper.data.dto.github.RepositoryDTO;
+import edu.java.scrapper.model.github.GithubRepositoryResponse;
 import edu.java.scrapper.di.util.ApiQualifier;
 import java.time.Duration;
 import org.springframework.stereotype.Component;
@@ -22,12 +22,12 @@ public class GithubClientImpl implements GithubClient {
     }
 
     @Override
-    public RepositoryDTO fetchRepository(String user, String repository) {
+    public GithubRepositoryResponse fetchRepository(String user, String repository) {
         return webClient
             .get()
             .uri("/repos/{username}/{repo}", user, repository)
             .retrieve()
-            .bodyToMono(RepositoryDTO.class)
+            .bodyToMono(GithubRepositoryResponse.class)
             .retryWhen(Retry.fixedDelay(MAX_ATTEMPTS, Duration.ofMillis(DURATION)))
             .block();
     }

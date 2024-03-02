@@ -1,7 +1,7 @@
 package edu.java.scrapper.data.client.impl;
 
 import edu.java.scrapper.data.client.StackOverflowClient;
-import edu.java.scrapper.data.dto.stackoverflow.AnswersDTO;
+import edu.java.scrapper.model.stackoverflow.StackOverflowAnswersResponse;
 import edu.java.scrapper.di.util.ApiQualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -18,11 +18,11 @@ public class StackOverflowClientImpl implements StackOverflowClient {
     }
 
     @Override
-    public AnswersDTO fetchAnswers(String questionId) {
+    public StackOverflowAnswersResponse fetchAnswers(String questionId) {
         return webClient
             .get()
             .uri("/questions/{questionId}/answers?site=stackoverflow", questionId)
-            .retrieve().bodyToMono(AnswersDTO.class)
+            .retrieve().bodyToMono(StackOverflowAnswersResponse.class)
             .block();
     }
 }

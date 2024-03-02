@@ -1,7 +1,7 @@
 package edu.java.scrapper.data.client;
 
-import edu.java.scrapper.data.dto.github.RepositoryDTO;
+import edu.java.scrapper.model.github.GithubRepositoryResponse;
 
 public interface GithubClient {
-    RepositoryDTO fetchRepository(String user, String repository);
+    GithubRepositoryResponse fetchRepository(String user, String repository);
 }

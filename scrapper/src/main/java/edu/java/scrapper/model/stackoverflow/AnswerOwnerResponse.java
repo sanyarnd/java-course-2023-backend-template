@@ -1,8 +1,8 @@
-package edu.java.scrapper.data.dto.stackoverflow;
+package edu.java.scrapper.model.stackoverflow;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record AnswerOwnerDTO(
+public record AnswerOwnerResponse(
     @JsonProperty("account_id")
     int accountId,
 

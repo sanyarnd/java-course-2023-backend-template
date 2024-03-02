@@ -1,9 +1,9 @@
-package edu.java.scrapper.data.dto.github;
+package edu.java.scrapper.model.github;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-public record RepositoryDTO(
+public record GithubRepositoryResponse(
     @JsonProperty("pushed_at")
     OffsetDateTime pushedAt,
 
@@ -44,7 +44,7 @@ public record RepositoryDTO(
     OffsetDateTime updatedAt,
 
     @JsonProperty("owner")
-    RepositoryOwnerDTO owner,
+    RepositoryOwnerResponse owner,
 
     @JsonProperty("open_issues")
     int openIssues,

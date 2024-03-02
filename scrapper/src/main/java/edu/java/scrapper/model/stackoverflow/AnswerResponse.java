@@ -1,10 +1,10 @@
-package edu.java.scrapper.data.dto.stackoverflow;
+package edu.java.scrapper.model.stackoverflow;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record AnswerDTO(
+public record AnswerResponse(
     @JsonProperty("owner")
-    AnswerOwnerDTO owner,
+    AnswerOwnerResponse owner,
 
     @JsonProperty("score")
     int score,
