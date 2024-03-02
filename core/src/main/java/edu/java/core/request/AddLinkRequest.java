@@ -1,4 +1,4 @@
-package edu.java.scrapper.model;
+package edu.java.core.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

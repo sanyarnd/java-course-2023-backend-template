@@ -1,7 +1,7 @@
 package edu.java.scrapper.data.client.impl;
 
 import edu.java.scrapper.data.client.GithubClient;
-import edu.java.scrapper.model.github.GithubRepositoryResponse;
+import edu.java.core.response.github.GithubRepositoryResponse;
 import edu.java.scrapper.di.util.ApiQualifier;
 import java.time.Duration;
 import org.springframework.stereotype.Component;

@@ -1,9 +1,9 @@
 package edu.java.bot.data;
 
-import edu.java.bot.model.LinkAlreadyNotTracked;
-import edu.java.bot.model.LinkAlreadyTracked;
-import edu.java.bot.model.LinkIsUnreachable;
-import edu.java.bot.model.UserIsNotAuthenticated;
+import edu.java.core.exception.LinkAlreadyNotTracked;
+import edu.java.core.exception.LinkAlreadyTracked;
+import edu.java.core.exception.LinkIsUnreachable;
+import edu.java.core.exception.UserIsNotAuthenticated;
 import java.util.List;
 
 public interface LinkTrackerRepository {

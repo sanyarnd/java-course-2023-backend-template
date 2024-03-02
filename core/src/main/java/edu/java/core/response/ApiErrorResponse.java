@@ -1,4 +1,4 @@
-package edu.java.bot.model.dto;
+package edu.java.core.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

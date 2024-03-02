@@ -1,11 +1,11 @@
 package edu.java.bot.data.impl;
 
 import edu.java.bot.data.LinkTrackerRepository;
-import edu.java.bot.model.LinkAlreadyTracked;
-import edu.java.bot.model.LinkAlreadyNotTracked;
-import edu.java.bot.model.UserIsNotAuthenticated;
-import edu.java.bot.model.dto.LinkResponse;
-import edu.java.bot.model.dto.ListLinksResponse;
+import edu.java.core.exception.LinkAlreadyTracked;
+import edu.java.core.exception.LinkAlreadyNotTracked;
+import edu.java.core.exception.UserIsNotAuthenticated;
+import edu.java.core.response.LinkResponse;
+import edu.java.core.response.ListLinksResponse;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.ClientResponse;

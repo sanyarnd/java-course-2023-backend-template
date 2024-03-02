@@ -1,4 +1,4 @@
-package edu.java.scrapper.model.github;
+package edu.java.core.response.github;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

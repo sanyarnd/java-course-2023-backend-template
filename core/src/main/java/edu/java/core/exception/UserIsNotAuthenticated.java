@@ -1,3 +1,3 @@
-package edu.java.bot.model;
+package edu.java.core.exception;
 
 public class UserIsNotAuthenticated extends RuntimeException {}

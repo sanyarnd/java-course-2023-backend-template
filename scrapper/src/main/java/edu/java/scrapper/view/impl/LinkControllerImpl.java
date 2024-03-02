@@ -1,9 +1,9 @@
 package edu.java.scrapper.view.impl;
 
-import edu.java.scrapper.model.AddLinkRequest;
-import edu.java.scrapper.model.LinkResponse;
-import edu.java.scrapper.model.ListLinksResponse;
-import edu.java.scrapper.model.RemoveLinkRequest;
+import edu.java.core.request.AddLinkRequest;
+import edu.java.core.request.RemoveLinkRequest;
+import edu.java.core.response.LinkResponse;
+import edu.java.core.response.ListLinksResponse;
 import edu.java.scrapper.view.LinkController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;

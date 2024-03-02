@@ -1,6 +1,6 @@
 package edu.java.scrapper.view;
 
-import edu.java.scrapper.model.ApiErrorResponse;
+import edu.java.core.response.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

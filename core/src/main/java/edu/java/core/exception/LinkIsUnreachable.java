@@ -1,4 +1,4 @@
-package edu.java.bot.model;
+package edu.java.core.exception;
 
 public class LinkIsUnreachable extends RuntimeException {
 }

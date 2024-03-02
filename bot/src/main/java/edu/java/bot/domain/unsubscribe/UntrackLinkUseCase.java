@@ -2,8 +2,8 @@ package edu.java.bot.domain.unsubscribe;
 
 import com.pengrad.telegrambot.model.User;
 import edu.java.bot.data.LinkTrackerRepository;
-import edu.java.bot.model.LinkAlreadyNotTracked;
-import edu.java.bot.model.UserIsNotAuthenticated;
+import edu.java.core.exception.LinkAlreadyNotTracked;
+import edu.java.core.exception.UserIsNotAuthenticated;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

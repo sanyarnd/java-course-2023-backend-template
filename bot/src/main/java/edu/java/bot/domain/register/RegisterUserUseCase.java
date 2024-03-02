@@ -1,9 +1,8 @@
 package edu.java.bot.domain.register;
 
 import com.pengrad.telegrambot.model.User;
-import edu.java.bot.data.LinkTrackerRepository;
 import edu.java.bot.data.UserAuthRepository;
-import edu.java.bot.model.UserAlreadyRegisteredException;
+import edu.java.core.exception.UserAlreadyAuthenticated;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +15,7 @@ public class RegisterUserUseCase {
         try {
             repository.registerUser(user.id());
             return new RegisterUserResponse.Ok();
-        } catch (UserAlreadyRegisteredException exception) {
+        } catch (UserAlreadyAuthenticated exception) {
             return new RegisterUserResponse.AlreadyRegistered();
         }
     }

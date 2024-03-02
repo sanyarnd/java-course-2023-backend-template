@@ -1,13 +1,21 @@
 package edu.java.scrapper.view;
 
-import edu.java.scrapper.model.*;
+import edu.java.core.request.AddLinkRequest;
+import edu.java.core.request.RemoveLinkRequest;
+import edu.java.core.response.ApiErrorResponse;
+import edu.java.core.response.LinkResponse;
+import edu.java.core.response.ListLinksResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 public interface LinkController {
     @Operation(summary = "Получить все отслеживаемые ссылки")

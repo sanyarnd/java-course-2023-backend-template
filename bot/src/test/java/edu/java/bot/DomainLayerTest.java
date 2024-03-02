@@ -11,10 +11,10 @@ import edu.java.bot.domain.subscribe.TrackLinkResponse;
 import edu.java.bot.domain.subscribe.TrackLinkUseCase;
 import edu.java.bot.domain.unsubscribe.UntrackLinkResponse;
 import edu.java.bot.domain.unsubscribe.UntrackLinkUseCase;
-import edu.java.bot.model.LinkAlreadyNotTracked;
-import edu.java.bot.model.LinkAlreadyTracked;
-import edu.java.bot.model.UserAlreadyRegisteredException;
-import edu.java.bot.model.UserIsNotAuthenticated;
+import edu.java.core.exception.LinkAlreadyNotTracked;
+import edu.java.core.exception.LinkAlreadyTracked;
+import edu.java.core.exception.UserAlreadyAuthenticated;
+import edu.java.core.exception.UserIsNotAuthenticated;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +49,7 @@ public class DomainLayerTest {
     public class RegisterUserTest {
         @BeforeEach
         public void setupInitUser() {
-            Mockito.lenient().doThrow(UserAlreadyRegisteredException.class).when(userAuthRepository).registerUser(123L);
+            Mockito.lenient().doThrow(UserAlreadyAuthenticated.class).when(userAuthRepository).registerUser(123L);
             Mockito.lenient().doNothing().when(userAuthRepository).registerUser(456L);
         }
 
