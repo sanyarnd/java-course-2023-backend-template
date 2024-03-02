@@ -1,4 +1,4 @@
-package edu.java.bot.configuration;
+package edu.java.bot.di;
 
 import com.pengrad.telegrambot.TelegramBot;
 import org.springframework.context.annotation.Bean;

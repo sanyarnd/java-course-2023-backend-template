@@ -1,4 +1,4 @@
-package edu.java.bot.view;
+package edu.java.bot.view.telegram;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
@@ -6,7 +6,7 @@ import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SetMyCommands;
-import edu.java.bot.view.command.CommandHandler;
+import edu.java.bot.view.telegram.command.CommandHandler;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import java.util.List;
@@ -27,7 +27,6 @@ public class BotUpdatesListener implements UpdatesListener {
         List<BotCommand> botCommands = commandHandlers.stream().map(CommandHandler::convertToApi).toList();
         SetMyCommands commands = new SetMyCommands(botCommands.toArray(BotCommand[]::new));
         telegramBot.execute(commands);
-        // Set updates
         telegramBot.setUpdatesListener(this, exceptionHandler);
     }
 
@@ -39,7 +38,6 @@ public class BotUpdatesListener implements UpdatesListener {
     @Override
     public int process(List<Update> list) {
         for (Update update : list) {
-            // Find matching command handler
             Optional<CommandHandler> handler = commandHandlers.stream()
                 .filter(commandHandler -> {
                     try {
@@ -50,7 +48,6 @@ public class BotUpdatesListener implements UpdatesListener {
                     }
                 })
                 .findAny();
-            // Process command
             handler.ifPresentOrElse(
                 commandHandler -> commandHandler.handle(update).ifPresent(telegramBot::execute),
                 () -> {

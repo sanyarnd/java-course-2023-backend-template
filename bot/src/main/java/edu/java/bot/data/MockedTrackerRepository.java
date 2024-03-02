@@ -1,9 +1,9 @@
 package edu.java.bot.data;
 
-import edu.java.bot.util.LinkAlreadyTrackedException;
-import edu.java.bot.util.LinkIsNotTrackedException;
-import edu.java.bot.util.UserAlreadyRegisteredException;
-import edu.java.bot.util.UserIsNotRegisteredException;
+import edu.java.bot.model.LinkAlreadyTrackedException;
+import edu.java.bot.model.LinkIsNotTrackedException;
+import edu.java.bot.model.UserAlreadyRegisteredException;
+import edu.java.bot.model.UserIsNotRegisteredException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;

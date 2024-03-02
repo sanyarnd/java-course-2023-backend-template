@@ -2,7 +2,7 @@ package edu.java.bot.domain.links;
 
 import com.pengrad.telegrambot.model.User;
 import edu.java.bot.data.TrackerRepository;
-import edu.java.bot.util.UserIsNotRegisteredException;
+import edu.java.bot.model.UserIsNotRegisteredException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,6 @@
 package edu.java.bot;
 
-import edu.java.bot.view.command.CommandHandler;
+import edu.java.bot.view.telegram.command.CommandHandler;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
