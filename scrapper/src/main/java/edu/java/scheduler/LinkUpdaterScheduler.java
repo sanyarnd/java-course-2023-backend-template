@@ -1,4 +1,4 @@
-package edu.java;
+package edu.java.scheduler;
 
 import edu.java.configuration.ApplicationConfig;
 import java.util.logging.Logger;

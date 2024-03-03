@@ -12,6 +12,7 @@ import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.services.CommandService;
 import edu.java.bot.services.ICommand;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -67,6 +68,7 @@ public class Bot {
         if (update == null || update.message() == null || update.message().chat() == null) {
             return true;
         }
+
         String requestForUser = null;
         try {
             requestForUser = commandService.processCommand(update);
@@ -80,9 +82,21 @@ public class Bot {
         return true;
     }
 
-    public boolean writeToUser(Update update, String text) {
+    public void writeToUser(Update update, String text) {
         SendMessage request = new SendMessage(update.message().chat().id(), text);
-        SendResponse response = telegramBot.execute(request);
-        return response.isOk();
+        telegramBot.execute(request);
+    }
+
+    public void callUsers(String url, String description, List<Long> tgChatIds) {
+        String updateMessage = getUpdateMessage(url, description);
+        for (Long userId : tgChatIds) {
+            SendMessage request = new SendMessage(userId, updateMessage);
+            telegramBot.execute(request);
+        }
+    }
+
+    private String getUpdateMessage(String url, String description) {
+        //TODO:: how should update message look like?
+        return "Обновление на " + url + "\nОписание: " + description;
     }
 }

@@ -14,5 +14,7 @@ spring:
 server:
   port: 8080
 
+springdoc.swagger-ui.path: /swagger-ui
+
 logging:
   config: classpath:log4j2-plain.xml
