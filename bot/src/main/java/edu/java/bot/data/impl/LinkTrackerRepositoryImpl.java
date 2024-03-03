@@ -5,7 +5,7 @@ import edu.java.core.exception.LinkAlreadyTracked;
 import edu.java.core.exception.LinkIsUnreachable;
 import edu.java.core.exception.LinkNotTracked;
 import edu.java.core.exception.UnrecognizableException;
-import edu.java.core.exception.UserIsNotAuthenticated;
+import edu.java.core.exception.UserNotAuthenticated;
 import edu.java.core.exception.util.ExceptionDeserializer;
 import edu.java.core.request.AddLinkRequest;
 import edu.java.core.request.RemoveLinkRequest;
@@ -30,12 +30,12 @@ public class LinkTrackerRepositoryImpl implements LinkTrackerRepository, Excepti
     }
 
     @Override
-    public List<String> getUserTrackedLinks(Long userId) throws UserIsNotAuthenticated {
+    public List<String> getUserTrackedLinks(Long userId) throws UserNotAuthenticated {
         final var response = webClient.get()
             .uri("/links")
             .header("Tg-Chat-Id", String.valueOf(userId))
             .retrieve()
-            .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.error(new UserIsNotAuthenticated()))
+            .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.error(new UserNotAuthenticated()))
             .bodyToMono(ListLinksResponse.class)
             .block();
         if (response != null) {
@@ -47,7 +47,7 @@ public class LinkTrackerRepositoryImpl implements LinkTrackerRepository, Excepti
 
     @Override
     public void setLinkTracked(Long userId, String link)
-        throws UserIsNotAuthenticated, LinkAlreadyTracked, LinkIsUnreachable {
+        throws UserNotAuthenticated, LinkAlreadyTracked, LinkIsUnreachable {
         webClient.post()
             .uri("/links")
             .header("Tg-Chat-Id", String.valueOf(userId))
@@ -63,7 +63,7 @@ public class LinkTrackerRepositoryImpl implements LinkTrackerRepository, Excepti
 
     @Override
     public void setLinkUntracked(Long userId, String link)
-        throws UserIsNotAuthenticated, LinkNotTracked {
+        throws UserNotAuthenticated, LinkNotTracked {
         webClient.method(HttpMethod.DELETE)
             .uri("/links")
             .header("Tg-Chat-Id", String.valueOf(userId))
@@ -80,8 +80,8 @@ public class LinkTrackerRepositoryImpl implements LinkTrackerRepository, Excepti
     @Override
     public Exception deserialize(ApiErrorResponse response) {
         final var exceptionName = response.exceptionName();
-        if (exceptionName.equals(UserIsNotAuthenticated.class.getName())) {
-            return new UserIsNotAuthenticated();
+        if (exceptionName.equals(UserNotAuthenticated.class.getName())) {
+            return new UserNotAuthenticated();
         } else if (exceptionName.equals(LinkAlreadyTracked.class.getName())) {
             return new LinkAlreadyTracked();
         } else if (exceptionName.equals(LinkIsUnreachable.class.getName())) {

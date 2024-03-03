@@ -14,7 +14,7 @@ import edu.java.bot.domain.unsubscribe.UntrackLinkUseCase;
 import edu.java.core.exception.LinkNotTracked;
 import edu.java.core.exception.LinkAlreadyTracked;
 import edu.java.core.exception.UserAlreadyAuthenticated;
-import edu.java.core.exception.UserIsNotAuthenticated;
+import edu.java.core.exception.UserNotAuthenticated;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,7 +72,7 @@ public class DomainLayerTest {
     public class TrackLinkTest {
         @BeforeEach
         public void setupTrackLinks() {
-            Mockito.lenient().doThrow(UserIsNotAuthenticated.class).when(linkTrackerRepository).setLinkTracked(456L, "onlyfans.com");
+            Mockito.lenient().doThrow(UserNotAuthenticated.class).when(linkTrackerRepository).setLinkTracked(456L, "onlyfans.com");
             Mockito.lenient().doThrow(LinkAlreadyTracked.class).when(linkTrackerRepository).setLinkTracked(123L, "github.com");
         }
 
@@ -96,7 +96,7 @@ public class DomainLayerTest {
     public class UntrackLinkTest {
         @BeforeEach
         public void setupUntrackLinks() {
-            Mockito.lenient().doThrow(UserIsNotAuthenticated.class).when(linkTrackerRepository).setLinkUntracked(456L, "onlyfans.com");
+            Mockito.lenient().doThrow(UserNotAuthenticated.class).when(linkTrackerRepository).setLinkUntracked(456L, "onlyfans.com");
             Mockito.lenient().doThrow(LinkNotTracked.class).when(linkTrackerRepository).setLinkUntracked(123L, "onlyfans.com");
         }
 
@@ -121,7 +121,7 @@ public class DomainLayerTest {
         @BeforeEach
         public void setupGetSubscriptions() {
             Mockito.lenient().when(linkTrackerRepository.getUserTrackedLinks(123L)).thenReturn(List.of("stackoverflow.com", "github.com"));
-            Mockito.lenient().when(linkTrackerRepository.getUserTrackedLinks(456L)).thenThrow(UserIsNotAuthenticated.class);
+            Mockito.lenient().when(linkTrackerRepository.getUserTrackedLinks(456L)).thenThrow(UserNotAuthenticated.class);
         }
 
         @Test
