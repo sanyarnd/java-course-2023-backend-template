@@ -19,10 +19,12 @@ public class UserAuthRepositoryImpl implements UserAuthRepository, ExceptionDese
         this.webClient = WebClient.create(baseUrl);
     }
 
+    private static final String ENDPOINT = "/tg-chat/{id}";
+
     @Override
     public void registerUser(Long userId) throws UserAlreadyRegistered {
         webClient.post()
-            .uri("/tg-chat/{id}", userId)
+            .uri(ENDPOINT, userId)
             .retrieve()
             .onStatus(
                 HttpStatusCode::is4xxClientError,
@@ -35,7 +37,7 @@ public class UserAuthRepositoryImpl implements UserAuthRepository, ExceptionDese
     @Override
     public void deleteUser(Long userId) throws UserNotRegistered {
         webClient.delete()
-            .uri("/tg-chat/{id}", userId)
+            .uri(ENDPOINT, userId)
             .retrieve()
             .onStatus(
                 HttpStatusCode::is4xxClientError,

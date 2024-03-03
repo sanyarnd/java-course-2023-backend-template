@@ -1,8 +1,8 @@
 package edu.java.scrapper.data.impl;
 
 import edu.java.core.response.stackoverflow.StackOverflowAnswersResponse;
-import edu.java.scrapper.data.StackOverflowClient;
 import edu.java.core.util.ApiQualifier;
+import edu.java.scrapper.data.StackOverflowClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 

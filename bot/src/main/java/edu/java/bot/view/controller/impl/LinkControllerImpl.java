@@ -1,8 +1,8 @@
 package edu.java.bot.view.controller.impl;
 
-import edu.java.core.request.LinkUpdateRequest;
 import edu.java.bot.view.controller.LinkController;
-import org.springframework.http.HttpStatusCode;
+import edu.java.core.request.LinkUpdateRequest;
+import edu.java.core.util.ResponseStubber;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class LinkControllerImpl implements LinkController {
     @Override
     public ResponseEntity<Void> updatesPost(LinkUpdateRequest body) {
-        return new ResponseEntity<>(HttpStatusCode.valueOf(501));
+        return new ResponseEntity<>(ResponseStubber.stubNotImplemented());
     }
 }

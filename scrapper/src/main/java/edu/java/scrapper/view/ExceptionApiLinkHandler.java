@@ -18,17 +18,20 @@ public class ExceptionApiLinkHandler {
         this.exceptionSerializer = exceptionSerializer;
     }
 
+    private final static Integer BAD_REQUEST_CODE = 400;
+    private final static Integer NOT_FOUNT_CODE = 404;
+
     @ExceptionHandler({LinkAlreadyTracked.class, LinkNotTracked.class})
     public ResponseEntity<ApiErrorResponse> handleTrackingExceptions(Exception exception) {
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
-            .body(exceptionSerializer.serialize(exception, 400));
+            .body(exceptionSerializer.serialize(exception, BAD_REQUEST_CODE));
     }
 
     @ExceptionHandler(LinkIsUnreachable.class)
     public ResponseEntity<ApiErrorResponse> handleUnreachableException(LinkIsUnreachable exception) {
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
-            .body(exceptionSerializer.serialize(exception, 404));
+            .body(exceptionSerializer.serialize(exception, NOT_FOUNT_CODE));
     }
 }

@@ -19,10 +19,13 @@ public class ExceptionApiUserHandler {
         this.exceptionSerializer = exceptionSerializer;
     }
 
-    @ExceptionHandler({UserAlreadyAuthenticated.class, UserNotAuthenticated.class, UserAlreadyRegistered.class, UserNotRegistered.class})
+    private final static Integer BAD_REQUEST_CODE = 400;
+
+    @ExceptionHandler({UserAlreadyAuthenticated.class, UserNotAuthenticated.class, UserAlreadyRegistered.class,
+        UserNotRegistered.class})
     public ResponseEntity<ApiErrorResponse> handleUserExceptions(Exception exception) {
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
-            .body(exceptionSerializer.serialize(exception, 400));
+            .body(exceptionSerializer.serialize(exception, BAD_REQUEST_CODE));
     }
 }

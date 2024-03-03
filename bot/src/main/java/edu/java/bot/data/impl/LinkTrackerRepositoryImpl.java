@@ -29,11 +29,14 @@ public class LinkTrackerRepositoryImpl implements LinkTrackerRepository, Excepti
         this.webClient = WebClient.create(baseUrl);
     }
 
+    private static final String ENDPOINT = "/links";
+    private static final String CHAT_ID_HEADER = "Tg-Chat-Id";
+
     @Override
     public List<String> getUserTrackedLinks(Long userId) throws UserNotAuthenticated {
         final var response = webClient.get()
-            .uri("/links")
-            .header("Tg-Chat-Id", String.valueOf(userId))
+            .uri(ENDPOINT)
+            .header(CHAT_ID_HEADER, String.valueOf(userId))
             .retrieve()
             .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.error(new UserNotAuthenticated()))
             .bodyToMono(ListLinksResponse.class)
@@ -49,8 +52,8 @@ public class LinkTrackerRepositoryImpl implements LinkTrackerRepository, Excepti
     public void setLinkTracked(Long userId, String link)
         throws UserNotAuthenticated, LinkAlreadyTracked, LinkIsUnreachable {
         webClient.post()
-            .uri("/links")
-            .header("Tg-Chat-Id", String.valueOf(userId))
+            .uri(ENDPOINT)
+            .header(CHAT_ID_HEADER, String.valueOf(userId))
             .body(BodyInserters.fromValue(new AddLinkRequest(link)))
             .retrieve()
             .onStatus(
@@ -65,8 +68,8 @@ public class LinkTrackerRepositoryImpl implements LinkTrackerRepository, Excepti
     public void setLinkUntracked(Long userId, String link)
         throws UserNotAuthenticated, LinkNotTracked {
         webClient.method(HttpMethod.DELETE)
-            .uri("/links")
-            .header("Tg-Chat-Id", String.valueOf(userId))
+            .uri(ENDPOINT)
+            .header(CHAT_ID_HEADER, String.valueOf(userId))
             .bodyValue(new RemoveLinkRequest(link))
             .retrieve()
             .onStatus(
@@ -80,16 +83,18 @@ public class LinkTrackerRepositoryImpl implements LinkTrackerRepository, Excepti
     @Override
     public Exception deserialize(ApiErrorResponse response) {
         final var exceptionName = response.exceptionName();
+        Exception exception;
         if (exceptionName.equals(UserNotAuthenticated.class.getName())) {
-            return new UserNotAuthenticated();
+            exception = new UserNotAuthenticated();
         } else if (exceptionName.equals(LinkAlreadyTracked.class.getName())) {
-            return new LinkAlreadyTracked();
+            exception = new LinkAlreadyTracked();
         } else if (exceptionName.equals(LinkIsUnreachable.class.getName())) {
-            return new LinkIsUnreachable();
+            exception = new LinkIsUnreachable();
         } else if (exceptionName.equals(LinkNotTracked.class.getName())) {
-            return new LinkNotTracked();
+            exception = new LinkNotTracked();
         } else {
-            return new UnrecognizableException(response);
+            exception = new UnrecognizableException(response);
         }
+        return exception;
     }
 }

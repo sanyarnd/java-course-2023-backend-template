@@ -1,7 +1,7 @@
 package edu.java.scrapper.view.impl;
 
+import edu.java.core.util.ResponseStubber;
 import edu.java.scrapper.view.TelegramController;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class TelegramControllerImpl implements TelegramController {
     @Override
     public ResponseEntity<Void> tgChatIdPost(Long id) {
-        return new ResponseEntity<>(HttpStatusCode.valueOf(501));
+        return new ResponseEntity<>(ResponseStubber.stubNotImplemented());
     }
 
     @Override
     public ResponseEntity<Void> tgChatIdDelete(Long id) {
-        return new ResponseEntity<>(HttpStatusCode.valueOf(501));
+        return new ResponseEntity<>(ResponseStubber.stubNotImplemented());
     }
 }
