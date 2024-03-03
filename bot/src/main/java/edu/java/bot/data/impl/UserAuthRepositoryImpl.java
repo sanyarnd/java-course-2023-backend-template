@@ -6,6 +6,7 @@ import edu.java.core.exception.UserAlreadyRegistered;
 import edu.java.core.exception.UserNotRegistered;
 import edu.java.core.exception.util.ExceptionDeserializer;
 import edu.java.core.response.ApiErrorResponse;
+import edu.java.core.util.ApiQualifier;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -14,7 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class UserAuthRepositoryImpl implements UserAuthRepository, ExceptionDeserializer {
     private final WebClient webClient;
 
-    public UserAuthRepositoryImpl(String baseUrl) {
+    public UserAuthRepositoryImpl(@ApiQualifier("scrapper") String baseUrl) {
         this.webClient = WebClient.create(baseUrl);
     }
 

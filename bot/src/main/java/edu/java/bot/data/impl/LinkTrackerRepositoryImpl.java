@@ -12,6 +12,7 @@ import edu.java.core.request.RemoveLinkRequest;
 import edu.java.core.response.ApiErrorResponse;
 import edu.java.core.response.LinkResponse;
 import edu.java.core.response.ListLinksResponse;
+import edu.java.core.util.ApiQualifier;
 import java.util.List;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;
@@ -24,7 +25,7 @@ import reactor.core.publisher.Mono;
 public class LinkTrackerRepositoryImpl implements LinkTrackerRepository, ExceptionDeserializer {
     private final WebClient webClient;
 
-    public LinkTrackerRepositoryImpl(String baseUrl) {
+    public LinkTrackerRepositoryImpl(@ApiQualifier("scrapper") String baseUrl) {
         this.webClient = WebClient.create(baseUrl);
     }
 

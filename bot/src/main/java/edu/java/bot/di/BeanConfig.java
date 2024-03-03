@@ -1,18 +1,20 @@
 package edu.java.bot.di;
 
 import com.pengrad.telegrambot.TelegramBot;
+import edu.java.core.util.ApiQualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class BeanConfig {
     @Bean
-    public String provideToken(ApplicationConfig applicationConfig) {
-        return applicationConfig.telegramToken();
+    public TelegramBot provideBot(ApplicationConfig config) {
+        return new TelegramBot(config.telegramToken());
     }
 
     @Bean
-    public TelegramBot provideBot(String token) {
-        return new TelegramBot(token);
+    @ApiQualifier("scrapper")
+    public String provideScrapperEndpoint(ApplicationConfig config) {
+        return config.scrapper();
     }
 }
