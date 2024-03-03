@@ -24,6 +24,11 @@
             "name": "app.api.stack-overflow",
             "type": "java.lang.String",
             "description": "Endpoint for Stack Overflow API."
+        },
+        {
+            "name": "app.api.bot",
+            "type": "java.lang.String",
+            "description": "Endpoint for bot service."
         }
     ]
 }

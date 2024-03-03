@@ -11,7 +11,7 @@ import edu.java.bot.domain.subscribe.TrackLinkResponse;
 import edu.java.bot.domain.subscribe.TrackLinkUseCase;
 import edu.java.bot.domain.unsubscribe.UntrackLinkResponse;
 import edu.java.bot.domain.unsubscribe.UntrackLinkUseCase;
-import edu.java.core.exception.LinkAlreadyNotTracked;
+import edu.java.core.exception.LinkNotTracked;
 import edu.java.core.exception.LinkAlreadyTracked;
 import edu.java.core.exception.UserAlreadyAuthenticated;
 import edu.java.core.exception.UserIsNotAuthenticated;
@@ -97,7 +97,7 @@ public class DomainLayerTest {
         @BeforeEach
         public void setupUntrackLinks() {
             Mockito.lenient().doThrow(UserIsNotAuthenticated.class).when(linkTrackerRepository).setLinkUntracked(456L, "onlyfans.com");
-            Mockito.lenient().doThrow(LinkAlreadyNotTracked.class).when(linkTrackerRepository).setLinkUntracked(123L, "onlyfans.com");
+            Mockito.lenient().doThrow(LinkNotTracked.class).when(linkTrackerRepository).setLinkUntracked(123L, "onlyfans.com");
         }
 
         @Test

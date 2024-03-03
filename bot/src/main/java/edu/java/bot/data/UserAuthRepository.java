@@ -1,7 +1,10 @@
 package edu.java.bot.data;
 
-public interface UserAuthRepository {
-    void registerUser(Long userId);
+import edu.java.core.exception.UserAlreadyRegistered;
+import edu.java.core.exception.UserNotRegistered;
 
-    void deleteUser(Long userId);
+public interface UserAuthRepository {
+    void registerUser(Long userId) throws UserAlreadyRegistered;
+
+    void deleteUser(Long userId) throws UserNotRegistered;
 }

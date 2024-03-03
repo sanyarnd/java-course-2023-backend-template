@@ -1,4 +1,4 @@
-package edu.java.scrapper.data.client;
+package edu.java.scrapper.data;
 
 import edu.java.core.response.github.GithubRepositoryResponse;
 

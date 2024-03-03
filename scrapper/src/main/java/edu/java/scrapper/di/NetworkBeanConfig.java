@@ -1,6 +1,6 @@
 package edu.java.scrapper.di;
 
-import edu.java.scrapper.di.util.ApiQualifier;
+import edu.java.core.util.ApiQualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,5 +16,11 @@ public class NetworkBeanConfig {
     @ApiQualifier("stack-overflow")
     public String provideStackOverflowEndpoint(ApplicationConfig config) {
         return config.api().stackOverflow();
+    }
+
+    @Bean
+    @ApiQualifier("bot")
+    public String provideBotEndpoint(ApplicationConfig config) {
+        return config.api().bot();
     }
 }

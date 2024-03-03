@@ -1,7 +1,7 @@
 package edu.java.scrapper.domain;
 
-import edu.java.scrapper.data.client.GithubClient;
-import edu.java.scrapper.data.client.StackOverflowClient;
+import edu.java.scrapper.data.GithubClient;
+import edu.java.scrapper.data.StackOverflowClient;
 import java.text.MessageFormat;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

@@ -1,8 +1,8 @@
-package edu.java.scrapper.data.client.impl;
+package edu.java.scrapper.data.impl;
 
-import edu.java.scrapper.data.client.GithubClient;
 import edu.java.core.response.github.GithubRepositoryResponse;
-import edu.java.scrapper.di.util.ApiQualifier;
+import edu.java.scrapper.data.GithubClient;
+import edu.java.core.util.ApiQualifier;
 import java.time.Duration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;

@@ -1,6 +1,6 @@
 package edu.java.bot.data;
 
-import edu.java.core.exception.LinkAlreadyNotTracked;
+import edu.java.core.exception.LinkNotTracked;
 import edu.java.core.exception.LinkAlreadyTracked;
 import edu.java.core.exception.LinkIsUnreachable;
 import edu.java.core.exception.UserIsNotAuthenticated;
@@ -14,5 +14,5 @@ public interface LinkTrackerRepository {
         throws UserIsNotAuthenticated, LinkAlreadyTracked, LinkIsUnreachable;
 
     void setLinkUntracked(Long userId, String link)
-        throws UserIsNotAuthenticated, LinkAlreadyNotTracked;
+        throws UserIsNotAuthenticated, LinkNotTracked;
 }

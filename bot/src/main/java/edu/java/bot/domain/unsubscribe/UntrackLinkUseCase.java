@@ -2,7 +2,7 @@ package edu.java.bot.domain.unsubscribe;
 
 import com.pengrad.telegrambot.model.User;
 import edu.java.bot.data.LinkTrackerRepository;
-import edu.java.core.exception.LinkAlreadyNotTracked;
+import edu.java.core.exception.LinkNotTracked;
 import edu.java.core.exception.UserIsNotAuthenticated;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ public class UntrackLinkUseCase {
             return new UntrackLinkResponse.Ok();
         } catch (UserIsNotAuthenticated exception) {
             return new UntrackLinkResponse.UserIsNotDefined();
-        } catch (LinkAlreadyNotTracked exception) {
+        } catch (LinkNotTracked exception) {
             return new UntrackLinkResponse.IsNotRegistered();
         }
     }

@@ -1,10 +1,12 @@
 package edu.java.bot.data.impl;
 
 import edu.java.bot.data.LinkTrackerRepository;
-import edu.java.core.exception.LinkAlreadyNotTracked;
 import edu.java.core.exception.LinkAlreadyTracked;
 import edu.java.core.exception.LinkIsUnreachable;
+import edu.java.core.exception.LinkNotTracked;
+import edu.java.core.exception.UnrecognizableException;
 import edu.java.core.exception.UserIsNotAuthenticated;
+import edu.java.core.exception.util.ExceptionDeserializer;
 import edu.java.core.request.AddLinkRequest;
 import edu.java.core.request.RemoveLinkRequest;
 import edu.java.core.response.ApiErrorResponse;
@@ -19,26 +21,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @Component
-public class LinkTrackerRepositoryImpl implements LinkTrackerRepository {
+public class LinkTrackerRepositoryImpl implements LinkTrackerRepository, ExceptionDeserializer {
     private final WebClient webClient;
 
     public LinkTrackerRepositoryImpl(String baseUrl) {
         this.webClient = WebClient.create(baseUrl);
-    }
-
-    private static RuntimeException extractException(ApiErrorResponse apiErrorResponse) {
-        final var exceptionName = apiErrorResponse.exceptionName();
-        if (exceptionName.equals(UserIsNotAuthenticated.class.getName())) {
-            return new UserIsNotAuthenticated();
-        } else if (exceptionName.equals(LinkAlreadyTracked.class.getName())) {
-            return new LinkAlreadyTracked();
-        } else if (exceptionName.equals(LinkIsUnreachable.class.getName())) {
-            return new LinkIsUnreachable();
-        } else if (exceptionName.equals(LinkAlreadyNotTracked.class.getName())) {
-            return new LinkAlreadyNotTracked();
-        } else {
-            return new IllegalStateException();
-        }
     }
 
     @Override
@@ -67,8 +54,7 @@ public class LinkTrackerRepositoryImpl implements LinkTrackerRepository {
             .retrieve()
             .onStatus(
                 HttpStatusCode::is4xxClientError,
-                clientResponse -> clientResponse.bodyToMono(ApiErrorResponse.class)
-                    .map(LinkTrackerRepositoryImpl::extractException)
+                clientResponse -> clientResponse.bodyToMono(ApiErrorResponse.class).map(this::deserialize)
             )
             .toBodilessEntity()
             .block();
@@ -76,18 +62,33 @@ public class LinkTrackerRepositoryImpl implements LinkTrackerRepository {
 
     @Override
     public void setLinkUntracked(Long userId, String link)
-        throws UserIsNotAuthenticated, LinkAlreadyNotTracked {
+        throws UserIsNotAuthenticated, LinkNotTracked {
         webClient.method(HttpMethod.DELETE)
             .uri("/links")
             .header("Tg-Chat-Id", String.valueOf(userId))
-            .body(BodyInserters.fromValue(new RemoveLinkRequest(link)))
+            .bodyValue(new RemoveLinkRequest(link))
             .retrieve()
             .onStatus(
                 HttpStatusCode::is4xxClientError,
-                clientResponse -> clientResponse.bodyToMono(ApiErrorResponse.class)
-                    .map(LinkTrackerRepositoryImpl::extractException)
+                clientResponse -> clientResponse.bodyToMono(ApiErrorResponse.class).map(this::deserialize)
             )
             .toBodilessEntity()
             .block();
+    }
+
+    @Override
+    public Exception deserialize(ApiErrorResponse response) {
+        final var exceptionName = response.exceptionName();
+        if (exceptionName.equals(UserIsNotAuthenticated.class.getName())) {
+            return new UserIsNotAuthenticated();
+        } else if (exceptionName.equals(LinkAlreadyTracked.class.getName())) {
+            return new LinkAlreadyTracked();
+        } else if (exceptionName.equals(LinkIsUnreachable.class.getName())) {
+            return new LinkIsUnreachable();
+        } else if (exceptionName.equals(LinkNotTracked.class.getName())) {
+            return new LinkNotTracked();
+        } else {
+            return new UnrecognizableException(response);
+        }
     }
 }
