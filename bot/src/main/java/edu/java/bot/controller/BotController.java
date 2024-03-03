@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class BotController {
     private Bot bot;
+
     public BotController(Bot bot) {
         this.bot = bot;
     }
@@ -35,7 +36,7 @@ public class BotController {
     })
     @Operation(summary = "Отправить обновление")
     public ResponseEntity<Void> postUpdates(@RequestBody @Valid LinkUpdate body) {
-        bot.callUsers(body.getUrl(),body.getDescription(),body.getTgChatIds());
+        bot.callUsers(body.getUrl(), body.getDescription(), body.getTgChatIds());
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }

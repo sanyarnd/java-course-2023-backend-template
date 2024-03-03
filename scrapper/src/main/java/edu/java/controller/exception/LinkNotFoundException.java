@@ -1,8 +1,6 @@
 package edu.java.controller.exception;
 
-import org.springframework.stereotype.Component;
-
-public class LinkNotFoundException extends RuntimeException implements IAPIError{
+public class LinkNotFoundException extends RuntimeException implements IAPIError {
     public LinkNotFoundException(String message) {
         super(message);
     }

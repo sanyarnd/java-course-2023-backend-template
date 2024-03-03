@@ -1,9 +1,9 @@
 package edu.java.bot.controller.dto;
 
-import lombok.Data;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import java.util.Arrays;
 import java.util.List;
+import lombok.Data;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @Data
 public class ApiErrorResponse {

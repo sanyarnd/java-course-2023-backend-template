@@ -1,10 +1,9 @@
 package edu.java.controller.dto;
 
-import lombok.Data;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class ListLinkResponse {

@@ -1,4 +1,4 @@
-package edu.java.clients.dto;
+package edu.java.bot.clients.dto;
 
 import java.util.List;
 import lombok.Data;

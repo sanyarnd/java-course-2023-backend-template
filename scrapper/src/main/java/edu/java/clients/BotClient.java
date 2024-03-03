@@ -2,17 +2,13 @@ package edu.java.clients;
 
 import edu.java.clients.dto.ApiErrorResponse;
 import edu.java.clients.dto.LinkUpdate;
-import edu.java.responses.GitHubResponse;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-import java.util.List;
 
 public class BotClient {
     private final WebClient webClient;
@@ -22,6 +18,7 @@ public class BotClient {
         this.webClient = webClient;
     }
 
+    //Тут происходит так, что при подучении статуса ошибки 400 выбрасывается ошибка, правильно ли это??
     public void postUpdates(Long id, String url, String description, List<Long> tgChatIds) {
         LinkUpdate linkUpdate = new LinkUpdate(id, url, description, tgChatIds);
 

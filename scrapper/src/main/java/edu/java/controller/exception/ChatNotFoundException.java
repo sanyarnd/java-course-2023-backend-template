@@ -1,7 +1,5 @@
 package edu.java.controller.exception;
 
-import org.springframework.stereotype.Component;
-
 public class ChatNotFoundException extends RuntimeException implements IAPIError {
     public ChatNotFoundException(String message) {
         super(message);

@@ -1,7 +1,5 @@
 package edu.java.controller.exception;
 
-import org.springframework.stereotype.Component;
-
 public class ChatReAddingException extends RuntimeException implements IAPIError {
     public ChatReAddingException(String message) {
         super(message);

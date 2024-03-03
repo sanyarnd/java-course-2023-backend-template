@@ -1,10 +1,10 @@
 package edu.java.controller.dto;
 
 import edu.java.controller.exception.IAPIError;
-import lombok.Data;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import java.util.Arrays;
 import java.util.List;
+import lombok.Data;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @Data
 public class ApiErrorResponse {

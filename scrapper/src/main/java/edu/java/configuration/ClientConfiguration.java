@@ -33,8 +33,6 @@ public class ClientConfiguration {
 
     @Bean
     public BotClient botClient() {
-        System.out.println("!!");
-        System.out.println(applicationConfig.basicURLs().botBasicURL());
         return new BotClient(WebClient.builder()
             .baseUrl(applicationConfig.basicURLs().botBasicURL())
             .build());

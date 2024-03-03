@@ -1,7 +1,5 @@
 package edu.java.controller.exception;
 
-import org.springframework.stereotype.Component;
-
 public class CantHandleURLException extends RuntimeException implements IAPIError {
     public CantHandleURLException(String message) {
         super(message);

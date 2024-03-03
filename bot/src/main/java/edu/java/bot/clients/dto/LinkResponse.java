@@ -1,4 +1,4 @@
-package edu.java.controller.dto;
+package edu.java.bot.clients.dto;
 
 import java.net.URI;
 import lombok.Data;
@@ -10,9 +10,4 @@ public class LinkResponse {
     // пока реализовано криво, бд добавится в следующей итерации
     Long id;
     URI url;
-
-    public LinkResponse(Long id, URI url) {
-        this.id = id;
-        this.url = url;
-    }
 }

@@ -1,22 +1,15 @@
 package edu.java.data;
 
-import edu.java.controller.ScrapperController;
 import edu.java.controller.exception.CantHandleURLException;
 import edu.java.controller.exception.ChatNotFoundException;
 import edu.java.controller.exception.ChatReAddingException;
 import edu.java.controller.exception.LinkNotFoundException;
 import edu.java.controller.exception.LinkReAddingException;
-import org.springframework.core.MethodParameter;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import org.springframework.stereotype.Component;
 
 @Component
 public class UserTracksService {
@@ -40,9 +33,7 @@ public class UserTracksService {
     }
 
     public boolean removeUser(Long chatId) {
-        if (!idToURLsMap.containsKey(chatId)) {
-            throw new ChatNotFoundException("Нет чата с id: " + chatId);
-        }
+        checkChatInSystem(chatId);
         idToURLsMap.remove(chatId);
         return true;
     }
@@ -57,19 +48,20 @@ public class UserTracksService {
     }
 
     public Long addTrackedURLs(Long chatId, String providedURL) {
-        URI url;
+        URI url = null;
         try {
             url = new URI(providedURL);
         } catch (URISyntaxException ex) {
-            throw new CantHandleURLException("Сервис не может обработать ссылку: " + providedURL);
+            throwBadURLException(providedURL);
         }
 
         if (!checkURL(url)) {
-            throw new CantHandleURLException("Сервис не может обработать ссылку: " + url.toString());
+            throwBadURLException(url.toString());
         }
         checkChatInSystem(chatId);
         if (idToURLsMap.get(chatId).contains(url)) {
-            throw new LinkReAddingException("У чата с id: " + chatId + " уже есть подпись на сайт: " + url.toString());
+            throw new LinkReAddingException(
+                "У чата со следующим id: " + chatId + " уже есть подпись на сайт: " + url.toString());
         }
         idToURLsMap.get(chatId).add(url);
         addTracking(url);
@@ -78,14 +70,14 @@ public class UserTracksService {
     }
 
     public Long removeTrackedURLs(Long chatId, String providedURL) {
-        URI url;
+        URI url = null;
         try {
             url = new URI(providedURL);
         } catch (URISyntaxException ex) {
-            throw new CantHandleURLException("Сервис не может обработать ссылку: " + providedURL);
+            throwBadURLException(providedURL);
         }
         if (!checkURL(url)) {
-            throw new CantHandleURLException("Сервис не может обработать ссылку: " + url.toString());
+            throwBadURLException(url.toString());
         }
         checkChatInSystem(chatId);
         if (!idToURLsMap.get(chatId).contains(url)) {
@@ -101,6 +93,11 @@ public class UserTracksService {
         if (!idToURLsMap.containsKey(chatId)) {
             throw new ChatNotFoundException("Нет чата с id: " + chatId);
         }
+    }
+
+    private void throwBadURLException(String url) {
+
+        throw new CantHandleURLException("Сервис не может обработать ссылку: " + url);
     }
 
     private boolean checkURL(URI url) {
