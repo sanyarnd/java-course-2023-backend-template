@@ -6,6 +6,7 @@ app:
   basic-urls:
     git-hub-basic-url: https://api.github.com
     stack-overflow-basic-url: https://api.stackexchange.com/2.3
+    bot-basic-url: http://localhost:8090
 
 spring:
   application:

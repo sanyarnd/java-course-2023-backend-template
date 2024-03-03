@@ -19,6 +19,6 @@ public record ApplicationConfig(
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }
 
-    public record BasicURLs(String gitHubBasicURL, String stackOverflowBasicURL) {
+    public record BasicURLs(String gitHubBasicURL, String stackOverflowBasicURL, String botBasicURL) {
     }
 }
