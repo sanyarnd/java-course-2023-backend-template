@@ -1,0 +1,9 @@
+{
+    "properties": [
+        {
+            "name": "app.scrapper",
+            "type": "java.lang.String",
+            "description": "Endpoint for scrapper service."
+        }
+    ]
+}

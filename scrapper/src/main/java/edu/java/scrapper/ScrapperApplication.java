@@ -1,6 +1,6 @@
 package edu.java.scrapper;
 
-import edu.java.scrapper.configuration.ApplicationConfig;
+import edu.java.scrapper.di.ApplicationConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

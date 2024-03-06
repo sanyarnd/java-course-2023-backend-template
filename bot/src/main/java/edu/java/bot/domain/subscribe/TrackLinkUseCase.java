@@ -1,24 +1,24 @@
 package edu.java.bot.domain.subscribe;
 
 import com.pengrad.telegrambot.model.User;
-import edu.java.bot.data.TrackerRepository;
-import edu.java.bot.util.LinkAlreadyTrackedException;
-import edu.java.bot.util.UserIsNotRegisteredException;
+import edu.java.bot.data.LinkTrackerRepository;
+import edu.java.core.exception.LinkAlreadyTracked;
+import edu.java.core.exception.UserNotAuthenticated;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
 public class TrackLinkUseCase {
-    private final TrackerRepository repository;
+    private final LinkTrackerRepository repository;
 
     public TrackLinkResponse trackLink(User user, String link) {
         try {
-            repository.subscribeToLinkUpdates(user.username(), link);
+            repository.setLinkTracked(user.id(), link);
             return new TrackLinkResponse.Ok();
-        } catch (UserIsNotRegisteredException exception) {
+        } catch (UserNotAuthenticated exception) {
             return new TrackLinkResponse.UserIsNotDefined();
-        } catch (LinkAlreadyTrackedException exception) {
+        } catch (LinkAlreadyTracked exception) {
             return new TrackLinkResponse.AlreadyRegistered();
         }
     }
