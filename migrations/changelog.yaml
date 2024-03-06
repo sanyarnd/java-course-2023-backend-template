@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: createTablesLinksAndLinksToChats
+      author: DennKK
+      changes:
+        - createTable:
+            tableName: links
+            columns:
+              - column:
+                  name: link_id
+                  type: serial
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: url
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated
+                  type: timestamp
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: links_to_chats
+            columns:
+              - column:
+                  name: chat_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: link_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+            primaryKey:
+              columns:
+                - column:
+                    name: chat_id
+                - column:
+                    name: link_id
+            foreignKeyConstraints:
+              - foreignKeyConstraint:
+                  baseTableName: links_to_chats
+                  referencedTableName: chats
+                  referencedColumnNames:
+                    - chat_id
+                  baseColumnNames:
+                    - chat_id
+              - foreignKeyConstraint:
+                  baseTableName: links_to_chats
+                  referencedTableName: links
+                  referencedColumnNames:
+                    - link_id
+                  baseColumnNames:
+                    - link_id
