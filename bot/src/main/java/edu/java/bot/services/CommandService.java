@@ -27,11 +27,10 @@ public class CommandService {
             return requestToUser;
         }
 
-        String text = update.message().text();
-        for (ICommand command : commands) {
-            if (command.getName().equals(text)) {
-                return command.processCommand(update);
-            }
+        String commandNameFromUser = update.message().text();
+        String textToUser = executeCommand(commandNameFromUser, update);
+        if (textToUser != null) {
+            return textToUser;
         }
         return processUndefinedCommand(update);
     }
@@ -40,17 +39,21 @@ public class CommandService {
         Long chatId = update.message().chat().id();
         String waitingName = waitings.getWaiting(chatId);
         if (!waitings.getDefaultWaiting().equals(waitingName)) {
-            for (ICommand command : commands) {
-                if (command.getName().equals(waitingName)) {
-                    return command.processCommand(update);
-                }
-            }
+            return executeCommand(waitingName, update);
         }
-
         return null;
     }
 
     private String processUndefinedCommand(Update update) {
         return UNDEFIENED_COMMAND_RESPONSE;
+    }
+
+    private String executeCommand(String commandName, Update update) {
+        for (ICommand command : commands) {
+            if (command.getName().equals(commandName)) {
+                return command.processCommand(update);
+            }
+        }
+        return null;
     }
 }
