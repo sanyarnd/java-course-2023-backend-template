@@ -1,3 +1,6 @@
+-- liquibase formatted sql
+
+--changeset AlexCawl:1
 CREATE TABLE IF NOT EXISTS telegram_chat
 (
     id            BIGINT,
@@ -5,6 +8,7 @@ CREATE TABLE IF NOT EXISTS telegram_chat
     PRIMARY KEY (id)
 );
 
+--changeset AlexCawl:2
 CREATE TABLE IF NOT EXISTS link
 (
     id              BIGINT GENERATED ALWAYS AS IDENTITY,
@@ -13,6 +17,7 @@ CREATE TABLE IF NOT EXISTS link
     PRIMARY KEY (id)
 );
 
+--changeset AlexCawl:3
 CREATE TABLE IF NOT EXISTS chat_to_link_binding
 (
     chat_id BIGINT REFERENCES telegram_chat (id) ON DELETE CASCADE,
