@@ -4,8 +4,10 @@ import edu.java.bot.clients.dto.AddLinkRequest;
 import edu.java.bot.clients.dto.ApiErrorResponse;
 import edu.java.bot.clients.dto.LinkResponse;
 import edu.java.bot.clients.dto.ListLinkResponse;
+import edu.java.bot.clients.dto.RemoveLinkRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -40,11 +42,7 @@ public class ScrapperClient {
             .uri(TG_CHAT_PATH, id)
             .retrieve()
             .onStatus(
-                HttpStatus.BAD_REQUEST::equals,
-                response -> response.bodyToMono(ApiErrorResponse.class).map(ScrapperApiException::new)
-            )
-            .onStatus(
-                HttpStatus.NOT_FOUND::equals,
+                status -> HttpStatus.BAD_REQUEST.equals(status) || HttpStatus.NOT_FOUND.equals(status),
                 response -> response.bodyToMono(ApiErrorResponse.class).map(ScrapperApiException::new)
             )
             .bodyToMono(Void.class).block();
@@ -56,11 +54,7 @@ public class ScrapperClient {
             .header(LINKS_HEADER_TG_CHAT_ID, chatId.toString())
             .retrieve()
             .onStatus(
-                HttpStatus.BAD_REQUEST::equals,
-                response -> response.bodyToMono(ApiErrorResponse.class).map(ScrapperApiException::new)
-            )
-            .onStatus(
-                HttpStatus.NOT_FOUND::equals,
+                status -> HttpStatus.BAD_REQUEST.equals(status) || HttpStatus.NOT_FOUND.equals(status),
                 response -> response.bodyToMono(ApiErrorResponse.class).map(ScrapperApiException::new)
             )
             .bodyToMono(ListLinkResponse.class).block();
@@ -74,30 +68,20 @@ public class ScrapperClient {
             .body(BodyInserters.fromValue(new AddLinkRequest(url)))
             .retrieve()
             .onStatus(
-                HttpStatus.BAD_REQUEST::equals,
-                response -> response.bodyToMono(ApiErrorResponse.class).map(ScrapperApiException::new)
-            )
-            .onStatus(
-                HttpStatus.NOT_FOUND::equals,
+                status -> HttpStatus.BAD_REQUEST.equals(status) || HttpStatus.NOT_FOUND.equals(status),
                 response -> response.bodyToMono(ApiErrorResponse.class).map(ScrapperApiException::new)
             )
             .bodyToMono(LinkResponse.class).block();
     }
 
     public LinkResponse deleteLink(Long chatId, String url) {
-        //TODO::В спецефикации для delete должно посылаться body,
-        // но у delete нет body. Наверное, надо менять спецификацтю,
-        // даже Swagger ругается на неё
-        return webClient.delete()
+        return webClient.method(HttpMethod.DELETE)
             .uri(LINKS_PATH)
             .header(LINKS_HEADER_TG_CHAT_ID, chatId.toString())
+            .body(BodyInserters.fromValue(new RemoveLinkRequest(url)))
             .retrieve()
             .onStatus(
-                HttpStatus.BAD_REQUEST::equals,
-                response -> response.bodyToMono(ApiErrorResponse.class).map(ScrapperApiException::new)
-            )
-            .onStatus(
-                HttpStatus.NOT_FOUND::equals,
+                status -> HttpStatus.BAD_REQUEST.equals(status) || HttpStatus.NOT_FOUND.equals(status),
                 response -> response.bodyToMono(ApiErrorResponse.class).map(ScrapperApiException::new)
             )
             .bodyToMono(LinkResponse.class).block();

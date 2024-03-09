@@ -18,7 +18,6 @@ public class BotClient {
         this.webClient = webClient;
     }
 
-    //Тут происходит так, что при подучении статуса ошибки 400 выбрасывается ошибка, правильно ли это??
     public void postUpdates(Long id, String url, String description, List<Long> tgChatIds) {
         LinkUpdate linkUpdate = new LinkUpdate(id, url, description, tgChatIds);
 
