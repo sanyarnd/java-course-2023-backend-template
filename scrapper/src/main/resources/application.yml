@@ -7,16 +7,15 @@ app:
     github: https://api.github.com/
     stack-overflow: https://api.stackexchange.com/
     bot: http://localhost:8090/
-  datasource:
-    url: jdbc:postgresql://postgresql:5432/scrapper
-    username: postgres
-    password: postgres
-  liquibase:
-    enabled: false
 
 spring:
   application:
     name: scrapper
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgresql:5432/scrapper
+    username: postgres
+    password: postgres
 
 server:
   port: 8080
