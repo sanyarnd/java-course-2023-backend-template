@@ -2,6 +2,7 @@ package edu.java.scrapper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Writer;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,6 +22,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 @Log4j2
 @Testcontainers
@@ -29,11 +31,10 @@ public abstract class PostgresIntegrationTest {
     private static final String DATABASE_NAME = "scrapper";
     private static final String DATABASE_USER_NAME = "postgres";
     private static final String DATABASE_USER_PASSWORD = "postgres";
-    public PostgreSQLContainer<?> postgreSQLContainer;
+    protected static PostgreSQLContainer<?> postgreSQLContainer;
 
-    @SuppressWarnings("resource")
-    public PostgresIntegrationTest() {
-        postgreSQLContainer = new PostgreSQLContainer<>(DOCKER_IMAGE_NAME)
+    static {
+        postgreSQLContainer = new PostgreSQLContainer<>(DockerImageName.parse(DOCKER_IMAGE_NAME))
             .withDatabaseName(DATABASE_NAME)
             .withUsername(DATABASE_USER_NAME)
             .withPassword(DATABASE_USER_PASSWORD);
@@ -41,7 +42,6 @@ public abstract class PostgresIntegrationTest {
         runMigrations(postgreSQLContainer);
     }
 
-    @SuppressWarnings("deprecation")
     private static void runMigrations(JdbcDatabaseContainer<?> jdbcDatabaseContainer) {
         Path changelogPath = new File(".").toPath().toAbsolutePath().resolve("../migrations/");
 
@@ -56,14 +56,14 @@ public abstract class PostgresIntegrationTest {
                 .getInstance()
                 .findCorrectDatabaseImplementation(new JdbcConnection(connection));
             Liquibase liquibase = new Liquibase("master.xml", new DirectoryResourceAccessor(changelogPath), db);
-            liquibase.update(new Contexts(), new LabelExpression());
+            liquibase.update(new Contexts(), new LabelExpression(), Writer.nullWriter());
         } catch (SQLException | LiquibaseException | FileNotFoundException e) {
             log.error(e);
         }
     }
 
     @DynamicPropertySource
-    public void jdbcProperties(@NotNull DynamicPropertyRegistry registry) {
+    public static void jdbcProperties(@NotNull DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
         registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
         registry.add("spring.datasource.password", postgreSQLContainer::getPassword);

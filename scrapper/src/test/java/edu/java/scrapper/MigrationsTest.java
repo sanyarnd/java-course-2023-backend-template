@@ -33,12 +33,12 @@ public class MigrationsTest extends PostgresIntegrationTest {
             tableLinkExists.next();
             assertTrue(tableLinkExists.getBoolean(1));
 
-            ResultSet tableAssignmentExists = statement.executeQuery(
+            ResultSet tableBindingExists = statement.executeQuery(
                 "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = 'public' AND tablename = 'chat_to_link_binding');");
-            tableAssignmentExists.next();
-            assertTrue(tableAssignmentExists.getBoolean(1));
-        } catch (SQLException e) {
-            log.error(e);
+            tableBindingExists.next();
+            assertTrue(tableBindingExists.getBoolean(1));
+        } catch (SQLException sqlException) {
+            log.error(sqlException);
         }
     }
 }
