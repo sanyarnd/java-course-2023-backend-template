@@ -12,14 +12,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Log4j2
 @Testcontainers
-public class MigrationsTest extends IntegrationTest {
+public class MigrationsTest extends PostgresIntegrationTest {
     @Test
     public void assertThatTablesExists() {
-        try (Connection connection = DriverManager.getConnection(
-            POSTGRES.getJdbcUrl(),
-            POSTGRES.getUsername(),
-            POSTGRES.getPassword()
-        ); Statement statement = connection.createStatement()) {
+        try (
+            Connection connection = DriverManager.getConnection(
+                postgreSQLContainer.getJdbcUrl(),
+                postgreSQLContainer.getUsername(),
+                postgreSQLContainer.getPassword()
+            );
+            Statement statement = connection.createStatement()
+        ) {
             ResultSet tableTelegramChatExists = statement.executeQuery(
                 "SELECT EXISTS (SELECT FROM pg_tables WHERE schemaname = 'public' AND tablename = 'telegram_chat');");
             tableTelegramChatExists.next();
