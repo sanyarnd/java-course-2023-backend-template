@@ -2,7 +2,6 @@ package edu.java.scrapper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.Writer;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -56,7 +55,7 @@ public abstract class PostgresIntegrationTest {
                 .getInstance()
                 .findCorrectDatabaseImplementation(new JdbcConnection(connection));
             Liquibase liquibase = new Liquibase("master.xml", new DirectoryResourceAccessor(changelogPath), db);
-            liquibase.update(new Contexts(), new LabelExpression(), Writer.nullWriter());
+            liquibase.update(new Contexts(), new LabelExpression());
         } catch (SQLException | LiquibaseException | FileNotFoundException e) {
             log.error(e);
         }
