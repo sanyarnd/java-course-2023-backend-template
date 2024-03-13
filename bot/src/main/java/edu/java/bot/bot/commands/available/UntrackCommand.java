@@ -1,7 +1,8 @@
-package edu.java.bot.bot.commands;
+package edu.java.bot.bot.commands.available;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.bot.commands.Command;
 
 public class UntrackCommand implements Command {
     @Override

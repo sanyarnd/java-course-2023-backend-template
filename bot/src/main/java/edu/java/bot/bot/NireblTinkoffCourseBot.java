@@ -18,25 +18,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NireblTinkoffCourseBot implements Bot {
     private final TelegramBot bot;
-
     private final UserMessageProcessor messageProcessor;
     private final int botOwner;
 
     @Autowired
     public NireblTinkoffCourseBot(
         UserMessageProcessor messageProcessor,
-        @Value("${app.telegram-token}") String botToken,
-        @Value("${app.bot-owner}") int botOwner
+        NireblTinkoffCourseBotProperties properties
     ) {
         this.messageProcessor = messageProcessor;
-        bot = new TelegramBot(botToken);
-        this.botOwner = botOwner;
+        bot = new TelegramBot(properties.getToken());
+        this.botOwner = properties.getBotOwner();
     }
 
     @PostConstruct
@@ -79,16 +76,22 @@ public class NireblTinkoffCourseBot implements Bot {
 
     @Override
     public void start() {
+        // get available commands
         var availableCommands = new ArrayList<BotCommand>();
         for (var command : messageProcessor.commands()) {
             availableCommands.add(command.toApiCommand());
         }
 
+        // get current commands menu in bot
         GetMyCommandsResponse currentCommands = bot.execute(new GetMyCommands());
+        // check if current menu is equal to available commands
         if (!Arrays.equals(currentCommands.commands(), availableCommands.toArray())) {
+            // if not, delete current menu in bot
             DeleteMyCommands clearCommands = new DeleteMyCommands();
             clearCommands.scope(new BotCommandScopeDefault());
             bot.execute(clearCommands);
+
+            // create new menu with available commands
             SetMyCommands cmd = new SetMyCommands(availableCommands.toArray(BotCommand[]::new));
             cmd.scope(new BotCommandScopeDefault());
             bot.execute(cmd);

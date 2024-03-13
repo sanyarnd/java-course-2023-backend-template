@@ -1,6 +1,7 @@
 app:
-  telegram-token: "6922990872:AAHPWT6cYPr1-LBLs8RU4zGqiQJo_mFMUfg"
-  bot-owner: 594363938
+  telegram-setts:
+    token: unset
+    bot-owner: 594363938
 
 spring:
   application:

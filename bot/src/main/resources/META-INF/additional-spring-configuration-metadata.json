@@ -1,0 +1,13 @@
+{
+    "properties": [
+        {
+            "name": "app.telegram-setts.token",
+            "type": "java.lang.String",
+            "description": "Description for app.telegram-setts.token."
+        },
+        {
+            "name": "app.telegram-setts.bot-owner",
+            "type": "java.lang.Integer",
+            "description": "Description for app.telegram-setts.owner."
+      }
+  ] }
