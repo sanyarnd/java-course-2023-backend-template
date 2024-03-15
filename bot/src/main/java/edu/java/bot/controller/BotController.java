@@ -1,7 +1,7 @@
 package edu.java.bot.controller;
 
-import edu.java.bot.api.BotApi;
-import edu.java.bot.request.LinkUpdateRequest;
+import edu.java.bot.controller.api.BotApi;
+import edu.java.payload.dto.request.LinkUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;

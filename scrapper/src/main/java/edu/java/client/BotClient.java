@@ -1,8 +1,8 @@
 package edu.java.client;
 
 import edu.java.client.exception.BotClientException;
-import edu.java.request.LinkUpdateRequest;
-import edu.java.response.ApiErrorResponse;
+import edu.java.payload.dto.request.LinkUpdateRequest;
+import edu.java.payload.dto.response.ApiErrorResponse;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;

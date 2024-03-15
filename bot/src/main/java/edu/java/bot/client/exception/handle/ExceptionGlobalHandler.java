@@ -1,6 +1,6 @@
 package edu.java.bot.client.exception.handle;
 
-import edu.java.bot.response.ApiErrorResponse;
+import edu.java.payload.dto.response.ApiErrorResponse;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;

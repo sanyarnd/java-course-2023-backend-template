@@ -1,10 +1,10 @@
 package edu.java.controller;
 
-import edu.java.api.ScrapperApi;
-import edu.java.request.AddLinkRequest;
-import edu.java.request.RemoveLinkRequest;
-import edu.java.response.LinkResponse;
-import edu.java.response.ListLinksResponse;
+import edu.java.controller.api.ScrapperApi;
+import edu.java.payload.dto.request.AddLinkRequest;
+import edu.java.payload.dto.request.RemoveLinkRequest;
+import edu.java.payload.dto.response.LinkResponse;
+import edu.java.payload.dto.response.ListLinksResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;

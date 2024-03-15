@@ -1,11 +1,11 @@
 package edu.java.bot.client;
 
 import edu.java.bot.client.exception.ScrapperClientException;
-import edu.java.bot.request.AddLinkRequest;
-import edu.java.bot.request.RemoveLinkRequest;
-import edu.java.bot.response.ApiErrorResponse;
-import edu.java.bot.response.LinkResponse;
-import edu.java.bot.response.ListLinksResponse;
+import edu.java.payload.dto.request.AddLinkRequest;
+import edu.java.payload.dto.request.RemoveLinkRequest;
+import edu.java.payload.dto.response.ApiErrorResponse;
+import edu.java.payload.dto.response.LinkResponse;
+import edu.java.payload.dto.response.ListLinksResponse;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
