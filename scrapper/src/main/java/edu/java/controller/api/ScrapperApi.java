@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Validated
-@RequestMapping(value = "scrapper")
 public interface ScrapperApi {
     @Operation(summary = "Получить все отслеживаемые ссылки", responses = {
         @ApiResponse(responseCode = "200",

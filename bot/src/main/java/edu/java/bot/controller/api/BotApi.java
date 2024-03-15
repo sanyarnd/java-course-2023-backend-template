@@ -9,10 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Validated
-@RequestMapping(value = "Bot API")
 public interface BotApi {
     @Operation(summary = "Отправить обновление", responses = {
         @ApiResponse(responseCode = "200", description = "Обновление обработано"),
