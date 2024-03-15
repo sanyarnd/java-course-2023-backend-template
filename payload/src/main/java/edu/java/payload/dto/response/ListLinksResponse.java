@@ -1,4 +1,4 @@
-package edu.java.bot.response;
+package edu.java.payload.dto.response;
 
 import java.util.List;
 

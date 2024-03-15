@@ -1,4 +1,4 @@
-package edu.java.request;
+package edu.java.payload.dto.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
