@@ -1,4 +1,4 @@
-package edu.java.scrapper.data;
+package edu.java.scrapper.data.network;
 
 import edu.java.core.exception.UnrecognizableException;
 import edu.java.core.request.LinkUpdateRequest;

@@ -8,6 +8,10 @@ spring:
   jackson:
     time-zone: UTC
 
+springdoc:
+  swagger-ui:
+    path: /
+
 server:
   port: 8090
 

@@ -1,11 +1,11 @@
-package edu.java.scrapper.data.impl;
+package edu.java.scrapper.data.network.impl;
 
 import edu.java.core.exception.UnrecognizableException;
 import edu.java.core.exception.util.ExceptionDeserializer;
 import edu.java.core.request.LinkUpdateRequest;
 import edu.java.core.response.ApiErrorResponse;
 import edu.java.core.util.ApiQualifier;
-import edu.java.scrapper.data.NotificationRepository;
+import edu.java.scrapper.data.network.NotificationRepository;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.reactive.function.client.WebClient;
