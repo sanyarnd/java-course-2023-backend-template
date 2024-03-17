@@ -8,12 +8,12 @@ import edu.java.scrapper.data.db.TelegramChatRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
 import edu.java.scrapper.domain.LinkService;
-import org.springframework.stereotype.Service;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class LinkServiceImpl implements LinkService {

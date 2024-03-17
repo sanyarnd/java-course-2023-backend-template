@@ -5,13 +5,13 @@ import edu.java.core.exception.UserNotRegistered;
 import edu.java.scrapper.data.db.TelegramChatRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 @Transactional
@@ -20,7 +20,10 @@ public class JdbcTelegramChatRepositoryImpl implements TelegramChatRepository {
     private final static String DELETE = "DELETE FROM telegram_chat WHERE id=? RETURNING *";
     private final static String FIND_BY_ID = "SELECT * FROM telegram_chat WHERE id=?";
     private final static String FIND_ALL = "SELECT * FROM telegram_chat";
-    private final static String FIND_CHATS_SUBSCRIBED_TO_LINK_ID = "SELECT telegram_chat.id, telegram_chat.registered_at FROM telegram_chat INNER JOIN chat_to_link_binding ON telegram_chat.id = chat_to_link_binding.chat_id AND chat_to_link_binding.link_id = ?";
+    @SuppressWarnings("LineLength")
+    private final static String FIND_CHATS_SUBSCRIBED_TO_LINK_ID = "SELECT telegram_chat.id, telegram_chat.registered_at "
+            + "FROM telegram_chat INNER JOIN chat_to_link_binding "
+            + "ON telegram_chat.id = chat_to_link_binding.chat_id AND chat_to_link_binding.link_id = ?";
 
     private final JdbcClient client;
 

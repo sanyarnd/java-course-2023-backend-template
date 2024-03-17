@@ -4,15 +4,15 @@ import edu.java.core.exception.link.LinkAlreadyRegistered;
 import edu.java.scrapper.data.db.LinkRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
+import java.net.URL;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import java.net.URL;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 @Transactional
@@ -26,7 +26,9 @@ public class JdbcLinkRepositoryImpl implements LinkRepository {
     private static final String UPDATE_LINK = "UPDATE link SET last_updated_at=? WHERE id=? RETURNING *";
     private static final String FIND_BY_URL = "SELECT * from link WHERE url=?";
     private static final String FIND_BY_DATE = "SELECT * FROM link WHERE last_updated_at < ?";
-    private final static String FIND_LINKS_SUBSCRIBED_WITH_CHAT_ID = "SELECT link.id, link.url, link.last_updated_at FROM link INNER JOIN chat_to_link_binding ON link.id = chat_to_link_binding.link_id AND chat_to_link_binding.chat_id=?";
+    private final static String FIND_LINKS_SUBSCRIBED_WITH_CHAT_ID = "SELECT link.id, link.url, link.last_updated_at "
+            + "FROM link INNER JOIN chat_to_link_binding "
+            + "ON link.id = chat_to_link_binding.link_id AND chat_to_link_binding.chat_id=?";
 
     private final JdbcClient client;
 

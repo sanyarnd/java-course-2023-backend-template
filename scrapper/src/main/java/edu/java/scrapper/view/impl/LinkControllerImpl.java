@@ -7,9 +7,9 @@ import edu.java.core.response.ListLinksResponse;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.domain.LinkService;
 import edu.java.scrapper.view.LinkController;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
 
 @RestController
 public class LinkControllerImpl implements LinkController {
