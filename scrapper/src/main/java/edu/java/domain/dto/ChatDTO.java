@@ -1,14 +1,13 @@
 package edu.java.domain.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class ChatsDTO {
+public class ChatDTO {
     Long telegramId;
 
 
-    public ChatsDTO(Long telegramId) {
+    public ChatDTO(Long telegramId) {
         this.telegramId = telegramId;
     }
 }

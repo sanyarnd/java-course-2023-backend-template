@@ -1,18 +1,17 @@
 package edu.java.domain.dto;
 
+import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import java.time.OffsetDateTime;
 
 @Data
 @AllArgsConstructor
-public class LinksDTO {
-    
+public class LinkDTO {
     Long id;
     String url;
     OffsetDateTime createdAt;
 
-    public LinksDTO(String url) {
+    public LinkDTO(String url) {
         this.url = url;
     }
 }

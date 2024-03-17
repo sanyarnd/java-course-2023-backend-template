@@ -1,8 +1,7 @@
 package edu.java.scrapper.db;
 
 import edu.java.domain.JdbcChatsDAO;
-import edu.java.domain.dto.ChatsDTO;
-import edu.java.domain.dto.LinksDTO;
+import edu.java.domain.dto.ChatDTO;
 import edu.java.scrapper.IntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,7 +25,7 @@ public class JdbcChatsTest extends IntegrationTest {
         Assertions.assertEquals(1, chatRepository.findAll().size());
 
         chatRepository.add(2L);
-        List<ChatsDTO> chats = chatRepository.findAll();
+        List<ChatDTO> chats = chatRepository.findAll();
         Assertions.assertEquals(2, chats.size());
         Assertions.assertTrue(1L == (chats.get(0).getTelegramId())
             || 1L == (chats.get(1).getTelegramId()));
@@ -41,7 +40,7 @@ public class JdbcChatsTest extends IntegrationTest {
         chatRepository.add(1L);
         chatRepository.add(2L);
 
-        List<ChatsDTO> chats = chatRepository.findAll();
+        List<ChatDTO> chats = chatRepository.findAll();
 
         Assertions.assertEquals(2, chats.size());
 
@@ -51,5 +50,12 @@ public class JdbcChatsTest extends IntegrationTest {
 
         chats = chatRepository.findAll();
         Assertions.assertTrue(chats.isEmpty());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void containsTest() {
+        //TODO
     }
 }

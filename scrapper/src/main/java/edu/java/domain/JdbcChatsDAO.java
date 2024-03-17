@@ -1,6 +1,6 @@
 package edu.java.domain;
 
-import edu.java.domain.dto.ChatsDTO;
+import edu.java.domain.dto.ChatDTO;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -30,9 +30,17 @@ public class JdbcChatsDAO {
     }
 
     //Нужна ли поддержка сериализации?, нужен ли Serializable?
-    public List<ChatsDTO> findAll() {
+    public List<ChatDTO> findAll() {
         String query = "SELECT * FROM chats;";
         return jdbcClient.sql(query).query((rs, rowNum) ->
-            new ChatsDTO(rs.getLong("telegramId"))).list();
+            new ChatDTO(rs.getLong("telegramId"))).list();
+    }
+
+    public boolean contains(Long chatId) {
+        String query = "SELECT COUNT(*) FROM chats WHERE telegramId = ?";
+        int count = jdbcClient.sql(query)
+            .param(chatId)
+            .query(Integer.class).single();
+        return count > 0;
     }
 }

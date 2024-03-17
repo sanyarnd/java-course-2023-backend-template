@@ -49,7 +49,7 @@ public class JdbcSubscribesTest extends IntegrationTest {
 
         subscribeRepository.add(1L, linkId);
         Assertions.assertEquals(1, subscribeRepository.findAll().size());
-        subscribeRepository.remove(1L, "java");
+        subscribeRepository.remove(1L, linkId);
         Assertions.assertEquals(0, subscribeRepository.findAll().size());
     }
 
@@ -65,5 +65,12 @@ public class JdbcSubscribesTest extends IntegrationTest {
         Assertions.assertEquals(1, subscribeRepository.findAll().size());
         chatRepository.remove(1L);
         Assertions.assertEquals(0, subscribeRepository.findAll().size());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void testFindById() {
+        //TODO
     }
 }

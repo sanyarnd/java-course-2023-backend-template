@@ -80,7 +80,8 @@ public class ScrapperController {
     @Operation(summary = "Получить все отслеживаемые ссылки")
     public ResponseEntity<ListLinkResponse> getLinks(@RequestHeader(name = "Tg-Chat-Id") Long id) {
         List<URI> urls = userTracksService.getTrackedURLs(id);
-        return ResponseEntity.status(HttpStatus.OK).body(new ListLinkResponse(urls));
+        //TODO:
+        return ResponseEntity.status(HttpStatus.OK).body(new ListLinkResponse(null));
     }
 
     @PostMapping("/links")

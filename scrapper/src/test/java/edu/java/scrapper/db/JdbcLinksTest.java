@@ -1,7 +1,7 @@
 package edu.java.scrapper.db;
 
 import edu.java.domain.JdbcLinksDAO;
-import edu.java.domain.dto.LinksDTO;
+import edu.java.domain.dto.LinkDTO;
 import edu.java.scrapper.IntegrationTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ public class JdbcLinksTest extends IntegrationTest {
         Assertions.assertEquals(1, linkRepository.findAll().size());
 
         linkRepository.add("http://kotlin.com");
-        List<LinksDTO> links = linkRepository.findAll();
+        List<LinkDTO> links = linkRepository.findAll();
         Assertions.assertEquals(2, links.size());
         Assertions.assertTrue("http://kotlin.com".equals(links.get(0).getUrl())
             || "http://kotlin.com".equals(links.get(1).getUrl()));
@@ -40,7 +40,7 @@ public class JdbcLinksTest extends IntegrationTest {
         linkRepository.add("http://java.com");
         linkRepository.add("http://kotlin.com");
 
-        List<LinksDTO> links = linkRepository.findAll();
+        List<LinkDTO> links = linkRepository.findAll();
 
         Assertions.assertEquals(2, links.size());
 
@@ -50,5 +50,19 @@ public class JdbcLinksTest extends IntegrationTest {
 
         links = linkRepository.findAll();
         Assertions.assertTrue(links.isEmpty());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void containsTest() {
+        //TODO
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void getIdTest() {
+        //TODO
     }
 }
