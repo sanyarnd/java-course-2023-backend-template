@@ -1,8 +1,7 @@
-package edu.java.scrapper.data.db.impl;
+package edu.java.scrapper.data.db.impl.jdbc;
 
 import edu.java.core.exception.UserAlreadyRegistered;
 import edu.java.core.exception.UserNotRegistered;
-import edu.java.core.util.JdbcRepository;
 import edu.java.scrapper.data.db.TelegramChatRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
@@ -11,13 +10,12 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @Transactional
-public class JdbcTelegramChatRepositoryImpl implements JdbcRepository<TelegramChat, Long>, TelegramChatRepository {
+public class JdbcTelegramChatRepositoryImpl implements TelegramChatRepository {
     private final static String ADD = "INSERT INTO telegram_chat (id, registered_at) VALUES (?, ?) RETURNING *";
     private final static String DELETE = "DELETE FROM telegram_chat WHERE id=? RETURNING *";
     private final static String FIND_BY_ID = "SELECT * FROM telegram_chat WHERE id=?";

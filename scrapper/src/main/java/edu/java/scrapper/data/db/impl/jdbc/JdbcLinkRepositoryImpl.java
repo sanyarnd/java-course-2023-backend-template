@@ -1,7 +1,6 @@
-package edu.java.scrapper.data.db.impl;
+package edu.java.scrapper.data.db.impl.jdbc;
 
 import edu.java.core.exception.link.LinkAlreadyRegistered;
-import edu.java.core.util.JdbcRepository;
 import edu.java.scrapper.data.db.LinkRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
@@ -17,7 +16,7 @@ import java.util.Optional;
 
 @Repository
 @Transactional
-public class JdbcLinkRepositoryImpl implements JdbcRepository<Link, Long>, LinkRepository {
+public class JdbcLinkRepositoryImpl implements LinkRepository {
     private final static String ADD = "INSERT INTO link (url, last_updated_at) VALUES (?, ?) RETURNING *";
     private final static String DELETE = "DELETE FROM link WHERE id=? RETURNING *";
     private final static String FIND_BY_ID = "SELECT * FROM link WHERE id=?";
@@ -116,7 +115,8 @@ public class JdbcLinkRepositoryImpl implements JdbcRepository<Link, Long>, LinkR
                 .list();
     }
 
-    private Optional<Link> findByUrl(URL url) {
+    @Override
+    public Optional<Link> findByUrl(URL url) {
         return client.sql(FIND_BY_URL)
                 .param(url)
                 .query(new BeanPropertyRowMapper<>(Link.class))

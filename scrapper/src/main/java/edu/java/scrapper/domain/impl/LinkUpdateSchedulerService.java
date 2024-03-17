@@ -1,4 +1,4 @@
-package edu.java.scrapper.domain;
+package edu.java.scrapper.domain.impl;
 
 import edu.java.scrapper.data.network.GithubClient;
 import edu.java.scrapper.data.network.StackOverflowClient;
