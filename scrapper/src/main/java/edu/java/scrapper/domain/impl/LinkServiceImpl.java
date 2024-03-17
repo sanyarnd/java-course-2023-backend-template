@@ -1,5 +1,6 @@
 package edu.java.scrapper.domain.impl;
 
+import edu.java.core.exception.LinkIsUnreachable;
 import edu.java.core.exception.UserNotRegistered;
 import edu.java.core.exception.link.LinkNotRegistered;
 import edu.java.scrapper.data.db.LinkRepository;
@@ -8,6 +9,8 @@ import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
 import edu.java.scrapper.domain.LinkService;
 import org.springframework.stereotype.Service;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,16 +26,16 @@ public class LinkServiceImpl implements LinkService {
     }
 
     @Override
-    public Link add(Long telegramChatId, URL url) {
-        Link link = linkRepository.registerLink(new Link().setUrl(url).setLastUpdatedAt(OffsetDateTime.MIN));
+    public Link add(Long telegramChatId, String url) {
+        Link link = linkRepository.registerLink(new Link().setUrl(getAccess(url)).setLastUpdatedAt(OffsetDateTime.MIN));
         TelegramChat telegramChat = telegramChatRepository.findById(telegramChatId).orElseThrow(UserNotRegistered::new);
         linkRepository.subscribe(link, telegramChat);
         return link;
     }
 
     @Override
-    public Link remove(Long telegramChatId, URL url) {
-        Link link = linkRepository.findByUrl(url).orElseThrow(LinkNotRegistered::new);
+    public Link remove(Long telegramChatId, String url) {
+        Link link = linkRepository.findByUrl(getAccess(url)).orElseThrow(LinkNotRegistered::new);
         TelegramChat telegramChat = telegramChatRepository.findById(telegramChatId).orElseThrow(UserNotRegistered::new);
         linkRepository.unsubscribe(link, telegramChat);
         return link;
@@ -41,5 +44,13 @@ public class LinkServiceImpl implements LinkService {
     @Override
     public List<Link> getAllForChat(Long chatId) {
         return linkRepository.findAllLinksSubscribedWith(new TelegramChat().setId(chatId));
+    }
+
+    private URL getAccess(String url) {
+        try {
+            return URI.create(url).toURL();
+        } catch (MalformedURLException e) {
+            throw new LinkIsUnreachable();
+        }
     }
 }

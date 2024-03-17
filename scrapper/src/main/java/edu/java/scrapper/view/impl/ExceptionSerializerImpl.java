@@ -13,7 +13,7 @@ public class ExceptionSerializerImpl implements ExceptionSerializer {
             exception.getMessage(),
             code.toString(),
             exception.getClass().getName(),
-            exception.getCause().getMessage(),
+            exception.getMessage(),
             Arrays.stream(exception.getStackTrace()).map(StackTraceElement::toString).toList()
         );
     }
