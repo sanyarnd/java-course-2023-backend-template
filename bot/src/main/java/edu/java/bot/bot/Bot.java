@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-//Is it Controller?
 @Component
 public class Bot {
     private static final Logger LOGGER = Logger.getLogger(Bot.class.getName());

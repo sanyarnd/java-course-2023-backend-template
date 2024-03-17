@@ -4,11 +4,13 @@ import edu.java.bot.data.UsersTracks;
 import java.util.HashSet;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+@SpringBootTest
 public class UserTracksTest {
 
     @Test

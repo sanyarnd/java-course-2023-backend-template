@@ -5,7 +5,7 @@ import edu.java.controller.dto.ApiErrorResponse;
 import edu.java.controller.dto.LinkResponse;
 import edu.java.controller.dto.ListLinkResponse;
 import edu.java.controller.dto.RemoveLinkRequest;
-import edu.java.data.UserTracksService;
+import edu.java.domain.UserTracksService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

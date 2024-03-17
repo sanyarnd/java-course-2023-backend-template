@@ -1,4 +1,4 @@
-package edu.java.data;
+package edu.java.domain;
 
 import edu.java.controller.exception.CantHandleURLException;
 import edu.java.controller.exception.ChatNotFoundException;
