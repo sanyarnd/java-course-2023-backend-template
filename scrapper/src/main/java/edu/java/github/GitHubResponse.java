@@ -7,5 +7,6 @@ public record GitHubResponse(
     String name,
     @JsonProperty("updated_at") String updatedAt,
     @JsonProperty("pushed_at") String pushedAt
+    // TODO: new ticket added
 ) {
 }
