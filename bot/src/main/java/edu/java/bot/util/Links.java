@@ -26,7 +26,9 @@ public class Links {
     public static boolean isValid(String link) {
         boolean valid = false;
         for (String allowedDomain : ALLOWED_SITES) {
-            valid = valid || link.startsWith(allowedDomain);
+            if (link.startsWith(allowedDomain)) {
+                return true;
+            }
         }
         return valid;
     }

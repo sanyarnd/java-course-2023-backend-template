@@ -6,7 +6,7 @@ import edu.java.bot.repository.SyntheticLinkRepository;
 import edu.java.bot.util.UserResponseValidators;
 import java.util.Objects;
 
-public class UntrackCommand implements ICommand {
+public class UntrackCommand implements IMultiLineCommand {
 
     @Override
     public String command() {

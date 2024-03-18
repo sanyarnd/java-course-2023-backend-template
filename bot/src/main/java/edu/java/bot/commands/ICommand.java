@@ -16,10 +16,6 @@ public interface ICommand {
         return update.message().text().startsWith(command());
     }
 
-    default SendMessage userResponseHandler(Update update) {
-        return null;
-    }
-
     default BotCommand toApiCommand() {
         return new BotCommand(command(), description());
     }
