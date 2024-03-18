@@ -1,7 +1,5 @@
 package edu.java.scrapper.data.db.entity;
 
-import java.net.URL;
-import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,8 +9,8 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class Link {
+public class LinkContent {
     private Long id;
-    private String url;
-    private OffsetDateTime lastUpdatedAt;
+    private String raw;
+    private Integer hash;
 }

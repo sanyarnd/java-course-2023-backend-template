@@ -118,7 +118,7 @@ public class JdbcLinkRepositoryImpl implements LinkRepository {
     }
 
     @Override
-    public Optional<Link> findByUrl(URL url) {
+    public Optional<Link> findByUrl(String url) {
         return client.sql(FIND_BY_URL)
                 .param(url)
                 .query(new BeanPropertyRowMapper<>(Link.class))

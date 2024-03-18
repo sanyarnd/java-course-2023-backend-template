@@ -23,7 +23,7 @@ public class LinkControllerImpl implements LinkController {
     public ResponseEntity<ListLinksResponse> linksGet(Long tgChatId) {
         List<LinkResponse> links = linkService.getAllForChat(tgChatId)
                 .stream()
-                .map(link -> new LinkResponse(link.getId(), link.getUrl().toString()))
+                .map(link -> new LinkResponse(link.getId(), link.getUrl()))
                 .toList();
         return ResponseEntity.ok(new ListLinksResponse(links, links.size()));
     }
@@ -31,12 +31,12 @@ public class LinkControllerImpl implements LinkController {
     @Override
     public ResponseEntity<LinkResponse> linksPost(Long tgChatId, AddLinkRequest body) {
         Link link = linkService.add(tgChatId, body.link());
-        return ResponseEntity.ok(new LinkResponse(link.getId(), link.getUrl().toString()));
+        return ResponseEntity.ok(new LinkResponse(link.getId(), link.getUrl()));
     }
 
     @Override
     public ResponseEntity<LinkResponse> linksDelete(Long tgChatId, RemoveLinkRequest body) {
         Link link = linkService.remove(tgChatId, body.link());
-        return ResponseEntity.ok(new LinkResponse(link.getId(), link.getUrl().toString()));
+        return ResponseEntity.ok(new LinkResponse(link.getId(), link.getUrl()));
     }
 }

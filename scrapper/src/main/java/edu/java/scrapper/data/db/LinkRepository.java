@@ -22,5 +22,5 @@ public interface LinkRepository extends BaseRepository<Link, Long> {
 
     List<Link> findAllLinksUpdatedBefore(OffsetDateTime offsetDateTime);
 
-    Optional<Link> findByUrl(URL url);
+    Optional<Link> findByUrl(String url);
 }
