@@ -6,11 +6,11 @@ import edu.java.core.util.ApiQualifier;
 import edu.java.scrapper.data.db.LinkContentRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.LinkContent;
-import edu.java.scrapper.data.network.GithubClient;
+import edu.java.scrapper.data.network.BaseClient;
+import edu.java.scrapper.data.network.GithubConnector;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,19 +19,27 @@ import reactor.util.retry.Retry;
 
 @Component
 @Slf4j
-public class GithubClientImpl implements GithubClient {
+public class GithubClientImpl extends BaseClient implements GithubConnector {
+    private final static List<String> urls = List.of(
+            "https://api.github.com/repos/([^/]+)/([^/]+)",
+            "https://github.com/([^/]+)/([^/]+)"
+    );
     private final static int MAX_ATTEMPTS = 3;
     private final static int DURATION = 200;
-    private final Pattern pattern;
     private final WebClient webClient;
     private LinkContentRepository contentRepository;
 
     public GithubClientImpl(@ApiQualifier("github") String baseUrl) {
-        this.pattern = Pattern.compile(baseUrl + "/repos/([^/]+)/([^/]+)");
+        super(urls);
         this.webClient = WebClient
                 .builder()
                 .baseUrl(baseUrl)
                 .build();
+    }
+
+    @Autowired
+    public void setContentRepository(LinkContentRepository contentRepository) {
+        this.contentRepository = contentRepository;
     }
 
     @Override
@@ -45,25 +53,12 @@ public class GithubClientImpl implements GithubClient {
                 .block();
     }
 
-    @Autowired
-    public void setContentRepository(LinkContentRepository contentRepository) {
-        this.contentRepository = contentRepository;
-    }
-
-    @Override
-    public Boolean canHandle(Link link) {
-        return pattern.matcher(link.getUrl()).matches();
-    }
-
     @Override
     public Link handle(Link link) throws LinkIsUnreachable {
-        Matcher matcher = pattern.matcher(link.getUrl());
-        if (!matcher.matches()) {
-            throw new LinkIsUnreachable();
-        }
-        String username = matcher.group(1);
-        String repository = matcher.group(2);
-        GithubRepositoryResponse response = fetchRepository(username, repository);
+        List<String> tokens = extractDataTokensFromLink(link);
+        System.out.println(tokens);
+        if (tokens.size() < 3) throw new LinkIsUnreachable();
+        GithubRepositoryResponse response = fetchRepository(tokens.get(1), tokens.get(2));
         contentRepository.findById(link.getId())
                 .ifPresentOrElse(
                         linkContent -> contentRepository.update(

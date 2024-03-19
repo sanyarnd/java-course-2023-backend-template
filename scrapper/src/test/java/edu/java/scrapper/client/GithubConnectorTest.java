@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import edu.java.scrapper.data.network.GithubClient;
+import edu.java.scrapper.data.network.GithubConnector;
 import edu.java.scrapper.data.network.impl.GithubClientImpl;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -17,9 +17,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 
 @WireMockTest
-public class GithubClientTest {
+public class GithubConnectorTest {
     private static WireMockServer server;
-    private static GithubClient client;
+    private static GithubConnector client;
 
     @BeforeAll
     public static void init() {

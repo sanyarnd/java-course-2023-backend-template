@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import edu.java.scrapper.data.network.StackOverflowClient;
+import edu.java.scrapper.data.network.StackOverflowConnector;
 import edu.java.scrapper.data.network.impl.StackOverflowClientImpl;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -17,9 +17,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
 @WireMockTest
-public class StackOverflowClientTest {
+public class StackOverflowConnectorTest {
     private static WireMockServer server;
-    private static StackOverflowClient client;
+    private static StackOverflowConnector client;
 
     @BeforeAll
     public static void init() {

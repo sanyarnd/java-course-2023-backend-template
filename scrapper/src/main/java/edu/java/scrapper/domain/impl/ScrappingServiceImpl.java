@@ -8,7 +8,7 @@ import edu.java.scrapper.data.db.TelegramChatRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
 import edu.java.scrapper.data.network.NotificationRepository;
-import edu.java.scrapper.data.network.ScrapperClient;
+import edu.java.scrapper.data.network.BaseClient;
 import edu.java.scrapper.domain.ScrappingService;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -22,13 +22,13 @@ import org.springframework.stereotype.Service;
 @ConditionalOnProperty(value = "app.scheduler.enable", havingValue = "true", matchIfMissing = true)
 public class ScrappingServiceImpl implements ScrappingService {
     private final static Integer MINUTES = 10;
-    private final List<ScrapperClient> scrapperClients;
+    private final List<BaseClient> scrapperClients;
     private final LinkRepository linkRepository;
     private final TelegramChatRepository telegramChatRepository;
     private final NotificationRepository notificationRepository;
 
     public ScrappingServiceImpl(
-            List<ScrapperClient> scrapperClients,
+            List<BaseClient> scrapperClients,
             LinkRepository linkRepository,
             TelegramChatRepository telegramChatRepository,
             NotificationRepository notificationRepository
@@ -40,7 +40,7 @@ public class ScrappingServiceImpl implements ScrappingService {
     }
 
     private boolean validate(Link link) {
-        return link != null && link.getId() != null && link.getUrl() != null;
+        return link.getUrl() != null && !link.getUrl().isBlank();
     }
 
     private void process(Link link) {
@@ -53,7 +53,7 @@ public class ScrappingServiceImpl implements ScrappingService {
                 );
     }
 
-    private void update(Link link, ScrapperClient scrapperClient) {
+    private void update(Link link, BaseClient scrapperClient) {
         try {
             Link updatedLink = scrapperClient.handle(link);
             linkRepository.update(updatedLink);
