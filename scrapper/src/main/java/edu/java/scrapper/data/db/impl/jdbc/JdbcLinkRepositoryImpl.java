@@ -1,13 +1,11 @@
 package edu.java.scrapper.data.db.impl.jdbc;
 
-import edu.java.core.exception.link.LinkAlreadyRegistered;
 import edu.java.scrapper.data.db.LinkRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
@@ -22,7 +20,7 @@ public class JdbcLinkRepositoryImpl implements LinkRepository {
     private final static String FIND_ALL = "SELECT * FROM link";
     private static final String ADD_CHAT_TO_LINK = "INSERT INTO chat_to_link_binding (chat_id, link_id) VALUES (?, ?)";
     private static final String DELETE_CHAT_TO_LINK = "DELETE FROM chat_to_link_binding WHERE chat_id=? AND link_id=?";
-    private static final String UPDATE_LINK = "UPDATE link SET last_updated_at=? WHERE id=? RETURNING *";
+    private static final String UPDATE_LINK = "UPDATE link SET last_updated_at=? WHERE id=?";
     private static final String FIND_BY_URL = "SELECT * from link WHERE url=?";
     private static final String FIND_BY_DATE = "SELECT * FROM link WHERE last_updated_at < ?";
     private final static String FIND_LINKS_SUBSCRIBED_WITH_CHAT_ID = "SELECT link.id, link.url, link.last_updated_at "
@@ -68,12 +66,8 @@ public class JdbcLinkRepositoryImpl implements LinkRepository {
     }
 
     @Override
-    public Link registerLink(Link link) throws LinkAlreadyRegistered {
-        try {
-            return this.findByUrl(link.getUrl()).orElse(this.add(link).orElseThrow());
-        } catch (DuplicateKeyException duplicateKeyException) {
-            throw new LinkAlreadyRegistered();
-        }
+    public Link registerLink(Link link) {
+        return this.findByUrl(link.getUrl()).orElseGet(() -> this.add(link).orElseThrow(IllegalStateException::new));
     }
 
     @Override
@@ -81,9 +75,7 @@ public class JdbcLinkRepositoryImpl implements LinkRepository {
         client.sql(UPDATE_LINK)
                 .param(link.getLastUpdatedAt())
                 .param(link.getId())
-                .query(new BeanPropertyRowMapper<>(Link.class))
-                .optional()
-                .ifPresent(System.out::println);
+                .update();
     }
 
     @Override
@@ -91,7 +83,7 @@ public class JdbcLinkRepositoryImpl implements LinkRepository {
         client.sql(ADD_CHAT_TO_LINK)
                 .param(telegramChat.getId())
                 .param(link.getId())
-                .query();
+                .update();
     }
 
     @Override
@@ -99,7 +91,7 @@ public class JdbcLinkRepositoryImpl implements LinkRepository {
         client.sql(DELETE_CHAT_TO_LINK)
                 .param(telegramChat.getId())
                 .param(link.getId())
-                .query();
+                .update();
     }
 
     @Override

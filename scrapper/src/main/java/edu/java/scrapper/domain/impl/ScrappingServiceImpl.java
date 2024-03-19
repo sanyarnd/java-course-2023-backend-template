@@ -45,7 +45,7 @@ public class ScrappingServiceImpl implements ScrappingService {
 
     private void process(Link link) {
         scrapperClients.stream()
-                .filter(scrapperClient -> scrapperClient.canHandle(link))
+                .filter(scrapperClient -> scrapperClient.canHandle(link.getUrl()))
                 .findAny()
                 .ifPresentOrElse(
                         scrapperClient -> update(link, scrapperClient),

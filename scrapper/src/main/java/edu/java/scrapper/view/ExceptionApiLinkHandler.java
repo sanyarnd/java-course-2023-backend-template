@@ -3,6 +3,7 @@ package edu.java.scrapper.view;
 import edu.java.core.exception.LinkAlreadyTracked;
 import edu.java.core.exception.LinkIsUnreachable;
 import edu.java.core.exception.LinkNotTracked;
+import edu.java.core.exception.link.LinkNotRegistered;
 import edu.java.core.exception.util.ExceptionSerializer;
 import edu.java.core.response.ApiErrorResponse;
 import org.springframework.http.HttpStatus;
@@ -28,8 +29,8 @@ public class ExceptionApiLinkHandler {
             .body(exceptionSerializer.serialize(exception, BAD_REQUEST_CODE));
     }
 
-    @ExceptionHandler(LinkIsUnreachable.class)
-    public ResponseEntity<ApiErrorResponse> handleUnreachableException(LinkIsUnreachable exception) {
+    @ExceptionHandler({LinkIsUnreachable.class, LinkNotRegistered.class})
+    public ResponseEntity<ApiErrorResponse> handleUnreachableException(Exception exception) {
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
             .body(exceptionSerializer.serialize(exception, NOT_FOUNT_CODE));

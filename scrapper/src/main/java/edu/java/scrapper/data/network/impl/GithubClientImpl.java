@@ -55,8 +55,7 @@ public class GithubClientImpl extends BaseClient implements GithubConnector {
 
     @Override
     public Link handle(Link link) throws LinkIsUnreachable {
-        List<String> tokens = extractDataTokensFromLink(link);
-        System.out.println(tokens);
+        List<String> tokens = extractDataTokensFromLink(link.getUrl());
         if (tokens.size() < 3) throw new LinkIsUnreachable();
         GithubRepositoryResponse response = fetchRepository(tokens.get(1), tokens.get(2));
         contentRepository.findById(link.getId())

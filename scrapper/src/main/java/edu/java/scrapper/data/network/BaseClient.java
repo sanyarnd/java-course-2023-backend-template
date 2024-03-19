@@ -16,17 +16,17 @@ public abstract class BaseClient {
         this.handledUrlPatterns = urls.stream().map(Pattern::compile).toList();
     }
 
-    public final @NotNull Boolean canHandle(@NotNull Link link) {
+    public final @NotNull Boolean canHandle(@NotNull String url) {
         return handledUrlPatterns.stream()
-                .anyMatch(pattern -> pattern.matcher(link.getUrl()).matches());
+                .anyMatch(pattern -> pattern.matcher(url).matches());
     }
 
-    protected final @NotNull List<String> extractDataTokensFromLink(@NotNull Link link) {
+    protected final @NotNull List<String> extractDataTokensFromLink(@NotNull String url) {
         Matcher matcher = handledUrlPatterns.stream()
-                .filter(pattern -> pattern.matcher(link.getUrl()).matches())
+                .filter(pattern -> pattern.matcher(url).matches())
                 .findAny()
                 .orElseThrow(LinkIsUnreachable::new)
-                .matcher(link.getUrl());
+                .matcher(url);
         if (!matcher.matches()) throw new IllegalStateException("Dude...");
         List<String> tokens = new ArrayList<>();
         for (int i = 0; i < matcher.groupCount() + 1; i++) {

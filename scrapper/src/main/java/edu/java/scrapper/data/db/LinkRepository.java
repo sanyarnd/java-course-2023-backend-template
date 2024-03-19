@@ -1,6 +1,5 @@
 package edu.java.scrapper.data.db;
 
-import edu.java.core.exception.link.LinkAlreadyRegistered;
 import edu.java.core.util.BaseRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
@@ -9,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LinkRepository extends BaseRepository<Link, Long> {
-    Link registerLink(Link link) throws LinkAlreadyRegistered;
+    Link registerLink(Link link);
 
     void update(Link link);
 

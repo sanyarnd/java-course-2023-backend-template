@@ -47,7 +47,7 @@ public class StackOverflowClientImpl extends BaseClient implements StackOverflow
 
     @Override
     public Link handle(Link link) throws LinkIsUnreachable {
-        List<String> tokens = extractDataTokensFromLink(link);
+        List<String> tokens = extractDataTokensFromLink(link.getUrl());
         if (tokens.size() < 2) throw new LinkIsUnreachable();
         StackOverflowAnswersResponse response = fetchAnswers(tokens.get(1));
         contentRepository.findById(link.getId())
