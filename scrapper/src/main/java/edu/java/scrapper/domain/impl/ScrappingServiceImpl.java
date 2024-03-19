@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @ConditionalOnProperty(value = "app.scheduler.enable", havingValue = "true", matchIfMissing = true)
 public class ScrappingServiceImpl implements ScrappingService {
+    private final static Integer MINUTES = 10;
     private final List<ScrapperClient> scrapperClients;
     private final LinkRepository linkRepository;
     private final TelegramChatRepository telegramChatRepository;
@@ -56,7 +57,6 @@ public class ScrappingServiceImpl implements ScrappingService {
         try {
             Link updatedLink = scrapperClient.handle(link);
             linkRepository.update(updatedLink);
-            System.out.println(linkRepository.findAll());
             notificationRepository.update(
                     new LinkUpdateRequest(
                             link.getId(),
@@ -82,7 +82,7 @@ public class ScrappingServiceImpl implements ScrappingService {
     @Scheduled(fixedDelayString = "#{@interval}")
     public void schedule() {
         try {
-            OffsetDateTime leastUpdateTime = OffsetDateTime.now().minusMinutes(5);
+            OffsetDateTime leastUpdateTime = OffsetDateTime.now().minusMinutes(MINUTES);
             linkRepository.findAllLinksUpdatedBefore(leastUpdateTime)
                     .stream()
                     .filter(this::validate)

@@ -1,6 +1,5 @@
 package edu.java.scrapper.data.db.entity;
 
-import java.net.URL;
 import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -66,8 +66,12 @@ public class GithubClientImpl implements GithubClient {
         GithubRepositoryResponse response = fetchRepository(username, repository);
         contentRepository.findById(link.getId())
                 .ifPresentOrElse(
-                        linkContent -> contentRepository.update(linkContent.setRaw(response.toString()).setHash(response.hashCode())),
-                        () -> contentRepository.add(new LinkContent(link.getId(), response.toString(), response.hashCode()))
+                        linkContent -> contentRepository.update(
+                                linkContent.setRaw(response.toString()).setHash(response.hashCode())
+                        ),
+                        () -> contentRepository.add(
+                                new LinkContent(link.getId(), response.toString(), response.hashCode())
+                        )
                 );
         return link.setLastUpdatedAt(OffsetDateTime.now());
     }

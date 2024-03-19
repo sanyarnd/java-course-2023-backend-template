@@ -4,7 +4,6 @@ import edu.java.core.exception.link.LinkAlreadyRegistered;
 import edu.java.core.util.BaseRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
-import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;

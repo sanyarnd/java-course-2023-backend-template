@@ -1,8 +1,6 @@
 package edu.java.scrapper.data.network.impl;
 
 import edu.java.core.exception.LinkIsUnreachable;
-import edu.java.core.request.LinkUpdateRequest;
-import edu.java.core.response.github.GithubRepositoryResponse;
 import edu.java.core.response.stackoverflow.StackOverflowAnswersResponse;
 import edu.java.core.util.ApiQualifier;
 import edu.java.scrapper.data.db.LinkContentRepository;
@@ -25,18 +23,18 @@ public class StackOverflowClientImpl implements StackOverflowClient {
     public StackOverflowClientImpl(@ApiQualifier("stack-overflow") String baseUrl) {
         this.pattern = Pattern.compile(baseUrl + "/questions/(\\w+)/answers?site=stackoverflow");
         this.webClient = WebClient
-            .builder()
-            .baseUrl(baseUrl)
-            .build();
+                .builder()
+                .baseUrl(baseUrl)
+                .build();
     }
 
     @Override
     public StackOverflowAnswersResponse fetchAnswers(String questionId) {
         return webClient
-            .get()
-            .uri("/questions/{questionId}/answers?site=stackoverflow", questionId)
-            .retrieve().bodyToMono(StackOverflowAnswersResponse.class)
-            .block();
+                .get()
+                .uri("/questions/{questionId}/answers?site=stackoverflow", questionId)
+                .retrieve().bodyToMono(StackOverflowAnswersResponse.class)
+                .block();
     }
 
     @Autowired
@@ -59,8 +57,12 @@ public class StackOverflowClientImpl implements StackOverflowClient {
         StackOverflowAnswersResponse response = fetchAnswers(questionId);
         contentRepository.findById(link.getId())
                 .ifPresentOrElse(
-                        linkContent -> contentRepository.update(linkContent.setRaw(response.toString()).setHash(response.hashCode())),
-                        () -> contentRepository.add(new LinkContent(link.getId(), response.toString(), response.hashCode()))
+                        linkContent -> contentRepository.update(
+                                linkContent.setRaw(response.toString()).setHash(response.hashCode())
+                        ),
+                        () -> contentRepository.add(
+                                new LinkContent(link.getId(), response.toString(), response.hashCode())
+                        )
                 );
         return link.setLastUpdatedAt(OffsetDateTime.now());
     }
