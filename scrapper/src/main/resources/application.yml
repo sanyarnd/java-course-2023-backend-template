@@ -4,9 +4,9 @@ app:
     interval: 10s
     force-check-delay: 10s
   api:
-    github: https://api.github.com/
-    stack-overflow: https://api.stackexchange.com/
-    bot: http://localhost:8090/
+    github: https://api.github.com
+    stack-overflow: https://api.stackexchange.com
+    bot: http://localhost:8090
 
 spring:
   application:

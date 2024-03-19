@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class JdbcLinkLinkContentRepositoryImpl implements LinkContentRepository {
-    private final static String ADD = "INSERT INTO link_content (raw, hash) VALUES (?, ?) RETURNING *";
+    private final static String ADD = "INSERT INTO link_content (id, raw, hash) VALUES (?, ?, ?) RETURNING *";
     private final static String DELETE = "DELETE FROM link_content WHERE id=? RETURNING *";
     private final static String FIND_BY_ID = "SELECT * FROM link_content WHERE id=?";
     private final static String FIND_ALL = "SELECT * FROM link_content";
@@ -26,6 +26,7 @@ public class JdbcLinkLinkContentRepositoryImpl implements LinkContentRepository 
     @Override
     public Optional<LinkContent> add(LinkContent entity) {
         return client.sql(ADD)
+                .param(entity.getId())
                 .param(entity.getRaw())
                 .param(entity.getHash())
                 .query(new BeanPropertyRowMapper<>(LinkContent.class))

@@ -21,7 +21,7 @@ public class NotificationRepositoryImpl implements NotificationRepository, Excep
     @Override
     public void update(LinkUpdateRequest request) throws UnrecognizableException {
         webClient.post()
-            .uri("/update")
+            .uri("/updates")
             .bodyValue(request)
             .retrieve()
             .onStatus(

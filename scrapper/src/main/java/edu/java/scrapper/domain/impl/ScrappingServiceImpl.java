@@ -1,8 +1,13 @@
 package edu.java.scrapper.domain.impl;
 
-import edu.java.scrapper.data.db.LinkContentRepository;
+import edu.java.core.exception.LinkIsUnreachable;
+import edu.java.core.exception.UnrecognizableException;
+import edu.java.core.request.LinkUpdateRequest;
 import edu.java.scrapper.data.db.LinkRepository;
+import edu.java.scrapper.data.db.TelegramChatRepository;
 import edu.java.scrapper.data.db.entity.Link;
+import edu.java.scrapper.data.db.entity.TelegramChat;
+import edu.java.scrapper.data.network.NotificationRepository;
 import edu.java.scrapper.data.network.ScrapperClient;
 import edu.java.scrapper.domain.ScrappingService;
 import java.time.OffsetDateTime;
@@ -18,16 +23,19 @@ import org.springframework.stereotype.Service;
 public class ScrappingServiceImpl implements ScrappingService {
     private final List<ScrapperClient> scrapperClients;
     private final LinkRepository linkRepository;
-    private final LinkContentRepository linkContentRepository;
+    private final TelegramChatRepository telegramChatRepository;
+    private final NotificationRepository notificationRepository;
 
     public ScrappingServiceImpl(
             List<ScrapperClient> scrapperClients,
             LinkRepository linkRepository,
-            LinkContentRepository linkContentRepository
+            TelegramChatRepository telegramChatRepository,
+            NotificationRepository notificationRepository
     ) {
         this.scrapperClients = scrapperClients;
         this.linkRepository = linkRepository;
-        this.linkContentRepository = linkContentRepository;
+        this.telegramChatRepository = telegramChatRepository;
+        this.notificationRepository = notificationRepository;
     }
 
     private boolean validate(Link link) {
@@ -36,9 +44,34 @@ public class ScrappingServiceImpl implements ScrappingService {
 
     private void process(Link link) {
         scrapperClients.stream()
-                .filter(scrapperClient -> scrapperClient.canHandle(link.getUrl()))
+                .filter(scrapperClient -> scrapperClient.canHandle(link))
                 .findAny()
-                .ifPresent(scrapperClient -> scrapperClient.handle(link.getUrl()));
+                .ifPresentOrElse(
+                        scrapperClient -> update(link, scrapperClient),
+                        () -> log.warn("No action for: " + link)
+                );
+    }
+
+    private void update(Link link, ScrapperClient scrapperClient) {
+        try {
+            Link updatedLink = scrapperClient.handle(link);
+            linkRepository.update(updatedLink);
+            notificationRepository.update(
+                    new LinkUpdateRequest(
+                            link.getId(),
+                            link.getUrl(),
+                            "",
+                            telegramChatRepository.findAllChatsSubscribedTo(updatedLink)
+                                    .stream()
+                                    .map(TelegramChat::getId)
+                                    .toList()
+                    )
+            );
+        } catch (LinkIsUnreachable exception) {
+            log.warn("SCRAPPER", exception);
+        } catch (UnrecognizableException exception) {
+            log.warn("IDK");
+        }
     }
 
     /**
