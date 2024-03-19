@@ -20,17 +20,18 @@ import reactor.util.retry.Retry;
 @Component
 @Slf4j
 public class GithubClientImpl extends BaseClient implements GithubConnector {
-    private final static List<String> urls = List.of(
+    private final static List<String> URLS = List.of(
             "https://api.github.com/repos/([^/]+)/([^/]+)",
             "https://github.com/([^/]+)/([^/]+)"
     );
+    private final static int TOKENS_COUNT = 3;
     private final static int MAX_ATTEMPTS = 3;
     private final static int DURATION = 200;
     private final WebClient webClient;
     private LinkContentRepository contentRepository;
 
     public GithubClientImpl(@ApiQualifier("github") String baseUrl) {
-        super(urls);
+        super(URLS);
         this.webClient = WebClient
                 .builder()
                 .baseUrl(baseUrl)
@@ -56,7 +57,9 @@ public class GithubClientImpl extends BaseClient implements GithubConnector {
     @Override
     public Link handle(Link link) throws LinkIsUnreachable {
         List<String> tokens = extractDataTokensFromLink(link.getUrl());
-        if (tokens.size() < 3) throw new LinkIsUnreachable();
+        if (tokens.size() < TOKENS_COUNT) {
+            throw new LinkIsUnreachable();
+        }
         GithubRepositoryResponse response = fetchRepository(tokens.get(1), tokens.get(2));
         contentRepository.findById(link.getId())
                 .ifPresentOrElse(

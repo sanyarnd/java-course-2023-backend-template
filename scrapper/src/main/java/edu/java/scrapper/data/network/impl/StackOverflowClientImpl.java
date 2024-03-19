@@ -16,15 +16,16 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
 public class StackOverflowClientImpl extends BaseClient implements StackOverflowConnector {
-    private final static List<String> urls = List.of(
+    private final static List<String> URLS = List.of(
             "https://api.stackexchange.com/questions/([^/]+)/answers?site=stackoverflow",
             "https://stackoverflow.com/questions/([^/]+)/([^/]+)"
     );
+    private final static int TOKENS_COUNT = 2;
     private final WebClient webClient;
     private LinkContentRepository contentRepository;
 
     public StackOverflowClientImpl(@ApiQualifier("stack-overflow") String baseUrl) {
-        super(urls);
+        super(URLS);
         this.webClient = WebClient
                 .builder()
                 .baseUrl(baseUrl)
@@ -48,7 +49,9 @@ public class StackOverflowClientImpl extends BaseClient implements StackOverflow
     @Override
     public Link handle(Link link) throws LinkIsUnreachable {
         List<String> tokens = extractDataTokensFromLink(link.getUrl());
-        if (tokens.size() < 2) throw new LinkIsUnreachable();
+        if (tokens.size() < TOKENS_COUNT) {
+            throw new LinkIsUnreachable();
+        }
         StackOverflowAnswersResponse response = fetchAnswers(tokens.get(1));
         contentRepository.findById(link.getId())
                 .ifPresentOrElse(

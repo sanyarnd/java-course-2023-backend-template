@@ -27,7 +27,9 @@ public abstract class BaseClient {
                 .findAny()
                 .orElseThrow(LinkIsUnreachable::new)
                 .matcher(url);
-        if (!matcher.matches()) throw new IllegalStateException("Dude...");
+        if (!matcher.matches()) {
+            throw new IllegalStateException("Dude...");
+        }
         List<String> tokens = new ArrayList<>();
         for (int i = 0; i < matcher.groupCount() + 1; i++) {
             tokens.add(matcher.group(i));

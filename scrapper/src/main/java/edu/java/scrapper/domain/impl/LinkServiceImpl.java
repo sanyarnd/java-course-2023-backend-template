@@ -32,9 +32,10 @@ public class LinkServiceImpl implements LinkService {
     @Override
     public Link add(Long telegramChatId, String url) {
         TelegramChat telegramChat = telegramChatRepository.findById(telegramChatId).orElseThrow(UserNotRegistered::new);
-        if (scrapperClients.stream().noneMatch(baseClient -> baseClient.canHandle(url))) throw new LinkIsUnreachable();
+        if (scrapperClients.stream().noneMatch(baseClient -> baseClient.canHandle(url))) {
+            throw new LinkIsUnreachable();
+        }
         Link link = linkRepository.registerLink(new Link().setUrl(url).setLastUpdatedAt(OffsetDateTime.MIN));
-        System.out.println(link);
         linkRepository.subscribe(link, telegramChat);
         return link;
     }
