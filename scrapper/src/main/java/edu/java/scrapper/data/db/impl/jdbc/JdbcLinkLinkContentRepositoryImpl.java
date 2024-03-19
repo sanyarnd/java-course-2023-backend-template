@@ -7,8 +7,10 @@ import java.util.Optional;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Transactional
 public class JdbcLinkLinkContentRepositoryImpl implements LinkContentRepository {
     private final static String ADD = "INSERT INTO link_content (id, raw, hash) VALUES (?, ?, ?) RETURNING *";
     private final static String DELETE = "DELETE FROM link_content WHERE id=? RETURNING *";

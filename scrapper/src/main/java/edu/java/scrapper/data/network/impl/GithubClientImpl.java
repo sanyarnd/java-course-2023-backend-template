@@ -28,7 +28,6 @@ public class GithubClientImpl implements GithubClient {
 
     public GithubClientImpl(@ApiQualifier("github") String baseUrl) {
         this.pattern = Pattern.compile(baseUrl + "/repos/([^/]+)/([^/]+)");
-        System.out.println(pattern.pattern());
         this.webClient = WebClient
                 .builder()
                 .baseUrl(baseUrl)
@@ -53,7 +52,6 @@ public class GithubClientImpl implements GithubClient {
 
     @Override
     public Boolean canHandle(Link link) {
-        System.out.println(link.getUrl() + " -> " + pattern.pattern());
         return pattern.matcher(link.getUrl()).matches();
     }
 
@@ -66,9 +64,7 @@ public class GithubClientImpl implements GithubClient {
         String username = matcher.group(1);
         String repository = matcher.group(2);
         GithubRepositoryResponse response = fetchRepository(username, repository);
-        var optional = contentRepository.findById(link.getId());
-        System.out.println(optional);
-        optional
+        contentRepository.findById(link.getId())
                 .ifPresentOrElse(
                         linkContent -> contentRepository.update(linkContent.setRaw(response.toString()).setHash(response.hashCode())),
                         () -> contentRepository.add(new LinkContent(link.getId(), response.toString(), response.hashCode()))

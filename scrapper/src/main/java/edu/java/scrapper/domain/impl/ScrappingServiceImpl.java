@@ -56,6 +56,7 @@ public class ScrappingServiceImpl implements ScrappingService {
         try {
             Link updatedLink = scrapperClient.handle(link);
             linkRepository.update(updatedLink);
+            System.out.println(linkRepository.findAll());
             notificationRepository.update(
                     new LinkUpdateRequest(
                             link.getId(),

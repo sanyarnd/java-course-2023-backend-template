@@ -4,7 +4,6 @@ import edu.java.core.exception.link.LinkAlreadyRegistered;
 import edu.java.scrapper.data.db.LinkRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
-import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -82,7 +81,9 @@ public class JdbcLinkRepositoryImpl implements LinkRepository {
         client.sql(UPDATE_LINK)
                 .param(link.getLastUpdatedAt())
                 .param(link.getId())
-                .query();
+                .query(new BeanPropertyRowMapper<>(Link.class))
+                .optional()
+                .ifPresent(System.out::println);
     }
 
     @Override
