@@ -10,8 +10,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.reactive.function.client.WebClient;
 
-@Repository
 @Slf4j
+@Repository
 public class NotificationConnectorImpl implements NotificationConnector {
     private final WebClient webClient;
 
