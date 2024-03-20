@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public class JdbcLinkLinkContentRepositoryImpl implements LinkContentRepository {
+public class JdbcLinkContentRepositoryImpl implements LinkContentRepository {
     private final static String ADD = "INSERT INTO link_content (id, raw, hash) VALUES (?, ?, ?) RETURNING *";
     private final static String DELETE = "DELETE FROM link_content WHERE id=? RETURNING *";
     private final static String FIND_BY_ID = "SELECT * FROM link_content WHERE id=?";
@@ -21,7 +21,7 @@ public class JdbcLinkLinkContentRepositoryImpl implements LinkContentRepository 
 
     private final JdbcClient client;
 
-    public JdbcLinkLinkContentRepositoryImpl(JdbcClient client) {
+    public JdbcLinkContentRepositoryImpl(JdbcClient client) {
         this.client = client;
     }
 

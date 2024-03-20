@@ -1,6 +1,10 @@
 package edu.java.scrapper.domain.impl;
 
-import edu.java.core.exception.*;
+import edu.java.core.exception.LinkAlreadyTrackedException;
+import edu.java.core.exception.LinkCannotBeHandledException;
+import edu.java.core.exception.LinkIsNotRegisteredException;
+import edu.java.core.exception.LinkIsNotTrackedException;
+import edu.java.core.exception.UserIsNotAuthorizedException;
 import edu.java.scrapper.data.db.LinkRepository;
 import edu.java.scrapper.data.db.TelegramChatRepository;
 import edu.java.scrapper.data.db.TrackerRepository;
@@ -40,7 +44,8 @@ public class LinkServiceImpl implements LinkService {
 
     @Override
     public Link add(Long telegramChatId, String url)
-            throws LinkCannotBeHandledException, LinkAlreadyTrackedException, LinkIsNotRegisteredException, UserIsNotAuthorizedException {
+            throws LinkCannotBeHandledException, LinkAlreadyTrackedException, LinkIsNotRegisteredException,
+            UserIsNotAuthorizedException {
         validateUrl(url);
         Link link = linkRepository
                 .addOrGetExisted(new Link().setUrl(url).setLastUpdatedAt(OffsetDateTime.MIN));

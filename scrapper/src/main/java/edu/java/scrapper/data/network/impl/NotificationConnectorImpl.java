@@ -28,7 +28,9 @@ public class NotificationConnectorImpl implements NotificationConnector {
                     .retrieve()
                     .onStatus(
                             HttpStatusCode::is4xxClientError,
-                            clientResponse -> clientResponse.bodyToMono(ApiErrorResponse.class).map(ApiErrorException::new)
+                            clientResponse -> clientResponse
+                                    .bodyToMono(ApiErrorResponse.class)
+                                    .map(ApiErrorException::new)
                     )
                     .toBodilessEntity()
                     .block();

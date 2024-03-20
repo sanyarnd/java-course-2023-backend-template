@@ -21,7 +21,8 @@ public abstract class BaseClient {
                 .anyMatch(pattern -> pattern.matcher(url).matches());
     }
 
-    protected final @NotNull List<String> extractDataTokensFromLink(@NotNull String url) throws LinkCannotBeHandledException {
+    protected final @NotNull List<String> extractDataTokensFromLink(@NotNull String url)
+            throws LinkCannotBeHandledException {
         Matcher matcher = handledUrlPatterns.stream()
                 .filter(pattern -> pattern.matcher(url).matches())
                 .findAny()
