@@ -1,6 +1,12 @@
 package edu.java.scrapper.view.impl;
 
-import edu.java.core.exception.*;
+import edu.java.core.exception.InfoException;
+import edu.java.core.exception.LinkAlreadyTrackedException;
+import edu.java.core.exception.LinkCannotBeHandledException;
+import edu.java.core.exception.LinkIsNotRegisteredException;
+import edu.java.core.exception.LinkIsNotTrackedException;
+import edu.java.core.exception.UserAlreadyAuthorizedException;
+import edu.java.core.exception.UserIsNotAuthorizedException;
 import edu.java.core.response.ApiErrorResponse;
 import java.util.Arrays;
 import org.springframework.http.HttpStatus;

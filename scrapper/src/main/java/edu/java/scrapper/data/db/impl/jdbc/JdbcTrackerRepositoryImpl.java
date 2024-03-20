@@ -21,8 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class JdbcTrackerRepositoryImpl implements TrackerRepository {
     private static final String ADD_CHAT_TO_LINK = "INSERT INTO chat_to_link_binding (chat_id, link_id) VALUES (?, ?)";
     private static final String DELETE_CHAT_TO_LINK = "DELETE FROM chat_to_link_binding WHERE chat_id=? AND link_id=?";
-    private final static String FIND_CHATS_SUBSCRIBED_TO_LINK_ID = "SELECT telegram_chat.id, telegram_chat.registered_at "
-            + "FROM telegram_chat INNER JOIN chat_to_link_binding "
+    private final static String FIND_CHATS_SUBSCRIBED_TO_LINK_ID = "SELECT telegram_chat.id, "
+            + "telegram_chat.registered_at FROM telegram_chat INNER JOIN chat_to_link_binding "
             + "ON telegram_chat.id = chat_to_link_binding.chat_id AND chat_to_link_binding.link_id = ?";
     private final static String FIND_LINKS_SUBSCRIBED_WITH_CHAT_ID = "SELECT link.id, link.url, link.last_updated_at "
             + "FROM link INNER JOIN chat_to_link_binding "
