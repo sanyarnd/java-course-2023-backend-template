@@ -1,9 +1,6 @@
 package edu.java.bot.data.impl;
 
 import edu.java.bot.data.UserAuthRepository;
-import edu.java.core.exception.UnrecognizableException;
-import edu.java.core.exception.UserAlreadyRegistered;
-import edu.java.core.exception.UserNotRegistered;
 import edu.java.core.exception.util.ExceptionDeserializer;
 import edu.java.core.response.ApiErrorResponse;
 import edu.java.core.util.ApiQualifier;

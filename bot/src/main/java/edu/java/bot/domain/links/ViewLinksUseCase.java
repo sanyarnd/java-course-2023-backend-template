@@ -2,7 +2,6 @@ package edu.java.bot.domain.links;
 
 import com.pengrad.telegrambot.model.User;
 import edu.java.bot.data.LinkTrackerRepository;
-import edu.java.core.exception.UserNotAuthenticated;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

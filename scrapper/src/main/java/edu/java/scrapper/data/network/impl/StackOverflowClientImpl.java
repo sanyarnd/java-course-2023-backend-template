@@ -1,6 +1,6 @@
 package edu.java.scrapper.data.network.impl;
 
-import edu.java.core.exception.LinkIsUnreachable;
+import edu.java.core.exception.LinkCannotBeHandledException;
 import edu.java.core.response.stackoverflow.StackOverflowAnswersResponse;
 import edu.java.core.util.ApiQualifier;
 import edu.java.scrapper.data.db.LinkContentRepository;
@@ -47,15 +47,12 @@ public class StackOverflowClientImpl extends BaseClient implements StackOverflow
     }
 
     @Override
-    public Link handle(Link link) throws LinkIsUnreachable {
+    public Link handle(Link link) throws LinkCannotBeHandledException {
         List<String> tokens = extractDataTokensFromLink(link.getUrl());
-        if (tokens.size() < TOKENS_COUNT) {
-            throw new LinkIsUnreachable();
-        }
         StackOverflowAnswersResponse response = fetchAnswers(tokens.get(1));
         contentRepository.findById(link.getId())
                 .ifPresentOrElse(
-                        linkContent -> contentRepository.update(
+                        linkContent -> contentRepository.updateContent(
                                 linkContent.setRaw(response.toString()).setHash(response.hashCode())
                         ),
                         () -> contentRepository.add(

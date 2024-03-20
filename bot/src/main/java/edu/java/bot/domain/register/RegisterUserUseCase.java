@@ -2,7 +2,6 @@ package edu.java.bot.domain.register;
 
 import com.pengrad.telegrambot.model.User;
 import edu.java.bot.data.UserAuthRepository;
-import edu.java.core.exception.UserAlreadyAuthenticated;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

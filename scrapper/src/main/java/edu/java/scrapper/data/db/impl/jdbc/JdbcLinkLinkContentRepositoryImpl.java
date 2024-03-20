@@ -59,7 +59,7 @@ public class JdbcLinkLinkContentRepositoryImpl implements LinkContentRepository 
     }
 
     @Override
-    public void update(LinkContent linkContent) {
+    public void updateContent(LinkContent linkContent) {
         client.sql(UPDATE_LINK_CONTENT)
                 .param(linkContent.getRaw())
                 .param(linkContent.getHash())

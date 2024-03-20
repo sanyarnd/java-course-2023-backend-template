@@ -1,7 +1,10 @@
 package edu.java.scrapper.domain;
 
-public interface TelegramChatService {
-    void register(Long telegramChatId);
+import edu.java.core.exception.UserAlreadyAuthorizedException;
+import edu.java.core.exception.UserIsNotAuthorizedException;
 
-    void unregister(Long telegramChatId);
+public interface TelegramChatService {
+    void register(Long telegramChatId) throws UserAlreadyAuthorizedException;
+
+    void unregister(Long telegramChatId) throws UserIsNotAuthorizedException;
 }

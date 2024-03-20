@@ -1,6 +1,6 @@
 package edu.java.scrapper.data.network;
 
-import edu.java.core.exception.LinkIsUnreachable;
+import edu.java.core.exception.LinkCannotBeHandledException;
 import edu.java.scrapper.data.db.entity.Link;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +21,11 @@ public abstract class BaseClient {
                 .anyMatch(pattern -> pattern.matcher(url).matches());
     }
 
-    protected final @NotNull List<String> extractDataTokensFromLink(@NotNull String url) {
+    protected final @NotNull List<String> extractDataTokensFromLink(@NotNull String url) throws LinkCannotBeHandledException {
         Matcher matcher = handledUrlPatterns.stream()
                 .filter(pattern -> pattern.matcher(url).matches())
                 .findAny()
-                .orElseThrow(LinkIsUnreachable::new)
+                .orElseThrow(() -> new LinkCannotBeHandledException(url))
                 .matcher(url);
         if (!matcher.matches()) {
             throw new IllegalStateException("Dude...");
@@ -37,5 +37,5 @@ public abstract class BaseClient {
         return tokens;
     }
 
-    public abstract Link handle(Link link) throws LinkIsUnreachable;
+    public abstract Link handle(Link link) throws LinkCannotBeHandledException;
 }

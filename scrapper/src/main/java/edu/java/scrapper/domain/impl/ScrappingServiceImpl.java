@@ -1,16 +1,15 @@
 package edu.java.scrapper.domain.impl;
 
-import edu.java.core.exception.LinkIsUnreachable;
-import edu.java.core.exception.UnrecognizableException;
 import edu.java.core.request.LinkUpdateRequest;
 import edu.java.scrapper.data.db.LinkRepository;
-import edu.java.scrapper.data.db.TelegramChatRepository;
+import edu.java.scrapper.data.db.TrackerRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
 import edu.java.scrapper.data.network.BaseClient;
-import edu.java.scrapper.data.network.NotificationRepository;
+import edu.java.scrapper.data.network.NotificationConnector;
 import edu.java.scrapper.domain.ScrappingService;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -24,19 +23,18 @@ public class ScrappingServiceImpl implements ScrappingService {
     private final static Integer MINUTES = 10;
     private final List<BaseClient> scrapperClients;
     private final LinkRepository linkRepository;
-    private final TelegramChatRepository telegramChatRepository;
-    private final NotificationRepository notificationRepository;
+    private final TrackerRepository trackerRepository;
+    private final NotificationConnector notificationConnector;
 
     public ScrappingServiceImpl(
             List<BaseClient> scrapperClients,
             LinkRepository linkRepository,
-            TelegramChatRepository telegramChatRepository,
-            NotificationRepository notificationRepository
+            TrackerRepository trackerRepository, NotificationConnector notificationConnector
     ) {
         this.scrapperClients = scrapperClients;
         this.linkRepository = linkRepository;
-        this.telegramChatRepository = telegramChatRepository;
-        this.notificationRepository = notificationRepository;
+        this.trackerRepository = trackerRepository;
+        this.notificationConnector = notificationConnector;
     }
 
     private boolean validate(Link link) {
@@ -54,25 +52,19 @@ public class ScrappingServiceImpl implements ScrappingService {
     }
 
     private void update(Link link, BaseClient scrapperClient) {
-        try {
-            Link updatedLink = scrapperClient.handle(link);
-            linkRepository.update(updatedLink);
-            notificationRepository.update(
-                    new LinkUpdateRequest(
-                            link.getId(),
-                            link.getUrl(),
-                            "",
-                            telegramChatRepository.findAllChatsSubscribedTo(updatedLink)
-                                    .stream()
-                                    .map(TelegramChat::getId)
-                                    .toList()
-                    )
-            );
-        } catch (LinkIsUnreachable exception) {
-            log.warn("SCRAPPER", exception);
-        } catch (UnrecognizableException exception) {
-            log.warn("IDK");
-        }
+        Link updatedLink = scrapperClient.handle(link);
+        linkRepository.updateTimeTouched(updatedLink);
+        notificationConnector.update(
+                new LinkUpdateRequest(
+                        link.getId(),
+                        link.getUrl(),
+                        "",
+                        trackerRepository.findAllChatsSubscribedTo(updatedLink)
+                                .stream()
+                                .map(TelegramChat::getId)
+                                .toList()
+                )
+        );
     }
 
     /**
@@ -88,7 +80,7 @@ public class ScrappingServiceImpl implements ScrappingService {
                     .filter(this::validate)
                     .forEach(this::process);
         } catch (Exception exception) {
-            log.error("SCHEDULE_EX", exception);
+            log.error(this.getClass().getName(), Arrays.stream(exception.getStackTrace()).toList());
         }
     }
 }
