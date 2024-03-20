@@ -2,8 +2,6 @@ package edu.java.bot.data.impl;
 
 import edu.java.bot.data.LinkTrackerRepository;
 import edu.java.core.exception.ApiErrorException;
-import edu.java.core.exception.UserIsNotAuthorizedException;
-import edu.java.core.exception.util.ExceptionDeserializer;
 import edu.java.core.request.AddLinkRequest;
 import edu.java.core.request.RemoveLinkRequest;
 import edu.java.core.response.ApiErrorResponse;
@@ -36,7 +34,7 @@ public class LinkTrackerRepositoryImpl implements LinkTrackerRepository {
                 .retrieve()
                 .onStatus(
                         HttpStatusCode::is4xxClientError,
-                        clientResponse -> clientResponse.bodyToMono(ApiErrorResponse.class).map(this::extract)
+                        clientResponse -> clientResponse.bodyToMono(ApiErrorResponse.class).map(ApiErrorException::new)
                 )
                 .bodyToMono(ListLinksResponse.class)
                 .block();
@@ -71,7 +69,7 @@ public class LinkTrackerRepositoryImpl implements LinkTrackerRepository {
                 .retrieve()
                 .onStatus(
                         HttpStatusCode::is4xxClientError,
-                        clientResponse -> clientResponse.bodyToMono(ApiErrorResponse.class).map(this::extract)
+                        clientResponse -> clientResponse.bodyToMono(ApiErrorResponse.class).map(ApiErrorException::new)
                 )
                 .toBodilessEntity()
                 .block();
