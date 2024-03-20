@@ -97,7 +97,7 @@ public class GithubClientImpl extends BaseClient implements GithubConnector, Git
                                 new LinkContent(link.getId(), response.toString(), response.hashCode())
                         )
                 );
-        return Pair.of(link.setLastUpdatedAt(OffsetDateTime.now()), handleMessage);
+        return Pair.of(link.setLastUpdatedAt(OffsetDateTime.now()), null);
     }
 
     private @Nullable String compareDataAndUpdate(GithubPersistenceData current, Long linkId) {
@@ -112,7 +112,8 @@ public class GithubClientImpl extends BaseClient implements GithubConnector, Git
                 });
         try {
             GithubPersistenceData previous = previousOptional.orElseThrow();
-
+            // TODO
+            return "";
         } catch (Exception exception) {
             contentRepository.add(new LinkContent(linkId, current.toString(), current.hashCode()));
             return null;

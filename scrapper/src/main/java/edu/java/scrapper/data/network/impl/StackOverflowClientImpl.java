@@ -10,6 +10,9 @@ import edu.java.scrapper.data.network.BaseClient;
 import edu.java.scrapper.data.network.StackOverflowConnector;
 import java.time.OffsetDateTime;
 import java.util.List;
+import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -47,7 +50,7 @@ public class StackOverflowClientImpl extends BaseClient implements StackOverflow
     }
 
     @Override
-    public Link handle(Link link) throws LinkCannotBeHandledException {
+    public Pair<Link, String> handle(Link link) throws LinkCannotBeHandledException {
         List<String> tokens = extractDataTokensFromLink(link.getUrl());
         StackOverflowAnswersResponse response = fetchAnswers(tokens.get(1));
         contentRepository.findById(link.getId())
@@ -59,6 +62,6 @@ public class StackOverflowClientImpl extends BaseClient implements StackOverflow
                                 new LinkContent(link.getId(), response.toString(), response.hashCode())
                         )
                 );
-        return link.setLastUpdatedAt(OffsetDateTime.now());
+        return Pair.of(link.setLastUpdatedAt(OffsetDateTime.now()), null);
     }
 }
