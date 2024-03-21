@@ -5,7 +5,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.scrapper.data.network.GithubConnector;
-import edu.java.scrapper.data.network.impl.GithubClientImpl;
+import edu.java.scrapper.data.network.impl.GithubConnectorImpl;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,7 +25,7 @@ public class GithubConnectorTest {
     public static void init() {
         server = new WireMockServer(WireMockConfiguration.wireMockConfig().dynamicPort());
         server.start();
-        client = new GithubClientImpl(server.baseUrl());
+        client = new GithubConnectorImpl(server.baseUrl());
         WireMock.configureFor(server.port());
     }
 
@@ -72,9 +72,6 @@ public class GithubConnectorTest {
         );
 
         var response = client.fetchRepository(username, repository);
-        Assertions.assertEquals(721347253, response.id());
         Assertions.assertEquals("iot-connector-application", response.name());
-        Assertions.assertEquals("2023-11-20T21:48:47Z", response.createdAt().toString());
-        Assertions.assertEquals("2024-01-24T20:34:19Z", response.updatedAt().toString());
     }
 }

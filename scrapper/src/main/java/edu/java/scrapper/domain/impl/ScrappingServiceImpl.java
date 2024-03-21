@@ -12,6 +12,9 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -43,7 +46,7 @@ public class ScrappingServiceImpl implements ScrappingService {
 
     private void process(Link link) {
         scrapperClients.stream()
-                .filter(scrapperClient -> scrapperClient.canHandle(link.getUrl()))
+                .filter(scrapperClient -> scrapperClient.canHandle(link))
                 .findAny()
                 .ifPresentOrElse(
                         scrapperClient -> update(link, scrapperClient),
@@ -52,14 +55,14 @@ public class ScrappingServiceImpl implements ScrappingService {
     }
 
     private void update(Link link, BaseClient scrapperClient) {
-        Link updatedLink = scrapperClient.handle(link);
-        linkRepository.updateTimeTouched(updatedLink);
+        String message = scrapperClient.handle(link);
+        linkRepository.updateTimeTouched(link.setLastUpdatedAt(OffsetDateTime.now()));
         notificationConnector.update(
                 new LinkUpdateRequest(
                         link.getId(),
                         link.getUrl(),
-                        "",
-                        trackerRepository.findAllChatsSubscribedTo(updatedLink)
+                        message,
+                        trackerRepository.findAllChatsSubscribedTo(link)
                                 .stream()
                                 .map(TelegramChat::getId)
                                 .toList()
@@ -67,9 +70,6 @@ public class ScrappingServiceImpl implements ScrappingService {
         );
     }
 
-    /**
-     * Schedule entrypoint for scrapping urls.
-     */
     @Override
     @Scheduled(fixedDelayString = "#{@interval}")
     public void schedule() {

@@ -2,11 +2,15 @@ package edu.java.core.response.stackoverflow;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record AnswerResponse(
+public record CommentResponse(
+
         @JsonProperty("owner")
         Owner owner,
 
         @JsonProperty("score")
-        int score
+        Integer score,
+
+        @JsonProperty("edited")
+        Boolean edited
 ) {
 }

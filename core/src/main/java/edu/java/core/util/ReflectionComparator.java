@@ -1,16 +1,9 @@
 package edu.java.core.util;
 
-import edu.java.core.response.github.GithubPersistenceData;
 import java.lang.reflect.Field;
 import java.util.*;
 
 public class ReflectionComparator {
-    public static void main(String[] args) throws IllegalAccessException {
-        var data1 = new GithubPersistenceData(1, 2, null, 4, 5);
-        var data2 = new GithubPersistenceData(1, 2, 1, 4, 5);
-        System.out.println(getDifference(data1, data2));
-    }
-
     public static Map<String, String> getObjectAsMap(Object object) throws IllegalAccessException {
         SortedMap<String, String> dictionary = new TreeMap<>();
         Field[] declaredFields = object.getClass().getDeclaredFields();

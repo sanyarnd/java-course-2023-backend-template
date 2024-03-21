@@ -1,9 +1,8 @@
 package edu.java.core.response.github;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
 
-public record GithubRepositoryResponse(
+public record RepositoryResponse(
     @JsonProperty("name")
     String name,
 
