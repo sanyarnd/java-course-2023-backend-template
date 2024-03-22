@@ -35,13 +35,6 @@ public class LinkServiceImpl implements LinkService {
         this.trackerRepository = trackerRepository;
     }
 
-    private void validateUrl(String url) throws LinkCannotBeHandledException {
-        scrapperClients.stream()
-                .filter(baseClient -> baseClient.canHandle(url))
-                .findAny()
-                .orElseThrow(() -> new LinkCannotBeHandledException(url));
-    }
-
     @Override
     public Link add(Long telegramChatId, String url)
             throws LinkCannotBeHandledException, LinkAlreadyTrackedException, LinkIsNotRegisteredException,
@@ -72,5 +65,12 @@ public class LinkServiceImpl implements LinkService {
     @Override
     public List<Link> getAllForChat(Long chatId) {
         return trackerRepository.findAllLinksSubscribedWith(new TelegramChat().setId(chatId));
+    }
+
+    private void validateUrl(String url) throws LinkCannotBeHandledException {
+        scrapperClients.stream()
+                .filter(baseClient -> baseClient.canHandle(url))
+                .findAny()
+                .orElseThrow(() -> new LinkCannotBeHandledException(url));
     }
 }

@@ -80,7 +80,7 @@ public class ScrappingServiceImpl implements ScrappingService {
                     .filter(this::validate)
                     .forEach(this::process);
         } catch (Exception exception) {
-            log.error(this.getClass().getName(), Arrays.stream(exception.getStackTrace()).toList());
+            log.error(this.getClass().getName(), exception);
         }
     }
 }

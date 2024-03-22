@@ -4,8 +4,6 @@ import edu.java.core.response.stackoverflow.AnswerResponse;
 import edu.java.core.response.stackoverflow.CommentResponse;
 import edu.java.core.util.ApiQualifier;
 import edu.java.scrapper.data.network.StackOverflowConnector;
-import java.util.List;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -21,22 +19,22 @@ public class StackOverflowConnectorImpl implements StackOverflowConnector {
     }
 
     @Override
-    public List<AnswerResponse> fetchAnswers(String questionId) {
+    public AnswerResponse fetchAnswers(String questionId) {
         return webClient
                 .get()
                 .uri("/questions/{questionId}/answers?site=stackoverflow", questionId)
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<List<AnswerResponse>>() {})
+                .bodyToMono(AnswerResponse.class)
                 .block();
     }
 
     @Override
-    public List<CommentResponse> fetchComments(String questionId) {
+    public CommentResponse fetchComments(String questionId) {
         return webClient
                 .get()
                 .uri("/questions/{questionId}/comments?order=desc&sort=creation&site=stackoverflow", questionId)
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<List<CommentResponse>>() {})
+                .bodyToMono(CommentResponse.class)
                 .block();
     }
 }

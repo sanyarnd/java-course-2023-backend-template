@@ -5,7 +5,6 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import edu.java.scrapper.data.network.StackOverflowConnector;
-import edu.java.scrapper.data.network.impl.StackOverflowClientImpl;
 import edu.java.scrapper.data.network.impl.StackOverflowConnectorImpl;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -92,9 +91,9 @@ public class StackOverflowConnectorTest {
                     .withBody(body))
         );
 
-        var response = client.fetchComments(questionId);
+        var response = client.fetchAnswers(questionId);
         Assertions.assertEquals(2, response.answers().size());
         Assertions.assertEquals("broot", response.answers().get(0).owner().displayName());
-        Assertions.assertEquals(1708682234, response.answers().get(1).creationDate());
+        Assertions.assertEquals(1, response.answers().get(1).score());
     }
 }

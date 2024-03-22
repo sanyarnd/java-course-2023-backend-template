@@ -16,9 +16,15 @@ public abstract class BaseClient {
     }
 
     public final Boolean canHandle(Link link) {
-        return handledUrlPatterns.stream()
-                .anyMatch(pattern -> pattern.matcher(link.getUrl()).matches());
+        return canHandle(link.getUrl());
     }
+
+    public final Boolean canHandle(String url) {
+        return handledUrlPatterns.stream()
+                .anyMatch(pattern -> pattern.matcher(url).matches());
+    }
+
+    public abstract String handle(Link link) throws LinkCannotBeHandledException;
 
     protected final List<String> extractDataTokensFromLink(String url)
             throws LinkCannotBeHandledException {
@@ -36,6 +42,4 @@ public abstract class BaseClient {
         }
         return tokens;
     }
-
-    public abstract String handle(Link link) throws LinkCannotBeHandledException;
 }

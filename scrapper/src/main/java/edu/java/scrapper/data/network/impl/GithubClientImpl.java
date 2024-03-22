@@ -53,11 +53,11 @@ public class GithubClientImpl extends BaseClient implements JsonSerializer<Githu
                         try {
                             return deserialize(rawContent);
                         } catch (JsonProcessingException e) {
-                            throw new LinkCannotBeHandledException(link.getUrl());
+                            return null;
                         }
                     })
                     .orElse(null);
-            contentRepository.add(new LinkContent(link.getId(), this.serialize(current), current.hashCode()));
+            contentRepository.updateContent(new LinkContent(link.getId(), this.serialize(current), current.hashCode()));
             List<String> differences = ReflectionComparator.getDifference(previous, current);
             return (differences.size() == 0)
                     ? null

@@ -16,6 +16,9 @@ public class ReflectionComparator {
     }
 
     public static List<String> getDifference(Object object1, Object object2) throws IllegalAccessException {
+        if (object1 == null || object2 == null) {
+            return List.of();
+        }
         Map<String, String> fieldsMap1 = getObjectAsMap(object1);
         Map<String, String> fieldsMap2 = getObjectAsMap(object2);
         return fieldsMap1.keySet().stream().map(

@@ -1,12 +1,10 @@
 package edu.java.core.response.stackoverflow;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 public record AnswerResponse(
-        @JsonProperty("owner")
-        Owner owner,
-
-        @JsonProperty("score")
-        int score
+        @JsonProperty("items")
+        List<Answer> answers
 ) {
 }
