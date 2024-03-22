@@ -8,7 +8,7 @@ import edu.java.core.response.github.CommitResponse;
 import edu.java.core.response.github.RepositoryResponse;
 import edu.java.core.util.JsonSerializer;
 import edu.java.core.util.ReflectionComparator;
-import edu.java.scrapper.data.db.LinkContentRepository;
+import edu.java.scrapper.data.db.repository.LinkContentRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.LinkContent;
 import edu.java.scrapper.data.network.BaseClient;
@@ -47,7 +47,7 @@ public class GithubClientImpl extends BaseClient implements JsonSerializer<Githu
         GithubPersistenceData current = new GithubPersistenceData(repository, commits);
         // Handle
         try {
-            GithubPersistenceData previous = contentRepository.findById(link.getId())
+            GithubPersistenceData previous = contentRepository.get(link.getId())
                     .map(LinkContent::getRaw)
                     .map(rawContent -> {
                         try {
@@ -57,7 +57,7 @@ public class GithubClientImpl extends BaseClient implements JsonSerializer<Githu
                         }
                     })
                     .orElse(null);
-            contentRepository.updateContent(new LinkContent(link.getId(), this.serialize(current), current.hashCode()));
+            contentRepository.upsert(new LinkContent(link.getId(), this.serialize(current), current.hashCode()));
             List<String> differences = ReflectionComparator.getDifference(previous, current);
             return (differences.size() == 0)
                     ? null

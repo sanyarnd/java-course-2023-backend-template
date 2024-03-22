@@ -4,13 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.java.core.exception.LinkCannotBeHandledException;
 import edu.java.core.model.StackOverflowPersistenceData;
-import edu.java.core.response.stackoverflow.Answer;
 import edu.java.core.response.stackoverflow.AnswerResponse;
-import edu.java.core.response.stackoverflow.Comment;
 import edu.java.core.response.stackoverflow.CommentResponse;
 import edu.java.core.util.JsonSerializer;
 import edu.java.core.util.ReflectionComparator;
-import edu.java.scrapper.data.db.LinkContentRepository;
+import edu.java.scrapper.data.db.repository.LinkContentRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.LinkContent;
 import edu.java.scrapper.data.network.BaseClient;
@@ -50,7 +48,7 @@ public class StackOverflowClientImpl extends BaseClient implements JsonSerialize
         StackOverflowPersistenceData current = new StackOverflowPersistenceData(answers, comments);
         // Handle
         try {
-            StackOverflowPersistenceData previous = contentRepository.findById(link.getId())
+            StackOverflowPersistenceData previous = contentRepository.get(link.getId())
                     .map(LinkContent::getRaw)
                     .map(rawContent -> {
                         try {
@@ -60,7 +58,7 @@ public class StackOverflowClientImpl extends BaseClient implements JsonSerialize
                         }
                     })
                     .orElse(null);
-            contentRepository.updateContent(new LinkContent(link.getId(), this.serialize(current), current.hashCode()));
+            contentRepository.upsert(new LinkContent(link.getId(), this.serialize(current), current.hashCode()));
             List<String> differences = ReflectionComparator.getDifference(previous, current);
             return (differences.size() == 0)
                     ? null

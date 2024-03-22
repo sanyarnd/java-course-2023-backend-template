@@ -5,15 +5,16 @@ import edu.java.core.exception.LinkCannotBeHandledException;
 import edu.java.core.exception.LinkIsNotRegisteredException;
 import edu.java.core.exception.LinkIsNotTrackedException;
 import edu.java.core.exception.UserIsNotAuthorizedException;
-import edu.java.scrapper.data.db.LinkRepository;
-import edu.java.scrapper.data.db.TelegramChatRepository;
-import edu.java.scrapper.data.db.TrackerRepository;
+import edu.java.scrapper.data.db.repository.LinkRepository;
+import edu.java.scrapper.data.db.repository.TelegramChatRepository;
+import edu.java.scrapper.data.db.repository.BinderRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
 import edu.java.scrapper.data.network.BaseClient;
 import edu.java.scrapper.domain.LinkService;
 import java.time.OffsetDateTime;
 import java.util.List;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,18 +22,18 @@ public class LinkServiceImpl implements LinkService {
     private final List<BaseClient> scrapperClients;
     private final TelegramChatRepository telegramChatRepository;
     private final LinkRepository linkRepository;
-    private final TrackerRepository trackerRepository;
+    private final BinderRepository binderRepository;
 
     public LinkServiceImpl(
             List<BaseClient> scrapperClients,
             TelegramChatRepository telegramChatRepository,
             LinkRepository linkRepository,
-            TrackerRepository trackerRepository
+            BinderRepository binderRepository
     ) {
         this.scrapperClients = scrapperClients;
         this.telegramChatRepository = telegramChatRepository;
         this.linkRepository = linkRepository;
-        this.trackerRepository = trackerRepository;
+        this.binderRepository = binderRepository;
     }
 
     @Override
@@ -41,11 +42,11 @@ public class LinkServiceImpl implements LinkService {
             UserIsNotAuthorizedException {
         validateUrl(url);
         Link link = linkRepository
-                .addOrGetExisted(new Link().setUrl(url).setLastUpdatedAt(OffsetDateTime.MIN));
+                .upsertAndReturn(new Link().setUrl(url).setLastUpdatedAt(OffsetDateTime.now()));
         TelegramChat telegramChat = telegramChatRepository
-                .findById(telegramChatId)
+                .get(telegramChatId)
                 .orElseThrow(() -> new UserIsNotAuthorizedException(telegramChatId));
-        trackerRepository.track(link, telegramChat);
+        binderRepository.create(Pair.of(telegramChat, link));
         return link;
     }
 
@@ -53,18 +54,18 @@ public class LinkServiceImpl implements LinkService {
     public Link remove(Long telegramChatId, String url)
             throws LinkIsNotTrackedException, LinkIsNotRegisteredException, UserIsNotAuthorizedException {
         Link link = linkRepository
-                .findByUrl(url)
+                .getByUrl(url)
                 .orElseThrow(() -> new LinkIsNotRegisteredException(url));
         TelegramChat telegramChat = telegramChatRepository
-                .findById(telegramChatId)
+                .get(telegramChatId)
                 .orElseThrow(() -> new UserIsNotAuthorizedException(telegramChatId));
-        trackerRepository.untrack(link, telegramChat);
+        binderRepository.delete(Pair.of(telegramChat, link));
         return link;
     }
 
     @Override
     public List<Link> getAllForChat(Long chatId) {
-        return trackerRepository.findAllLinksSubscribedWith(new TelegramChat().setId(chatId));
+        return binderRepository.findAllLinksSubscribedWith(new TelegramChat().setId(chatId));
     }
 
     private void validateUrl(String url) throws LinkCannotBeHandledException {
