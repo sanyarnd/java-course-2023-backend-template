@@ -14,7 +14,7 @@ public record ApplicationConfig(
     @NotNull
     Api api
 ) {
-    public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
+    public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration linkExpiration) {
     }
 
     public record Api(@NotNull String github, @NotNull String stackOverflow, @NotNull String bot) {

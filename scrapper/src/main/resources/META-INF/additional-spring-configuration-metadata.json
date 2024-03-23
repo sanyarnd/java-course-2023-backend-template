@@ -11,9 +11,9 @@
             "description": "Scheduler interval in milliseconds/seconds/minutes."
         },
         {
-            "name": "app.scheduler.force-check-delay",
+            "name": "app.scheduler.link-expiration",
             "type": "java.time.Duration",
-            "description": "Scheduler force-check-delay in milliseconds/seconds/minutes."
+            "description": "Link expiration time in milliseconds/seconds/minutes."
         },
         {
             "name": "app.api.github",

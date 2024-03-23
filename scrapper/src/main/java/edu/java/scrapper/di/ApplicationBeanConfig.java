@@ -12,4 +12,9 @@ public class ApplicationBeanConfig {
     public Duration provideSchedulerInterval(ApplicationConfig config) {
         return config.scheduler().interval();
     }
+
+    @Bean("expiration")
+    public Duration provideLinkExpiration(ApplicationConfig config) {
+        return config.scheduler().linkExpiration();
+    }
 }

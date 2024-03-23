@@ -6,6 +6,7 @@ import edu.java.core.exception.LinkCannotBeHandledException;
 import edu.java.core.model.GithubPersistenceData;
 import edu.java.core.response.github.CommitResponse;
 import edu.java.core.response.github.RepositoryResponse;
+import edu.java.core.util.DifferenceComparator;
 import edu.java.core.util.JsonSerializer;
 import edu.java.core.util.ReflectionComparator;
 import edu.java.scrapper.data.db.repository.LinkContentRepository;
@@ -20,7 +21,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class GithubClientImpl extends BaseClient implements JsonSerializer<GithubPersistenceData> {
+public class GithubClientImpl
+        extends BaseClient
+        implements JsonSerializer<GithubPersistenceData>, DifferenceComparator<GithubPersistenceData> {
     private final static List<String> URLS = List.of(
             "https://api.github.com/repos/([^/]+)/([^/]+)",
             "https://github.com/([^/]+)/([^/]+)"
@@ -47,6 +50,7 @@ public class GithubClientImpl extends BaseClient implements JsonSerializer<Githu
         GithubPersistenceData current = new GithubPersistenceData(repository, commits);
         // Handle
         try {
+            // Get previous data
             GithubPersistenceData previous = contentRepository.get(link.getId())
                     .map(LinkContent::getRaw)
                     .map(rawContent -> {
@@ -57,12 +61,14 @@ public class GithubClientImpl extends BaseClient implements JsonSerializer<Githu
                         }
                     })
                     .orElse(null);
+            // Update with current data
             contentRepository.upsert(new LinkContent(link.getId(), this.serialize(current), current.hashCode()));
-            List<String> differences = ReflectionComparator.getDifference(previous, current);
+            // Get difference
+            List<String> differences = getDifference(previous, current);
             return (differences.size() == 0)
                     ? null
                     : differences.stream().map(s -> s + "\n").collect(Collectors.joining());
-        } catch (JsonProcessingException | IllegalAccessException exception) {
+        } catch (JsonProcessingException | IllegalStateException exception) {
             throw new LinkCannotBeHandledException(link.getUrl());
         }
     }
@@ -75,5 +81,14 @@ public class GithubClientImpl extends BaseClient implements JsonSerializer<Githu
     @Override
     public GithubPersistenceData deserialize(String from) throws JsonProcessingException {
         return objectMapper.readValue(from, GithubPersistenceData.class);
+    }
+
+    @Override
+    public List<String> getDifference(GithubPersistenceData before, GithubPersistenceData next) throws IllegalStateException {
+        try {
+            return ReflectionComparator.getDifference(before, next);
+        } catch (IllegalAccessException exception) {
+            throw new IllegalStateException(exception);
+        }
     }
 }

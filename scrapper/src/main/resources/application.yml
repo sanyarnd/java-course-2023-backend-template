@@ -2,7 +2,7 @@ app:
   scheduler:
     enable: true
     interval: 10s
-    force-check-delay: 10s
+    link-expiration: 10m
   api:
     github: https://api.github.com
     stack-overflow: https://api.stackexchange.com
