@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public class JdbcTelegramChatRepositoryImpl implements TelegramChatRepository {
+    private final static String ID = "id";
+    private final static String REGISTERED_AT = "registered_at";
+
     private final JdbcClient client;
 
     public JdbcTelegramChatRepositoryImpl(JdbcClient client) {
@@ -24,7 +27,7 @@ public class JdbcTelegramChatRepositoryImpl implements TelegramChatRepository {
     @Override
     public Optional<TelegramChat> get(Long entityId) {
         return client.sql("SELECT id, registered_at FROM telegram_chat WHERE id=:id")
-                .param("id", entityId)
+                .param(ID, entityId)
                 .query(new BeanPropertyRowMapper<>(TelegramChat.class))
                 .optional();
     }
@@ -40,8 +43,8 @@ public class JdbcTelegramChatRepositoryImpl implements TelegramChatRepository {
     public void create(TelegramChat entity) throws UserAlreadyAuthorizedException {
         try {
             client.sql("INSERT INTO telegram_chat (id, registered_at) VALUES (:id, :registered_at)")
-                    .param("id", entity.getId())
-                    .param("registered_at", entity.getRegisteredAt())
+                    .param(ID, entity.getId())
+                    .param(REGISTERED_AT, entity.getRegisteredAt())
                     .update();
         } catch (DataIntegrityViolationException exception) {
             throw new UserAlreadyAuthorizedException(entity.getId());
@@ -51,8 +54,8 @@ public class JdbcTelegramChatRepositoryImpl implements TelegramChatRepository {
     @Override
     public void delete(TelegramChat entity) throws UserIsNotAuthorizedException {
         int rowsAffected = client.sql("DELETE from telegram_chat WHERE id=:id AND registered_at=:registered_at")
-                .param("id", entity.getId())
-                .param("registered_at", entity.getRegisteredAt())
+                .param(ID, entity.getId())
+                .param(REGISTERED_AT, entity.getRegisteredAt())
                 .update();
         if (rowsAffected == 0) {
             throw new UserIsNotAuthorizedException(entity.getId());
@@ -62,16 +65,17 @@ public class JdbcTelegramChatRepositoryImpl implements TelegramChatRepository {
     @Override
     public void update(TelegramChat entity) {
         client.sql("UPDATE telegram_chat SET registered_at=:registered_at WHERE id=:id")
-                .param("id", entity.getId())
-                .param("registered_at", entity.getRegisteredAt())
+                .param(ID, entity.getId())
+                .param(REGISTERED_AT, entity.getRegisteredAt())
                 .update();
     }
 
+    @SuppressWarnings("LineLength")
     @Override
     public void upsert(TelegramChat entity) {
         client.sql("INSERT INTO telegram_chat (id, registered_at) VALUES (:id, :registered_at) ON CONFLICT (id) DO UPDATE SET registered_at=:registered_at")
-                .param("id", entity.getId())
-                .param("registered_at", entity.getRegisteredAt())
+                .param(ID, entity.getId())
+                .param(REGISTERED_AT, entity.getRegisteredAt())
                 .update();
     }
 }

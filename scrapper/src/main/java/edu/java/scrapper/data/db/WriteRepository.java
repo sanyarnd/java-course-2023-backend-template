@@ -2,7 +2,7 @@ package edu.java.scrapper.data.db;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
-public interface WriteRepository <T> {
+public interface WriteRepository<T> {
     /**
      * Base CRUD operation. Create.
      */

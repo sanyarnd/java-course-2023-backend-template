@@ -2,10 +2,10 @@ package edu.java.scrapper.domain.impl;
 
 import edu.java.core.exception.LinkCannotBeHandledException;
 import edu.java.core.request.LinkUpdateRequest;
-import edu.java.scrapper.data.db.repository.LinkRepository;
-import edu.java.scrapper.data.db.repository.BinderRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
+import edu.java.scrapper.data.db.repository.BinderRepository;
+import edu.java.scrapper.data.db.repository.LinkRepository;
 import edu.java.scrapper.data.network.BaseClient;
 import edu.java.scrapper.data.network.NotificationConnector;
 import edu.java.scrapper.domain.ScrappingService;

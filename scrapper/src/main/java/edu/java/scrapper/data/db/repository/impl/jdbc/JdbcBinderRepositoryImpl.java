@@ -16,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public class JdbcBinderRepositoryImpl implements BinderRepository {
+    private final static String NOT_SUPPORTED_DESCRIPTION = "This method is not supported!";
+    private final static String CHAT_ID = "chat_id";
+    private final static String LINK_ID = "link_id";
     private final static String FIND_CHATS_SUBSCRIBED_TO_LINK_ID = "SELECT telegram_chat.id, "
             + "telegram_chat.registered_at FROM telegram_chat INNER JOIN chat_to_link_binding "
             + "ON telegram_chat.id = chat_to_link_binding.chat_id AND chat_to_link_binding.link_id = :link_id";
@@ -33,8 +36,8 @@ public class JdbcBinderRepositoryImpl implements BinderRepository {
     public void create(Pair<TelegramChat, Link> entity) throws LinkAlreadyTrackedException {
         try {
             client.sql("INSERT INTO chat_to_link_binding (chat_id, link_id) VALUES (:chat_id, :link_id)")
-                    .param("chat_id", entity.getLeft().getId())
-                    .param("link_id", entity.getRight().getId())
+                    .param(CHAT_ID, entity.getLeft().getId())
+                    .param(LINK_ID, entity.getRight().getId())
                     .update();
         } catch (DataIntegrityViolationException exception) {
             throw new LinkAlreadyTrackedException(entity.getRight().getId(), entity.getLeft().getId());
@@ -44,8 +47,8 @@ public class JdbcBinderRepositoryImpl implements BinderRepository {
     @Override
     public void delete(Pair<TelegramChat, Link> entity) throws LinkIsNotTrackedException {
         int rowsAffected = client.sql("DELETE FROM chat_to_link_binding WHERE chat_id=:chat_id AND link_id=:link_id")
-                .param("chat_id", entity.getLeft().getId())
-                .param("link_id", entity.getRight().getId())
+                .param(CHAT_ID, entity.getLeft().getId())
+                .param(LINK_ID, entity.getRight().getId())
                 .update();
         if (rowsAffected == 0) {
             throw new LinkIsNotTrackedException(entity.getRight().getUrl(), entity.getLeft().getId());
@@ -54,18 +57,18 @@ public class JdbcBinderRepositoryImpl implements BinderRepository {
 
     @Override
     public void update(Pair<TelegramChat, Link> entity) throws IllegalStateException {
-        throw new IllegalStateException("This method is not supported!");
+        throw new IllegalStateException(NOT_SUPPORTED_DESCRIPTION);
     }
 
     @Override
     public void upsert(Pair<TelegramChat, Link> entity) throws IllegalStateException {
-        throw new IllegalStateException("This method is not supported!");
+        throw new IllegalStateException(NOT_SUPPORTED_DESCRIPTION);
     }
 
     @Override
     public List<TelegramChat> findAllChatsSubscribedTo(Link link) {
         return client.sql(FIND_CHATS_SUBSCRIBED_TO_LINK_ID)
-                .param("link_id", link.getId())
+                .param(LINK_ID, link.getId())
                 .query(new BeanPropertyRowMapper<>(TelegramChat.class))
                 .list();
     }
@@ -73,7 +76,7 @@ public class JdbcBinderRepositoryImpl implements BinderRepository {
     @Override
     public List<Link> findAllLinksSubscribedWith(TelegramChat chat) {
         return client.sql(FIND_LINKS_SUBSCRIBED_WITH_CHAT_ID)
-                .param("chat_id", chat.getId())
+                .param(CHAT_ID, chat.getId())
                 .query(new BeanPropertyRowMapper<>(Link.class))
                 .list();
     }

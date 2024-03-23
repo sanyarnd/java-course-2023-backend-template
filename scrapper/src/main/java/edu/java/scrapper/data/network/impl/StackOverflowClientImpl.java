@@ -85,7 +85,8 @@ public class StackOverflowClientImpl
     }
 
     @Override
-    public List<String> getDifference(StackOverflowPersistenceData before, StackOverflowPersistenceData next) throws IllegalStateException {
+    public List<String> getDifference(StackOverflowPersistenceData before, StackOverflowPersistenceData next)
+            throws IllegalStateException {
         try {
             return ReflectionComparator.getDifference(before, next);
         } catch (IllegalAccessException exception) {

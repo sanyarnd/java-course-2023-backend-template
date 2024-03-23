@@ -3,7 +3,7 @@ package edu.java.scrapper.data.db;
 import java.util.List;
 import java.util.Optional;
 
-public interface ReadRepository <T, I> {
+public interface ReadRepository<T, I> {
     /**
      * Base CRUD operation. Get.
      */

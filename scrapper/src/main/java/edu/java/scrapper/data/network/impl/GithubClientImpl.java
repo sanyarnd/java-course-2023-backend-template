@@ -9,9 +9,9 @@ import edu.java.core.response.github.RepositoryResponse;
 import edu.java.core.util.DifferenceComparator;
 import edu.java.core.util.JsonSerializer;
 import edu.java.core.util.ReflectionComparator;
-import edu.java.scrapper.data.db.repository.LinkContentRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.LinkContent;
+import edu.java.scrapper.data.db.repository.LinkContentRepository;
 import edu.java.scrapper.data.network.BaseClient;
 import edu.java.scrapper.data.network.GithubConnector;
 import java.util.List;
@@ -32,7 +32,11 @@ public class GithubClientImpl
     private final LinkContentRepository contentRepository;
     private final ObjectMapper objectMapper;
 
-    public GithubClientImpl(GithubConnector connector, LinkContentRepository contentRepository, ObjectMapper objectMapper) {
+    public GithubClientImpl(
+            GithubConnector connector,
+            LinkContentRepository contentRepository,
+            ObjectMapper objectMapper
+    ) {
         super(URLS);
         this.connector = connector;
         this.contentRepository = contentRepository;
@@ -84,7 +88,8 @@ public class GithubClientImpl
     }
 
     @Override
-    public List<String> getDifference(GithubPersistenceData before, GithubPersistenceData next) throws IllegalStateException {
+    public List<String> getDifference(GithubPersistenceData before, GithubPersistenceData next)
+            throws IllegalStateException {
         try {
             return ReflectionComparator.getDifference(before, next);
         } catch (IllegalAccessException exception) {

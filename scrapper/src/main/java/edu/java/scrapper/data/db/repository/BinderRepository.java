@@ -1,9 +1,7 @@
 package edu.java.scrapper.data.db.repository;
 
 import edu.java.core.exception.LinkAlreadyTrackedException;
-import edu.java.core.exception.LinkIsNotRegisteredException;
 import edu.java.core.exception.LinkIsNotTrackedException;
-import edu.java.core.exception.UserIsNotAuthorizedException;
 import edu.java.scrapper.data.db.WriteRepository;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
