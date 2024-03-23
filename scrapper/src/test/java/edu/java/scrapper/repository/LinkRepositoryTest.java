@@ -62,8 +62,10 @@ public class LinkRepositoryTest extends PostgresIntegrationTest {
         );
         assertTrue(repository.getAll().isEmpty());
 
-        // Create links
+        // Create List<Link>
         links.forEach(repository::createAndReturn);
+
+        // Check
         assertEquals(links.size(), repository.getAll().size());
     }
 
@@ -150,7 +152,7 @@ public class LinkRepositoryTest extends PostgresIntegrationTest {
                 .setLastUpdatedAt(OffsetDateTime.now());
         assertTrue(repository.getAll().isEmpty());
 
-        // Upsert TelegramChat
+        // Upsert Link
         Link upsertedLink = repository.upsertAndReturn(link);
         assertFalse(repository.getAll().isEmpty());
 
@@ -171,7 +173,7 @@ public class LinkRepositoryTest extends PostgresIntegrationTest {
         assertTrue(repository.getAll().isEmpty());
         link = repository.createAndReturn(link);
 
-        // Upsert TelegramChat
+        // Upsert Link
         link = link.setLastUpdatedAt(OffsetDateTime.now().plusHours(5));
         Link upsertedLink = repository.upsertAndReturn(link);
 

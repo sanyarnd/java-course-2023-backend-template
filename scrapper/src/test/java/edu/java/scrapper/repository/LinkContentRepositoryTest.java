@@ -93,7 +93,7 @@ public class LinkContentRepositoryTest extends PostgresIntegrationTest {
         );
         assertTrue(repository.getAll().isEmpty());
 
-        // Create LinkContents
+        // Create List<LinkContent>
         contents.forEach(repository::create);
 
         // Check
@@ -112,7 +112,7 @@ public class LinkContentRepositoryTest extends PostgresIntegrationTest {
                 .setHash(44);
         assertTrue(repository.getAll().isEmpty());
 
-        // Create TelegramChat
+        // Create LinkContent
         repository.create(content);
         assertFalse(repository.getAll().isEmpty());
 
@@ -133,7 +133,7 @@ public class LinkContentRepositoryTest extends PostgresIntegrationTest {
                 .setHash(44);
         assertTrue(repository.getAll().isEmpty());
 
-        // Create TelegramChat
+        // Create LinkContent
         repository.create(content);
         assertFalse(repository.getAll().isEmpty());
 
@@ -178,12 +178,58 @@ public class LinkContentRepositoryTest extends PostgresIntegrationTest {
         repository.create(content);
         assertFalse(repository.getAll().isEmpty());
 
-        // Update TelegramChat
+        // Update LinkContent
         content = content.setRaw("{ a: 2, b: 3, c: 4 }").setHash(67);
         repository.update(content);
 
         // Check
         LinkContent updatedLinkContent = repository.get(bindedLink.getId()).orElseThrow();
         assertEquals(content, updatedLinkContent);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void assertThatUpsertWhenInsertWorksRight() {
+        // Setup
+        Link bindedLink = bindedLinks.get(0);
+        LinkContent content = new LinkContent()
+                .setId(bindedLink.getId())
+                .setRaw("{ a: 1, b: 2, c: null }")
+                .setHash(44);
+        assertTrue(repository.getAll().isEmpty());
+
+        // Upsert LinkContent
+        repository.upsert(content);
+        assertFalse(repository.getAll().isEmpty());
+
+        // Check
+        LinkContent upsertedContent = repository.get(content.getId()).orElseThrow();
+        assertEquals(content, upsertedContent);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void assertThatUpsertWhenUpdateWorksRight() {
+        // Setup
+        Link bindedLink = bindedLinks.get(0);
+        LinkContent content = new LinkContent()
+                .setId(bindedLink.getId())
+                .setRaw("{ a: 1, b: 2, c: null }")
+                .setHash(44);
+        assertTrue(repository.getAll().isEmpty());
+
+        // Create LinkContent
+        repository.create(content);
+        assertFalse(repository.getAll().isEmpty());
+
+        // Upsert LinkContent
+        content = content.setRaw("{ a: null, b: 2, c: null }").setHash(22);
+        repository.upsert(content);
+
+        // Check
+        LinkContent upsertedContent = repository.get(content.getId()).orElseThrow();
+        assertEquals(content, upsertedContent);
     }
 }

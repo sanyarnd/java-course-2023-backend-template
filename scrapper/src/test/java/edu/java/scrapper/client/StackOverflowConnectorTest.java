@@ -2,8 +2,13 @@ package edu.java.scrapper.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import edu.java.core.response.stackoverflow.Answer;
+import edu.java.core.response.stackoverflow.AnswerResponse;
+import edu.java.core.response.stackoverflow.Comment;
+import edu.java.core.response.stackoverflow.CommentResponse;
 import edu.java.scrapper.data.network.StackOverflowConnector;
 import edu.java.scrapper.data.network.impl.StackOverflowConnectorImpl;
 import org.junit.jupiter.api.AfterAll;
@@ -11,10 +16,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
 @WireMockTest
 public class StackOverflowConnectorTest {
@@ -35,65 +36,123 @@ public class StackOverflowConnectorTest {
     }
 
     @Test
-    public void fetchRepositoryTest() {
-        var questionId = "249231";
-        var body = """
-                {
-                    "items": [
-                      {
-                        "owner": {
-                          "account_id": 202054,
-                          "reputation": 24652,
-                          "user_id": 448875,
-                          "user_type": "registered",
-                          "profile_image": "https://www.gravatar.com/avatar/08bf88dd3de014943401fa7879763a4f?s=256&d=identicon&r=PG",
-                          "display_name": "broot",
-                          "link": "https://stackoverflow.com/users/448875/broot"
-                        },
-                        "is_accepted": false,
-                        "score": 3,
-                        "last_activity_date": 1708686651,
-                        "last_edit_date": 1708686651,
-                        "creation_date": 1708686218,
-                        "answer_id": 78046932,
-                        "question_id": 78046340,
-                        "content_license": "CC BY-SA 4.0"
-                      },
-                      {
-                        "owner": {
-                          "account_id": 15144230,
-                          "reputation": 2691,
-                          "user_id": 10928439,
-                          "user_type": "registered",
-                          "profile_image": "https://www.gravatar.com/avatar/ede5fd9e9ee4f6c685b19960d57ada05?s=256&d=identicon&r=PG&f=y&so-version=2",
-                          "display_name": "Simon Jacobs",
-                          "link": "https://stackoverflow.com/users/10928439/simon-jacobs"
-                        },
-                        "is_accepted": true,
-                        "score": 1,
-                        "last_activity_date": 1708682234,
-                        "creation_date": 1708682234,
-                        "answer_id": 78046513,
-                        "question_id": 78046340,
-                        "content_license": "CC BY-SA 4.0"
-                      }
-                    ],
-                    "has_more": false,
-                    "quota_max": 300,
-                    "quota_remaining": 204
-                  }
-            """;
+    public void fetchQuestionAnswersTest() {
+        var questionId = "78200710";
         stubFor(
-            get(urlEqualTo(String.format("/questions/%s/answers?site=stackoverflow", questionId)))
-                .willReturn(aResponse()
-                    .withStatus(HttpStatus.OK.value())
-                    .withHeader("Content-Type", "application/json")
-                    .withBody(body))
+                get(urlEqualTo(String.format("/questions/%s/answers?site=stackoverflow", questionId)))
+                        .willReturn(aResponse()
+                                .withStatus(HttpStatus.OK.value())
+                                .withHeader("Content-Type", "application/json")
+                                .withBody(ANSWERS_RESPONSE_BODY))
         );
 
-        var response = client.fetchAnswers(questionId);
-        Assertions.assertEquals(2, response.answers().size());
-        Assertions.assertEquals("broot", response.answers().get(0).owner().displayName());
-        Assertions.assertEquals(1, response.answers().get(1).score());
+        AnswerResponse response = client.fetchAnswers(questionId);
+        Assertions.assertEquals(1, response.answers().size());
+        Answer answer = response.answers().get(0);
+        Assertions.assertEquals("Osuwariboy", answer.owner().displayName());
+        Assertions.assertEquals(0, answer.score());
     }
+
+    @Test
+    public void fetchQuestionCommentsTest() {
+        var questionId = "78200710";
+        stubFor(
+                get(urlEqualTo(String.format("/questions/%s/comments?site=stackoverflow", questionId)))
+                        .willReturn(aResponse()
+                                .withStatus(HttpStatus.OK.value())
+                                .withHeader("Content-Type", "application/json")
+                                .withBody(COMMENTS_RESPONSE_BODY))
+        );
+
+        CommentResponse response = client.fetchComments(questionId);
+        Assertions.assertEquals(2, response.comments().size());
+        Comment comment = response.comments().get(1);
+        Assertions.assertEquals("apokryfos", comment.owner().displayName());
+        Assertions.assertEquals(0, comment.score());
+    }
+
+    private final static String ANSWERS_RESPONSE_BODY = """
+            {
+              "items": [
+                {
+                  "owner": {
+                    "account_id": 1477553,
+                    "reputation": 1359,
+                    "user_id": 1387606,
+                    "user_type": "registered",
+                    "accept_rate": 70,
+                    "profile_image": "https://www.gravatar.com/avatar/4b573dfb1d444d7eff698c6aeba5442b?s=256&d=identicon&r=PG",
+                    "display_name": "Osuwariboy",
+                    "link": "https://stackoverflow.com/users/1387606/osuwariboy"
+                  },
+                  "is_accepted": false,
+                  "score": 0,
+                  "last_activity_date": 1711034799,
+                  "creation_date": 1711034799,
+                  "answer_id": 78201095,
+                  "question_id": 78200710,
+                  "content_license": "CC BY-SA 4.0"
+                }
+              ],
+              "has_more": false,
+              "quota_max": 10000,
+              "quota_remaining": 9983
+            }
+            """;
+
+    private final static String COMMENTS_RESPONSE_BODY = """
+            {
+              "items": [
+                {
+                  "owner": {
+                    "account_id": 1477553,
+                    "reputation": 1359,
+                    "user_id": 1387606,
+                    "user_type": "registered",
+                    "accept_rate": 70,
+                    "profile_image": "https://www.gravatar.com/avatar/4b573dfb1d444d7eff698c6aeba5442b?s=256&d=identicon&r=PG",
+                    "display_name": "Osuwariboy",
+                    "link": "https://stackoverflow.com/users/1387606/osuwariboy"
+                  },
+                  "reply_to_user": {
+                    "account_id": 226653,
+                    "reputation": 39656,
+                    "user_id": 487813,
+                    "user_type": "registered",
+                    "accept_rate": 84,
+                    "profile_image": "https://i.stack.imgur.com/lU5if.jpg?s=256&g=1",
+                    "display_name": "apokryfos",
+                    "link": "https://stackoverflow.com/users/487813/apokryfos"
+                  },
+                  "edited": false,
+                  "score": 0,
+                  "creation_date": 1711033925,
+                  "post_id": 78200710,
+                  "comment_id": 137865564,
+                  "content_license": "CC BY-SA 4.0"
+                },
+                {
+                  "owner": {
+                    "account_id": 226653,
+                    "reputation": 39656,
+                    "user_id": 487813,
+                    "user_type": "registered",
+                    "accept_rate": 84,
+                    "profile_image": "https://i.stack.imgur.com/lU5if.jpg?s=256&g=1",
+                    "display_name": "apokryfos",
+                    "link": "https://stackoverflow.com/users/487813/apokryfos"
+                  },
+                  "edited": false,
+                  "score": 0,
+                  "creation_date": 1711032967,
+                  "post_id": 78200710,
+                  "comment_id": 137865364,
+                  "content_license": "CC BY-SA 4.0"
+                }
+              ],
+              "has_more": false,
+              "quota_max": 10000,
+              "quota_remaining": 9998
+            }
+            """;
 }

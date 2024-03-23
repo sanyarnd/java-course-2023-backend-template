@@ -32,7 +32,7 @@ public class StackOverflowConnectorImpl implements StackOverflowConnector {
     public CommentResponse fetchComments(String questionId) {
         return webClient
                 .get()
-                .uri("/questions/{questionId}/comments?order=desc&sort=creation&site=stackoverflow", questionId)
+                .uri("/questions/{questionId}/comments?site=stackoverflow", questionId)
                 .retrieve()
                 .bodyToMono(CommentResponse.class)
                 .block();

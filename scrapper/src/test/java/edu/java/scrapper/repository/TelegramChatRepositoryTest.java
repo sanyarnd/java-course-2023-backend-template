@@ -61,7 +61,7 @@ public class TelegramChatRepositoryTest extends PostgresIntegrationTest {
         );
         assertTrue(repository.getAll().isEmpty());
 
-        // Create TelegramChats
+        // Create List<TelegramChat>
         chats.forEach(repository::create);
 
         // Check
