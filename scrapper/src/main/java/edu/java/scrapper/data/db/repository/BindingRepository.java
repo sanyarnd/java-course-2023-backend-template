@@ -3,23 +3,23 @@ package edu.java.scrapper.data.db.repository;
 import edu.java.core.exception.LinkAlreadyTrackedException;
 import edu.java.core.exception.LinkIsNotTrackedException;
 import edu.java.scrapper.data.db.WriteRepository;
+import edu.java.scrapper.data.db.entity.Binding;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
 import java.util.List;
-import org.apache.commons.lang3.tuple.Pair;
 
-public interface BinderRepository extends WriteRepository<Pair<TelegramChat, Link>> {
+public interface BindingRepository extends WriteRepository<Binding> {
     @Override
-    void create(Pair<TelegramChat, Link> entity) throws LinkAlreadyTrackedException;
-
-    @Override
-    void delete(Pair<TelegramChat, Link> entity) throws LinkIsNotTrackedException;
+    void create(Binding entity) throws LinkAlreadyTrackedException;
 
     @Override
-    void update(Pair<TelegramChat, Link> entity) throws IllegalStateException;
+    void delete(Binding entity) throws LinkIsNotTrackedException;
 
     @Override
-    void upsert(Pair<TelegramChat, Link> entity) throws IllegalStateException;
+    void update(Binding entity) throws IllegalStateException;
+
+    @Override
+    void upsert(Binding entity) throws IllegalStateException;
 
     List<TelegramChat> findAllChatsSubscribedTo(Link link);
 

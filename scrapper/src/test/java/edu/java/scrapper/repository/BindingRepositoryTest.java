@@ -3,16 +3,16 @@ package edu.java.scrapper.repository;
 import edu.java.core.exception.LinkAlreadyTrackedException;
 import edu.java.core.exception.LinkIsNotTrackedException;
 import edu.java.scrapper.PostgresIntegrationTest;
+import edu.java.scrapper.data.db.entity.Binding;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
-import edu.java.scrapper.data.db.repository.BinderRepository;
+import edu.java.scrapper.data.db.repository.BindingRepository;
 import edu.java.scrapper.data.db.repository.LinkRepository;
 import edu.java.scrapper.data.db.repository.TelegramChatRepository;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Pair;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,9 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @SpringBootTest
-public class BinderRepositoryTest extends PostgresIntegrationTest {
+public class BindingRepositoryTest extends PostgresIntegrationTest {
     @Autowired
-    private BinderRepository repository;
+    private BindingRepository repository;
 
     @Autowired
     private LinkRepository linkRepository;
@@ -83,10 +83,10 @@ public class BinderRepositoryTest extends PostgresIntegrationTest {
         TelegramChat telegramChat = bindedChats.get(0);
 
         // Create Binding
-        repository.create(Pair.of(telegramChat, link));
+        repository.create(new Binding(telegramChat, link));
 
         // Check
-        assertThrows(LinkAlreadyTrackedException.class, () -> repository.create(Pair.of(telegramChat, link)));
+        assertThrows(LinkAlreadyTrackedException.class, () -> repository.create(new Binding(telegramChat, link)));
     }
 
     @Test
@@ -98,13 +98,13 @@ public class BinderRepositoryTest extends PostgresIntegrationTest {
         TelegramChat telegramChat = bindedChats.get(0);
 
         // Create Binding
-        repository.create(Pair.of(telegramChat, link));
+        repository.create(new Binding(telegramChat, link));
 
         // Delete Binding
-        repository.delete(Pair.of(telegramChat, link));
+        repository.delete(new Binding(telegramChat, link));
 
         // Check
-        assertThrows(LinkIsNotTrackedException.class, () -> repository.delete(Pair.of(telegramChat, link)));
+        assertThrows(LinkIsNotTrackedException.class, () -> repository.delete(new Binding(telegramChat, link)));
     }
 
     @Test
@@ -116,7 +116,7 @@ public class BinderRepositoryTest extends PostgresIntegrationTest {
         TelegramChat telegramChat = bindedChats.get(0);
 
         // Check
-        assertThrows(IllegalStateException.class, () -> repository.update(Pair.of(telegramChat, link)));
+        assertThrows(IllegalStateException.class, () -> repository.update(new Binding(telegramChat, link)));
     }
 
     @Test
@@ -128,7 +128,7 @@ public class BinderRepositoryTest extends PostgresIntegrationTest {
         TelegramChat telegramChat = bindedChats.get(0);
 
         // Check
-        assertThrows(IllegalStateException.class, () -> repository.upsert(Pair.of(telegramChat, link)));
+        assertThrows(IllegalStateException.class, () -> repository.upsert(new Binding(telegramChat, link)));
     }
 
     @Test
@@ -140,7 +140,7 @@ public class BinderRepositoryTest extends PostgresIntegrationTest {
         TelegramChat telegramChat = bindedChats.get(0);
 
         // Create Binding
-        repository.create(Pair.of(telegramChat, link));
+        repository.create(new Binding(telegramChat, link));
 
         // Check
         List<TelegramChat> chats = repository.findAllChatsSubscribedTo(link);
@@ -156,7 +156,7 @@ public class BinderRepositoryTest extends PostgresIntegrationTest {
         Link link = bindedLinks.get(0);
 
         // Create Bindings
-        bindedChats.forEach(telegramChat -> repository.create(Pair.of(telegramChat, link)));
+        bindedChats.forEach(telegramChat -> repository.create(new Binding(telegramChat, link)));
 
         // Check
         List<TelegramChat> chats = repository.findAllChatsSubscribedTo(link);
@@ -172,7 +172,7 @@ public class BinderRepositoryTest extends PostgresIntegrationTest {
         TelegramChat telegramChat = bindedChats.get(0);
 
         // Create Binding
-        repository.create(Pair.of(telegramChat, link));
+        repository.create(new Binding(telegramChat, link));
 
         // Check
         List<Link> chats = repository.findAllLinksSubscribedWith(telegramChat);
@@ -188,7 +188,7 @@ public class BinderRepositoryTest extends PostgresIntegrationTest {
         TelegramChat telegramChat = bindedChats.get(0);
 
         // Create Bindings
-        bindedLinks.forEach(link -> repository.create(Pair.of(telegramChat, link)));
+        bindedLinks.forEach(link -> repository.create(new Binding(telegramChat, link)));
 
         // Check
         List<Link> links = repository.findAllLinksSubscribedWith(telegramChat);

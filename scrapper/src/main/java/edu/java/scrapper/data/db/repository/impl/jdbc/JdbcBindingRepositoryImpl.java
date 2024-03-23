@@ -2,11 +2,11 @@ package edu.java.scrapper.data.db.repository.impl.jdbc;
 
 import edu.java.core.exception.LinkAlreadyTrackedException;
 import edu.java.core.exception.LinkIsNotTrackedException;
+import edu.java.scrapper.data.db.entity.Binding;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
-import edu.java.scrapper.data.db.repository.BinderRepository;
+import edu.java.scrapper.data.db.repository.BindingRepository;
 import java.util.List;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public class JdbcBinderRepositoryImpl implements BinderRepository {
+public class JdbcBindingRepositoryImpl implements BindingRepository {
     private final static String NOT_SUPPORTED_DESCRIPTION = "This method is not supported!";
     private final static String CHAT_ID = "chat_id";
     private final static String LINK_ID = "link_id";
@@ -28,40 +28,40 @@ public class JdbcBinderRepositoryImpl implements BinderRepository {
 
     private final JdbcClient client;
 
-    public JdbcBinderRepositoryImpl(JdbcClient client) {
+    public JdbcBindingRepositoryImpl(JdbcClient client) {
         this.client = client;
     }
 
     @Override
-    public void create(Pair<TelegramChat, Link> entity) throws LinkAlreadyTrackedException {
+    public void create(Binding entity) throws LinkAlreadyTrackedException {
         try {
             client.sql("INSERT INTO chat_to_link_binding (chat_id, link_id) VALUES (:chat_id, :link_id)")
-                    .param(CHAT_ID, entity.getLeft().getId())
-                    .param(LINK_ID, entity.getRight().getId())
+                    .param(CHAT_ID, entity.getChatId())
+                    .param(LINK_ID, entity.getLinkId())
                     .update();
         } catch (DataIntegrityViolationException exception) {
-            throw new LinkAlreadyTrackedException(entity.getRight().getId(), entity.getLeft().getId());
+            throw new LinkAlreadyTrackedException(entity.getLinkId(), entity.getChatId());
         }
     }
 
     @Override
-    public void delete(Pair<TelegramChat, Link> entity) throws LinkIsNotTrackedException {
+    public void delete(Binding entity) throws LinkIsNotTrackedException {
         int rowsAffected = client.sql("DELETE FROM chat_to_link_binding WHERE chat_id=:chat_id AND link_id=:link_id")
-                .param(CHAT_ID, entity.getLeft().getId())
-                .param(LINK_ID, entity.getRight().getId())
+                .param(CHAT_ID, entity.getChatId())
+                .param(LINK_ID, entity.getLinkId())
                 .update();
         if (rowsAffected == 0) {
-            throw new LinkIsNotTrackedException(entity.getRight().getUrl(), entity.getLeft().getId());
+            throw new LinkIsNotTrackedException(entity.getLinkId(), entity.getChatId());
         }
     }
 
     @Override
-    public void update(Pair<TelegramChat, Link> entity) throws IllegalStateException {
+    public void update(Binding entity) throws IllegalStateException {
         throw new IllegalStateException(NOT_SUPPORTED_DESCRIPTION);
     }
 
     @Override
-    public void upsert(Pair<TelegramChat, Link> entity) throws IllegalStateException {
+    public void upsert(Binding entity) throws IllegalStateException {
         throw new IllegalStateException(NOT_SUPPORTED_DESCRIPTION);
     }
 

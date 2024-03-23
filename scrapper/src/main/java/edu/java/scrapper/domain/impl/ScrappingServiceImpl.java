@@ -4,7 +4,7 @@ import edu.java.core.exception.LinkCannotBeHandledException;
 import edu.java.core.request.LinkUpdateRequest;
 import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
-import edu.java.scrapper.data.db.repository.BinderRepository;
+import edu.java.scrapper.data.db.repository.BindingRepository;
 import edu.java.scrapper.data.db.repository.LinkRepository;
 import edu.java.scrapper.data.network.BaseClient;
 import edu.java.scrapper.data.network.NotificationConnector;
@@ -24,20 +24,20 @@ import org.springframework.stereotype.Service;
 public class ScrappingServiceImpl implements ScrappingService {
     private final List<BaseClient> scrapperClients;
     private final LinkRepository linkRepository;
-    private final BinderRepository binderRepository;
+    private final BindingRepository bindingRepository;
     private final NotificationConnector notificationConnector;
     private final Duration linkExpiration;
 
     public ScrappingServiceImpl(
             List<BaseClient> scrapperClients,
             LinkRepository linkRepository,
-            BinderRepository binderRepository,
+            BindingRepository bindingRepository,
             NotificationConnector notificationConnector,
             @Qualifier("expiration") Duration linkExpiration
     ) {
         this.scrapperClients = scrapperClients;
         this.linkRepository = linkRepository;
-        this.binderRepository = binderRepository;
+        this.bindingRepository = bindingRepository;
         this.notificationConnector = notificationConnector;
         this.linkExpiration = linkExpiration;
     }
@@ -86,7 +86,7 @@ public class ScrappingServiceImpl implements ScrappingService {
                             link.getId(),
                             link.getUrl(),
                             message,
-                            binderRepository.findAllChatsSubscribedTo(link)
+                            bindingRepository.findAllChatsSubscribedTo(link)
                                     .stream()
                                     .map(TelegramChat::getId)
                                     .toList()
