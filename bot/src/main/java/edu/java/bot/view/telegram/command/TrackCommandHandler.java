@@ -2,8 +2,7 @@ package edu.java.bot.view.telegram.command;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.domain.subscribe.TrackLinkResponse;
-import edu.java.bot.domain.subscribe.TrackLinkUseCase;
+import edu.java.bot.domain.TrackLinkUseCase;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
@@ -34,15 +33,7 @@ public class TrackCommandHandler implements CommandHandler {
         var matcher = getPattern().matcher(update.message().text());
         if (matcher.find()) {
             var response = tracker.trackLink(update.message().from(), matcher.group(1));
-            String message = null;
-            if (response instanceof TrackLinkResponse.Ok) {
-                message = "Link subscribed";
-            } else if (response instanceof TrackLinkResponse.AlreadyRegistered) {
-                message = "Link is already registered!";
-            } else if (response instanceof TrackLinkResponse.UserIsNotDefined) {
-                message = "You have to login first!";
-            }
-            return Optional.of(new SendMessage(update.message().chat().id(), message));
+            return Optional.of(new SendMessage(update.message().chat().id(), response.getMessage()));
         } else {
             return Optional.empty();
         }

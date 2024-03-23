@@ -2,8 +2,7 @@ package edu.java.bot.view.telegram.command;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import edu.java.bot.domain.register.RegisterUserResponse;
-import edu.java.bot.domain.register.RegisterUserUseCase;
+import edu.java.bot.domain.RegisterUserUseCase;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -26,12 +25,6 @@ public class StartCommandHandler implements CommandHandler {
     @Override
     public Optional<SendMessage> handle(Update update) {
         var response = register.registerUser(update.message().from());
-        String message = null;
-        if (response instanceof RegisterUserResponse.Ok) {
-            message = "Registration successful";
-        } else if (response instanceof RegisterUserResponse.AlreadyRegistered) {
-            message = "You already logged in!";
-        }
-        return Optional.of(new SendMessage(update.message().chat().id(), message));
+        return Optional.of(new SendMessage(update.message().chat().id(), response.getMessage()));
     }
 }

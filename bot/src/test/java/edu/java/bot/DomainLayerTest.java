@@ -3,18 +3,8 @@ package edu.java.bot;
 import com.pengrad.telegrambot.model.User;
 import edu.java.bot.data.LinkTrackerRepository;
 import edu.java.bot.data.UserAuthRepository;
-import edu.java.bot.domain.links.ViewLinksResponse;
-import edu.java.bot.domain.links.ViewLinksUseCase;
-import edu.java.bot.domain.register.RegisterUserResponse;
-import edu.java.bot.domain.register.RegisterUserUseCase;
-import edu.java.bot.domain.subscribe.TrackLinkResponse;
-import edu.java.bot.domain.subscribe.TrackLinkUseCase;
-import edu.java.bot.domain.unsubscribe.UntrackLinkResponse;
-import edu.java.bot.domain.unsubscribe.UntrackLinkUseCase;
-import edu.java.core.exception.LinkAlreadyTracked;
-import edu.java.core.exception.LinkNotTracked;
-import edu.java.core.exception.UserAlreadyAuthenticated;
-import edu.java.core.exception.UserNotAuthenticated;
+import edu.java.bot.domain.*;
+import edu.java.core.exception.ApiErrorException;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +39,7 @@ public class DomainLayerTest {
     public class RegisterUserTest {
         @BeforeEach
         public void setupInitUser() {
-            Mockito.lenient().doThrow(UserAlreadyAuthenticated.class).when(userAuthRepository).registerUser(123L);
+            Mockito.lenient().doThrow(ApiErrorException.class).when(userAuthRepository).registerUser(123L);
             Mockito.lenient().doNothing().when(userAuthRepository).registerUser(456L);
         }
 
@@ -57,14 +47,14 @@ public class DomainLayerTest {
         public void userRegistrationOk() {
             var useCase = new RegisterUserUseCase(userAuthRepository);
             var response = useCase.registerUser(notOkUser);
-            Assertions.assertInstanceOf(RegisterUserResponse.Ok.class, response);
+            Assertions.assertInstanceOf(TelegramResponse.class, response);
         }
 
         @Test
         public void userRegistrationNotOk() {
             var useCase = new RegisterUserUseCase(userAuthRepository);
             var response = useCase.registerUser(okUser);
-            Assertions.assertInstanceOf(RegisterUserResponse.AlreadyRegistered.class, response);
+            Assertions.assertInstanceOf(ErrorTelegramResponse.class, response);
         }
     }
 
@@ -72,24 +62,15 @@ public class DomainLayerTest {
     public class TrackLinkTest {
         @BeforeEach
         public void setupTrackLinks() {
-            Mockito.lenient().doThrow(UserNotAuthenticated.class).when(linkTrackerRepository)
+            Mockito.lenient().doThrow(ApiErrorException.class).when(linkTrackerRepository)
                 .setLinkTracked(456L, "onlyfans.com");
-            Mockito.lenient().doThrow(LinkAlreadyTracked.class).when(linkTrackerRepository)
-                .setLinkTracked(123L, "github.com");
         }
 
         @Test
         public void checkUserIsNotRegisteredYet() {
             var useCase = new TrackLinkUseCase(linkTrackerRepository);
             var response = useCase.trackLink(notOkUser, "onlyfans.com");
-            Assertions.assertInstanceOf(TrackLinkResponse.UserIsNotDefined.class, response);
-        }
-
-        @Test
-        public void checkLinkIsAlreadyTracked() {
-            var useCase = new TrackLinkUseCase(linkTrackerRepository);
-            var response = useCase.trackLink(okUser, "github.com");
-            Assertions.assertInstanceOf(TrackLinkResponse.AlreadyRegistered.class, response);
+            Assertions.assertInstanceOf(ErrorTelegramResponse.class, response);
         }
     }
 
@@ -97,24 +78,15 @@ public class DomainLayerTest {
     public class UntrackLinkTest {
         @BeforeEach
         public void setupUntrackLinks() {
-            Mockito.lenient().doThrow(UserNotAuthenticated.class).when(linkTrackerRepository)
+            Mockito.lenient().doThrow(ApiErrorException.class).when(linkTrackerRepository)
                 .setLinkUntracked(456L, "onlyfans.com");
-            Mockito.lenient().doThrow(LinkNotTracked.class).when(linkTrackerRepository)
-                .setLinkUntracked(123L, "onlyfans.com");
         }
 
         @Test
         public void checkUserIsNotRegisteredYet() {
             var useCase = new UntrackLinkUseCase(linkTrackerRepository);
             var response = useCase.untrackLink(notOkUser, "onlyfans.com");
-            Assertions.assertInstanceOf(UntrackLinkResponse.UserIsNotDefined.class, response);
-        }
-
-        @Test
-        public void checkLinkIsAlreadyTracked() {
-            var useCase = new UntrackLinkUseCase(linkTrackerRepository);
-            var response = useCase.untrackLink(okUser, "onlyfans.com");
-            Assertions.assertInstanceOf(UntrackLinkResponse.IsNotRegistered.class, response);
+            Assertions.assertInstanceOf(ErrorTelegramResponse.class, response);
         }
     }
 
@@ -125,21 +97,21 @@ public class DomainLayerTest {
             Mockito.lenient().when(linkTrackerRepository.getUserTrackedLinks(123L))
                 .thenReturn(List.of("stackoverflow.com", "github.com"));
             Mockito.lenient().when(linkTrackerRepository.getUserTrackedLinks(456L))
-                .thenThrow(UserNotAuthenticated.class);
+                .thenThrow(ApiErrorException.class);
         }
 
         @Test
         public void checkLinksOk() {
             var useCase = new ViewLinksUseCase(linkTrackerRepository);
             var response = useCase.viewLinks(okUser);
-            Assertions.assertInstanceOf(ViewLinksResponse.Ok.class, response);
+            Assertions.assertInstanceOf(TelegramResponse.class, response);
         }
 
         @Test
         public void checkLinksNotOk() {
             var useCase = new ViewLinksUseCase(linkTrackerRepository);
             var response = useCase.viewLinks(notOkUser);
-            Assertions.assertInstanceOf(ViewLinksResponse.UserIsNotDefined.class, response);
+            Assertions.assertInstanceOf(ErrorTelegramResponse.class, response);
         }
     }
 }

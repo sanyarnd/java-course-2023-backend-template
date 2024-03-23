@@ -4,18 +4,24 @@ app:
     interval: 10s
     force-check-delay: 10s
   api:
-    github: https://api.github.com/
-    stack-overflow: https://api.stackexchange.com/
-    bot: http://localhost:8090/
+    github: https://api.github.com
+    stack-overflow: https://api.stackexchange.com
+    bot: http://localhost:8090
 
 spring:
   application:
     name: scrapper
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgresql:5432/scrapper
+    url: jdbc:postgresql://localhost:5432/scrapper
     username: postgres
     password: postgres
+  liquibase:
+    enabled: false
+
+springdoc:
+  swagger-ui:
+    path: /
 
 server:
   port: 8080

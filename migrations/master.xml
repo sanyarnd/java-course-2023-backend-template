@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--suppress XmlUnusedNamespaceDeclaration -->
 <databaseChangeLog
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
-       http://www.liquibase.org/xml/ns/dbchangelog-ext https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <include file="init.sql"/>
+    <changeSet id="1" author="AlexCawl">
+        <sqlFile path="migration-1.sql"/>
+    </changeSet>
+
+    <changeSet id="2" author="AlexCawl">
+        <sqlFile path="migration-2.sql"/>
+    </changeSet>
 </databaseChangeLog>

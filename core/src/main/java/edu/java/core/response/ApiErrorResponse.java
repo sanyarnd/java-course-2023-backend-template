@@ -8,7 +8,7 @@ public record ApiErrorResponse(
     String description,
 
     @JsonProperty("code")
-    String code,
+    Integer code,
 
     @JsonProperty("exceptionName")
     String exceptionName,
