@@ -1,9 +1,17 @@
 package edu.java.core.util;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
 
 public class ReflectionComparator {
+    private ReflectionComparator() {
+    }
+
     public static Map<String, String> getObjectAsMap(Object object) throws IllegalAccessException {
         SortedMap<String, String> dictionary = new TreeMap<>();
         Field[] declaredFields = object.getClass().getDeclaredFields();
