@@ -1,6 +1,7 @@
 package edu.java.scrapper.data.db.repository;
 
 import edu.java.core.exception.UserAlreadyAuthorizedException;
+import edu.java.core.exception.UserIsNotAuthorizedException;
 import edu.java.scrapper.data.db.ReadRepository;
 import edu.java.scrapper.data.db.WriteRepository;
 import edu.java.scrapper.data.db.entity.TelegramChat;
@@ -10,5 +11,5 @@ public interface TelegramChatRepository extends ReadRepository<TelegramChat, Lon
     void create(TelegramChat entity) throws UserAlreadyAuthorizedException;
 
     @Override
-    void delete(TelegramChat entity) throws UserAlreadyAuthorizedException;
+    void delete(TelegramChat entity) throws UserIsNotAuthorizedException;
 }

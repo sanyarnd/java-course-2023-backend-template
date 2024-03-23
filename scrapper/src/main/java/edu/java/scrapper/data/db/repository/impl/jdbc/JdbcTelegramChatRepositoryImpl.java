@@ -1,10 +1,12 @@
 package edu.java.scrapper.data.db.repository.impl.jdbc;
 
 import edu.java.core.exception.UserAlreadyAuthorizedException;
+import edu.java.core.exception.UserIsNotAuthorizedException;
 import edu.java.scrapper.data.db.entity.TelegramChat;
 import edu.java.scrapper.data.db.repository.TelegramChatRepository;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
@@ -36,18 +38,25 @@ public class JdbcTelegramChatRepositoryImpl implements TelegramChatRepository {
 
     @Override
     public void create(TelegramChat entity) throws UserAlreadyAuthorizedException {
-        client.sql("INSERT INTO telegram_chat (id, registered_at) VALUES (:id, :registered_at)")
-                .param("id", entity.getId())
-                .param("registered_at", entity.getRegisteredAt())
-                .update();
+        try {
+            client.sql("INSERT INTO telegram_chat (id, registered_at) VALUES (:id, :registered_at)")
+                    .param("id", entity.getId())
+                    .param("registered_at", entity.getRegisteredAt())
+                    .update();
+        } catch (DataIntegrityViolationException exception) {
+            throw new UserAlreadyAuthorizedException(entity.getId());
+        }
     }
 
     @Override
-    public void delete(TelegramChat entity) throws UserAlreadyAuthorizedException {
-        client.sql("DELETE from telegram_chat WHERE id=:id AND registered_at=:registered_at")
+    public void delete(TelegramChat entity) throws UserIsNotAuthorizedException {
+        int rowsAffected = client.sql("DELETE from telegram_chat WHERE id=:id AND registered_at=:registered_at")
                 .param("id", entity.getId())
                 .param("registered_at", entity.getRegisteredAt())
                 .update();
+        if (rowsAffected == 0) {
+            throw new UserIsNotAuthorizedException(entity.getId());
+        }
     }
 
     @Override

@@ -5,7 +5,9 @@ import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.repository.LinkRepository;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -181,5 +183,49 @@ public class LinkRepositoryTest extends PostgresIntegrationTest {
         assertNotNull(upsertedLink.getId());
         assertEquals(link.getUrl(), upsertedLink.getUrl());
         assertEquals(link.getLastUpdatedAt().toEpochSecond(), upsertedLink.getLastUpdatedAt().toEpochSecond());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void assertThatGetByUrlWorksRight() {
+        // Setup
+        Link link = new Link()
+                .setUrl("https://github.com")
+                .setLastUpdatedAt(OffsetDateTime.now());
+        assertTrue(repository.getAll().isEmpty());
+        link = repository.createAndReturn(link);
+
+        // Check existing
+        assertEquals(link, repository.getByUrl(link.getUrl()).orElseThrow());
+
+        // Check non-existing
+        assertThrows(NoSuchElementException.class, () -> repository.getByUrl("https://vk.com").orElseThrow());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void assertThatGetAllUpdatedBeforeWorksRight() {
+        // Setup
+        List<Link> links = Stream.of(
+                        new Link()
+                                .setUrl("https://github.com")
+                                .setLastUpdatedAt(OffsetDateTime.now().minusHours(5)),
+                        new Link()
+                                .setUrl("https://vk.com")
+                                .setLastUpdatedAt(OffsetDateTime.now().minusHours(5)),
+                        new Link()
+                                .setUrl("https://stackoverflow.com")
+                                .setLastUpdatedAt(OffsetDateTime.now().minusHours(5))
+                )
+                .map(repository::createAndReturn)
+                .toList();
+
+        // Check to-update
+        assertEquals(links, repository.getAllUpdatedBefore(OffsetDateTime.now()));
+
+        // Check to-not-update
+        assertTrue(repository.getAllUpdatedBefore(OffsetDateTime.now().minusHours(6)).isEmpty());
     }
 }

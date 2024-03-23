@@ -37,7 +37,7 @@ public class JdbcBinderRepositoryImpl implements BinderRepository {
                     .param("link_id", entity.getRight().getId())
                     .update();
         } catch (DataIntegrityViolationException exception) {
-            throw new LinkAlreadyTrackedException(entity.getLeft().getId(), entity.getRight().getId());
+            throw new LinkAlreadyTrackedException(entity.getRight().getId(), entity.getLeft().getId());
         }
     }
 
@@ -48,7 +48,7 @@ public class JdbcBinderRepositoryImpl implements BinderRepository {
                 .param("link_id", entity.getRight().getId())
                 .update();
         if (rowsAffected == 0) {
-            throw new LinkIsNotTrackedException(entity.getRight().getUrl());
+            throw new LinkIsNotTrackedException(entity.getRight().getUrl(), entity.getLeft().getId());
         }
     }
 

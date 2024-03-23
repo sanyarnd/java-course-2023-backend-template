@@ -1,5 +1,7 @@
 package edu.java.scrapper.repository;
 
+import edu.java.core.exception.UserAlreadyAuthorizedException;
+import edu.java.core.exception.UserIsNotAuthorizedException;
 import edu.java.scrapper.PostgresIntegrationTest;
 import edu.java.scrapper.data.db.entity.TelegramChat;
 import edu.java.scrapper.data.db.repository.TelegramChatRepository;
@@ -10,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -91,7 +92,7 @@ public class TelegramChatRepositoryTest extends PostgresIntegrationTest {
     @Test
     @Transactional
     @Rollback
-    public void assertThatCreateThrowsDataIntegrityViolationExceptionWithSameEntity() {
+    public void assertThatCreateThrowsUserAlreadyAuthorizedExceptionWithSameEntity() {
         // Setup
         TelegramChat telegramChat = new TelegramChat()
                 .setId(123L)
@@ -103,7 +104,7 @@ public class TelegramChatRepositoryTest extends PostgresIntegrationTest {
         assertFalse(repository.getAll().isEmpty());
 
         // Check
-        assertThrows(DataIntegrityViolationException.class, () -> repository.create(telegramChat));
+        assertThrows(UserAlreadyAuthorizedException.class, () -> repository.create(telegramChat));
     }
 
     @Test
@@ -123,6 +124,28 @@ public class TelegramChatRepositoryTest extends PostgresIntegrationTest {
         // Check
         repository.delete(telegramChat);
         assertTrue(repository.getAll().isEmpty());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void assertThatDeleteThrowsUserIsNotAuthorizedExceptionWithSameEntity() {
+        // Setup
+        TelegramChat telegramChat = new TelegramChat()
+                .setId(123L)
+                .setRegisteredAt(OffsetDateTime.now());
+        assertTrue(repository.getAll().isEmpty());
+
+        // Create TelegramChat
+        repository.create(telegramChat);
+        assertFalse(repository.getAll().isEmpty());
+
+        // Delete TelegramChat
+        repository.delete(telegramChat);
+        assertTrue(repository.getAll().isEmpty());
+
+        // Check
+        assertThrows(UserIsNotAuthorizedException.class, () -> repository.delete(telegramChat));
     }
 
     @Test
