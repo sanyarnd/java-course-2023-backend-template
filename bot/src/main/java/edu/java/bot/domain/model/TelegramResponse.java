@@ -1,4 +1,4 @@
-package edu.java.bot.domain;
+package edu.java.bot.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

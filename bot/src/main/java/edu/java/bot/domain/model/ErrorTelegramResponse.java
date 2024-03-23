@@ -1,4 +1,4 @@
-package edu.java.bot.domain;
+package edu.java.bot.domain.model;
 
 import edu.java.core.exception.ApiErrorException;
 import lombok.Getter;
