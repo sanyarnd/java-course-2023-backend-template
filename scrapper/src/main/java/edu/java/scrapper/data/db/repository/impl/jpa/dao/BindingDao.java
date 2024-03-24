@@ -23,4 +23,8 @@ public interface BindingDao extends JpaRepository<Binding, Binding.BindingPK> {
             nativeQuery = true
     )
     int delete(@Param("chat_id") Long chatId, @Param("link_id") Long linkId);
+
+    List<Binding> findAllByLinkId(Long linkId);
+
+    List<Binding> findAllByChatId(Long chatId);
 }
