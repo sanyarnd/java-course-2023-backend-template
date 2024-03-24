@@ -86,6 +86,7 @@ public class LinkRepositoryTest extends PostgresIntegrationTest {
 
         // Check
         assertFalse(repository.getAll().isEmpty());
+        assertNotNull(createdLink.getId());
         assertEquals(link.getUrl(), createdLink.getUrl());
         assertEquals(link.getLastUpdatedAt().toEpochSecond(), createdLink.getLastUpdatedAt().toEpochSecond());
     }

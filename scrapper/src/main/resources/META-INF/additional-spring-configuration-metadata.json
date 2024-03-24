@@ -1,34 +1,39 @@
 {
-    "properties": [
-        {
-            "description": "Is scheduler enabled.",
-            "name": "app.scheduler.enable",
-            "type": "java.lang.Boolean"
-        },
-        {
-            "name": "app.scheduler.interval",
-            "type": "java.time.Duration",
-            "description": "Scheduler interval in milliseconds/seconds/minutes."
-        },
-        {
-            "name": "app.scheduler.link-expiration",
-            "type": "java.time.Duration",
-            "description": "Link expiration time in milliseconds/seconds/minutes."
-        },
-        {
-            "name": "app.api.github",
-            "type": "java.lang.String",
-            "description": "Endpoint for GitHub API."
-        },
-        {
-            "name": "app.api.stack-overflow",
-            "type": "java.lang.String",
-            "description": "Endpoint for Stack Overflow API."
-        },
-        {
-            "name": "app.api.bot",
-            "type": "java.lang.String",
-            "description": "Endpoint for bot service."
-        }
-    ]
+  "properties": [
+    {
+      "description": "Is scheduler enabled.",
+      "name": "app.scheduler.enable",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "app.scheduler.interval",
+      "type": "java.time.Duration",
+      "description": "Scheduler interval in milliseconds/seconds/minutes."
+    },
+    {
+      "name": "app.scheduler.link-expiration",
+      "type": "java.time.Duration",
+      "description": "Link expiration time in milliseconds/seconds/minutes."
+    },
+    {
+      "name": "app.api.github",
+      "type": "java.lang.String",
+      "description": "Endpoint for GitHub API."
+    },
+    {
+      "name": "app.api.stack-overflow",
+      "type": "java.lang.String",
+      "description": "Endpoint for Stack Overflow API."
+    },
+    {
+      "name": "app.api.bot",
+      "type": "java.lang.String",
+      "description": "Endpoint for bot service."
+    },
+    {
+      "name": "app.database-access-type",
+      "type": "java.lang.String",
+      "description": "Type of database access API. Can be either JDBC or JPA."
+    }
+  ]
 }

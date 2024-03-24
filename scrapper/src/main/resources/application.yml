@@ -7,6 +7,7 @@ app:
     github: https://api.github.com
     stack-overflow: https://api.stackexchange.com
     bot: http://localhost:8090
+  database-access-type: jpa
 
 spring:
   application:

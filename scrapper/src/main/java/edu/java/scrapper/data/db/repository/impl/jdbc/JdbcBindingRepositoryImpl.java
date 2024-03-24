@@ -7,14 +7,14 @@ import edu.java.scrapper.data.db.entity.Link;
 import edu.java.scrapper.data.db.entity.TelegramChat;
 import edu.java.scrapper.data.db.repository.BindingRepository;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
 @Transactional
+@AllArgsConstructor
 public class JdbcBindingRepositoryImpl implements BindingRepository {
     private final static String NOT_SUPPORTED_DESCRIPTION = "This method is not supported!";
     private final static String CHAT_ID = "chat_id";
@@ -27,10 +27,6 @@ public class JdbcBindingRepositoryImpl implements BindingRepository {
             + "ON link.id = chat_to_link_binding.link_id AND chat_to_link_binding.chat_id = :chat_id";
 
     private final JdbcClient client;
-
-    public JdbcBindingRepositoryImpl(JdbcClient client) {
-        this.client = client;
-    }
 
     @Override
     public void create(Binding entity) throws LinkAlreadyTrackedException {

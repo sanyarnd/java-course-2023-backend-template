@@ -6,23 +6,19 @@ import edu.java.scrapper.data.db.entity.TelegramChat;
 import edu.java.scrapper.data.db.repository.TelegramChatRepository;
 import java.util.List;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
 @Transactional
+@AllArgsConstructor
 public class JdbcTelegramChatRepositoryImpl implements TelegramChatRepository {
     private final static String ID = "id";
     private final static String REGISTERED_AT = "registered_at";
 
     private final JdbcClient client;
-
-    public JdbcTelegramChatRepositoryImpl(JdbcClient client) {
-        this.client = client;
-    }
 
     @Override
     public Optional<TelegramChat> get(Long entityId) {

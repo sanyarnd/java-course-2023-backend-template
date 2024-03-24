@@ -5,23 +5,19 @@ import edu.java.scrapper.data.db.repository.LinkRepository;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
 @Transactional
+@AllArgsConstructor
 public class JdbcLinkRepositoryImpl implements LinkRepository {
     private final static String ID = "id";
     private final static String URL = "url";
     private final static String LAST_UPDATED_AT = "last_updated_at";
 
     private final JdbcClient client;
-
-    public JdbcLinkRepositoryImpl(JdbcClient client) {
-        this.client = client;
-    }
 
     @Override
     public Optional<Link> get(Long entityId) {

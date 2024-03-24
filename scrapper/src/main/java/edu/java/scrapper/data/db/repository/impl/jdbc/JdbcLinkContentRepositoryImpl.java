@@ -4,24 +4,20 @@ import edu.java.scrapper.data.db.entity.LinkContent;
 import edu.java.scrapper.data.db.repository.LinkContentRepository;
 import java.util.List;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
 @Transactional
+@AllArgsConstructor
 public class JdbcLinkContentRepositoryImpl implements LinkContentRepository {
     private final static String ID = "id";
     private final static String RAW = "raw";
     private final static String HASH = "hash";
 
     private final JdbcClient client;
-
-    public JdbcLinkContentRepositoryImpl(JdbcClient client) {
-        this.client = client;
-    }
 
     @Override
     public Optional<LinkContent> get(Long entityId) {

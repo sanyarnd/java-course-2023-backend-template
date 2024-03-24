@@ -12,11 +12,19 @@ public record ApplicationConfig(
     Scheduler scheduler,
 
     @NotNull
-    Api api
+    Api api,
+
+    @NotNull
+    AccessType databaseAccessType
 ) {
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration linkExpiration) {
     }
 
     public record Api(@NotNull String github, @NotNull String stackOverflow, @NotNull String bot) {
+    }
+
+    public enum AccessType {
+        JDBC,
+        JPA
     }
 }

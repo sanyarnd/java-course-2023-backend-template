@@ -162,11 +162,16 @@ public class TelegramChatRepositoryTest extends PostgresIntegrationTest {
         repository.create(telegramChat);
         assertFalse(repository.getAll().isEmpty());
 
+        log.info(repository.getAll().toString());
+
         // Update TelegramChat
         telegramChat = telegramChat.setRegisteredAt(OffsetDateTime.now().plusHours(5));
+        log.error(String.valueOf(telegramChat));
         repository.update(telegramChat);
+        log.info(repository.getAll().toString());
 
         // Check
+        assertEquals(1, repository.getAll().size());
         TelegramChat updatedTelegramChat = repository.get(telegramChat.getId()).orElseThrow();
         assertEquals(telegramChat.getId(), updatedTelegramChat.getId());
         assertEquals(telegramChat.getRegisteredAt().toEpochSecond(), updatedTelegramChat.getRegisteredAt().toEpochSecond());
