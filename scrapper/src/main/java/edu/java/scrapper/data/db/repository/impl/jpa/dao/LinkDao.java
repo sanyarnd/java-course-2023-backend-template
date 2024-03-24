@@ -9,12 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface LinkDao extends JpaRepository<Link, Long> {
+    @SuppressWarnings("LineLength")
     @Query(
             value = "INSERT INTO link (url, last_updated_at) VALUES (:url, :last_updated_at) RETURNING link.id, link.url, link.last_updated_at",
             nativeQuery = true
     )
     Link createAndReturn(@Param("url") String url, @Param("last_updated_at") OffsetDateTime lastUpdatedAt);
 
+    @SuppressWarnings("LineLength")
     @Query(
             value = "DELETE from link WHERE id=:id AND url=:url AND last_updated_at=:last_updated_at RETURNING link.id, link.url, link.last_updated_at",
             nativeQuery = true
@@ -22,6 +24,7 @@ public interface LinkDao extends JpaRepository<Link, Long> {
     Optional<Link> deleteAndReturn(@Param("id") Long id, @Param("url") String url, @Param("last_updated_at") OffsetDateTime lastUpdatedAt);
 
 
+    @SuppressWarnings("LineLength")
     @Query(
             value = "UPDATE link SET url=:url, last_updated_at=:last_updated_at WHERE id=:id RETURNING link.id, link.url, link.last_updated_at",
             nativeQuery = true

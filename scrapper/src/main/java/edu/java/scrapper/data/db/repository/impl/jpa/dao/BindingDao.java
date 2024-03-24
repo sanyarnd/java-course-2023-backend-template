@@ -1,8 +1,6 @@
 package edu.java.scrapper.data.db.repository.impl.jpa.dao;
 
 import edu.java.scrapper.data.db.entity.Binding;
-import edu.java.scrapper.data.db.entity.TelegramChat;
-import java.time.OffsetDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
