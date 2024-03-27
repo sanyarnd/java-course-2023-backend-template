@@ -8,26 +8,20 @@ import com.pengrad.telegrambot.request.BaseRequest;
 import com.pengrad.telegrambot.request.SetMyCommands;
 import com.pengrad.telegrambot.response.BaseResponse;
 import edu.java.bot.commands.ICommand;
-import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.processors.UserProcessor;
 import jakarta.annotation.PostConstruct;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ContentMateBot implements IBot {
 
     private static final String BOT_NAME = "ContentMate2_Bot";
 
     private final TelegramBot telegramBot;
     private final UserProcessor userProcessor;
-
-    @Autowired
-    public ContentMateBot(ApplicationConfig applicationConfig, UserProcessor userProcessor) {
-        this.telegramBot = new TelegramBot(applicationConfig.telegramToken());
-        this.userProcessor = userProcessor;
-    }
 
     @Override
     public <T extends BaseRequest<T, R>, R extends BaseResponse> void execute(BaseRequest<T, R> request) {
