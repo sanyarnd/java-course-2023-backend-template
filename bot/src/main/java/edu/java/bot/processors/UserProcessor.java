@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.commands.HelpCommand;
 import edu.java.bot.commands.ICommand;
+import edu.java.bot.commands.IMultiLineCommand;
 import edu.java.bot.commands.ListCommand;
 import edu.java.bot.commands.StartCommand;
 import edu.java.bot.commands.TrackCommand;
@@ -16,8 +17,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserProcessor {
 
-    public List<? extends ICommand> multiLineCommands() {
-        List<ICommand> commands = new ArrayList<>();
+    public List<? extends IMultiLineCommand> multiLineCommands() {
+        List<IMultiLineCommand> commands = new ArrayList<>();
         commands.add(new TrackCommand());
         commands.add(new UntrackCommand());
 

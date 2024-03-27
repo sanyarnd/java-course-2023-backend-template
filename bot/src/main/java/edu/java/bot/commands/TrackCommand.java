@@ -5,7 +5,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import edu.java.bot.repository.SyntheticLinkRepository;
 import edu.java.bot.util.Links;
 
-public class TrackCommand implements ICommand {
+public class TrackCommand implements IMultiLineCommand {
 
     @Override
     public String command() {
